@@ -1,0 +1,3 @@
+[submodule "src/lib/wxWidgets"]
+	path = src/lib/wxWidgets
+	url = https://github.com/wxWidgets/wxWidgets.git
