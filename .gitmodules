@@ -1,3 +1,6 @@
 [submodule "src/lib/wxWidgets"]
 	path = src/lib/wxWidgets
 	url = https://github.com/wxWidgets/wxWidgets.git
+[submodule "src/lib/eMIDI"]
+	path = src/lib/eMIDI
+	url = https://github.com/coon42/eMIDI.git
