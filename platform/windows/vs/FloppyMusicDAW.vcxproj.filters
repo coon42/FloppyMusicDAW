@@ -13,15 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\eMIDI">
+      <UniqueIdentifier>{e19ac7d8-1ae1-40bb-8b57-4c5f44762f74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\hal\emidi_windows.c">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\helpers.c">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\midifile.c">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\midiport.c">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\midiplayer.c">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\main.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\eMIDI\src\hal\emidi_hal.h">
+      <Filter>Source Files\eMIDI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

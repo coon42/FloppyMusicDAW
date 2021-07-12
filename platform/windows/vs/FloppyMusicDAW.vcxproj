@@ -19,9 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\hal\emidi_windows.c" />
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\helpers.c" />
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\midifile.c" />
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\midiplayer.c" />
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\midiport.c" />
     <ClCompile Include="..\..\..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\lib\eMIDI\src\hal\emidi_hal.h" />
     <ClInclude Include="..\..\..\src\main.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
