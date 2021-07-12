@@ -23,6 +23,7 @@ public:
 private:
   void OnExit(wxCommandEvent& event);
   void OnAbout(wxCommandEvent& event);
+  void OnOpen(wxCommandEvent& event);
 
   wxDECLARE_EVENT_TABLE();
 };
@@ -30,6 +31,7 @@ private:
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 EVT_MENU(wxID_EXIT, MainFrame::OnExit)
 EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
+EVT_MENU(wxID_OPEN, MainFrame::OnOpen)
 wxEND_EVENT_TABLE()
 wxIMPLEMENT_APP_CONSOLE(WxApp);
 

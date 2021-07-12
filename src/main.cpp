@@ -21,6 +21,11 @@ bool WxApp::OnInit() {
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
   : wxFrame(NULL, wxID_ANY, title, pos, size) {
   wxMenu *menuFile = new wxMenu;
+
+  wxMenuItem* pGetBpItem = new wxMenuItem(menuFile, wxID_OPEN, "&Open MIDI File\tCtrl-O", "Open MIDI File");
+  menuFile->Append(pGetBpItem);
+
+  menuFile->AppendSeparator();
   menuFile->Append(wxID_EXIT);
 
   wxMenu *menuHelp = new wxMenu;
@@ -45,4 +50,7 @@ void MainFrame::OnAbout(wxCommandEvent& event) {
                "IRC: coon@hackint.org\n\n"
                "https://www.reddit.com/user/coon42\nhttps://github.com/coon42\n",
                "Floppy Music DAW", wxOK | wxICON_INFORMATION);
+}
+
+void MainFrame::OnOpen(wxCommandEvent& event) {
 }
