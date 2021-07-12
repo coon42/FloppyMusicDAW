@@ -58,4 +58,24 @@ void MainFrame::OnAbout(wxCommandEvent& event) {
 }
 
 void MainFrame::OnOpen(wxCommandEvent& event) {
+  wxFileDialog openFileDialog(this, _("Open Midi file"), "", "", "MIDI files (*.mid;*.midi)|*.mid;*.midi",
+      wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+
+  if (openFileDialog.ShowModal() == wxID_CANCEL)
+    return;
+
+  if (Error error = eMidi_open(&midiFile_, openFileDialog.GetPath())) {
+    printf("Error on opening midi file!\n");
+    return;
+  }
+
+  if (Error error = eMidi_printFileInfo(&midiFile_)) {
+    printf("Error on printing MIDI file info!\n");
+    return;
+  }
+
+  if (Error error = eMidi_close(&midiFile_)) {
+    printf("Error on closing midi file!\n");
+    return;
+  }
 }
