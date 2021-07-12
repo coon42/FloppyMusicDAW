@@ -1,5 +1,10 @@
 #include <iostream>
 
+extern "C" {
+#include "lib/eMIDI/src/midifile.h"
+#include "lib/eMIDI/src/helpers.h"
+}
+
 #include "main.h"
 
 //--------------------------------------------------------------------------------------------------------------

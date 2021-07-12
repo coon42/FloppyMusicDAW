@@ -25,6 +25,8 @@ private:
   void OnAbout(wxCommandEvent& event);
   void OnOpen(wxCommandEvent& event);
 
+  MidiFile midiFile_;
+
   wxDECLARE_EVENT_TABLE();
 };
 
@@ -34,7 +36,5 @@ EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 EVT_MENU(wxID_OPEN, MainFrame::OnOpen)
 wxEND_EVENT_TABLE()
 wxIMPLEMENT_APP_CONSOLE(WxApp);
-
-
 
 #endif // _MAIN_H
