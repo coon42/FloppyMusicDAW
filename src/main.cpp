@@ -27,6 +27,71 @@ KeyEditorCanvas::KeyEditorCanvas(wxWindow* pParent)
     : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
 }
 
+void KeyEditorCanvas::OnPaint(wxPaintEvent& event) {
+  wxPaintDC dc(this);
+  render(dc);
+}
+
+void KeyEditorCanvas::render(wxDC& dc) {
+  int width;
+  int height;
+  GetClientSize(&width, &height);
+
+  const int xSpacing = 50;
+  const int ySpacing = 10;
+  const int xPadding = 50;
+  const int yPadding = 20;
+
+  const int numMidiNotes = 128;
+
+  // draw divisions
+  for (int x = 0; x < width / xSpacing; ++x) {
+    const int xOffset = x * xSpacing;
+    const bool isFirst = x % 4 == 0;
+    const int yEndPos = isFirst ? 30 : 10;
+
+    if (isFirst) {
+      dc.SetPen(wxPen(wxColor(0, 0, 0), 1)); // black line, 1 pixels thick
+      dc.SetTextForeground(wxColor(0, 0, 0)); // set text color
+    }
+    else {
+      dc.SetPen(wxPen(wxColor(192, 192, 192), 1)); // black line, 1 pixels thick
+      dc.SetTextForeground(wxColor(128, 128, 128)); // set text color
+    }
+
+    dc.DrawLine(xPadding + xOffset, 0,  xPadding + xOffset, yEndPos);
+    dc.DrawLine(xPadding + xOffset, 30, xPadding + xOffset, 30 + numMidiNotes * ySpacing);
+
+    const int labelXoffset = isFirst ? xOffset + 5 : xOffset - 4;
+
+    const int major = 1 + x / 4;
+    const int minor = 1 + x % 4;
+
+    char pBuf[64]{0};
+
+    if (isFirst)
+      snprintf(pBuf, sizeof(pBuf), "%d", major);
+    else
+      snprintf(pBuf, sizeof(pBuf), "%d.%d", major, minor);
+
+    dc.DrawText(pBuf, xPadding + labelXoffset, 10);
+  }
+
+  // draw note lines
+  dc.SetPen(wxPen(wxColor(0, 0, 0), 1)); // black line, 1 pixels thick
+  dc.SetTextForeground(wxColor(0, 0, 0)); // set text color
+
+  for (int y = 0; y < numMidiNotes; ++y) {
+    const int yOffset = y * ySpacing;
+    dc.DrawLine(xPadding, 30 + yOffset, width, 30 + yOffset);
+
+    const int midiNote = numMidiNotes - 1 - y;
+    const char* pNoteStr = eMidi_numberToNote(midiNote);
+
+    dc.DrawText(pNoteStr, 0, 30 + yOffset);
+  }
+}
+
 //--------------------------------------------------------------------------------------------------------------
 // KeyEditorWindow
 //--------------------------------------------------------------------------------------------------------------

@@ -19,7 +19,17 @@ public:
 class KeyEditorCanvas : public wxWindow {
 public:
   KeyEditorCanvas(wxWindow* pParent);
+
+private:
+  void OnPaint(wxPaintEvent& event);
+  void render(wxDC& dc);
+
+  wxDECLARE_EVENT_TABLE();
 };
+
+wxBEGIN_EVENT_TABLE(KeyEditorCanvas, wxWindow)
+EVT_PAINT(KeyEditorCanvas::OnPaint)
+wxEND_EVENT_TABLE()
 
 //--------------------------------------------------------------------------------------------------------------
 // KeyEditorWindow
