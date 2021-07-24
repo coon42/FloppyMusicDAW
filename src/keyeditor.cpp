@@ -20,9 +20,7 @@ void KeyEditorCanvas::OnPaint(wxPaintEvent& event) {
 }
 
 void KeyEditorCanvas::render(wxDC& dc) {
-  int width;
-  int height;
-  GetClientSize(&width, &height);
+  const wxSize canvasSize = GetClientSize();
 
   const int xSpacing = 50;
   const int ySpacing = 10;
@@ -32,7 +30,7 @@ void KeyEditorCanvas::render(wxDC& dc) {
   const int numMidiNotes = 128;
 
   // draw divisions
-  for (int x = 0; x < width / xSpacing; ++x) {
+  for (int x = 0; x < canvasSize.GetWidth() / xSpacing; ++x) {
     const int xOffset = x * xSpacing;
     const bool isFirst = x % 4 == 0;
     const int yEndPos = isFirst ? 30 : 10;
@@ -70,7 +68,7 @@ void KeyEditorCanvas::render(wxDC& dc) {
 
   for (int y = 0; y < numMidiNotes; ++y) {
     const int yOffset = y * ySpacing;
-    dc.DrawLine(xPadding, 30 + yOffset, width, 30 + yOffset);
+    dc.DrawLine(xPadding, 30 + yOffset, canvasSize.GetWidth(), 30 + yOffset);
 
     const int midiNote = numMidiNotes - 1 - y;
     const char* pNoteStr = eMidi_numberToNote(midiNote);
