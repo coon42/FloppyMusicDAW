@@ -47,7 +47,7 @@ private:
   void OnAbout(wxCommandEvent& event);
   void OnOpen(wxCommandEvent& event);
 
-  MidiFile midiFile_;
+  MidiFile midiFile_{0};
 
   wxDECLARE_EVENT_TABLE();
 };
