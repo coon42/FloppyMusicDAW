@@ -3,36 +3,7 @@
 
 #include <wx/wx.h>
 
-//-------------------------------------------------------------------------------------------------
-// KeyEditorCanvas
-//-------------------------------------------------------------------------------------------------
-
-class KeyEditorCanvas : public wxWindow {
-public:
-  KeyEditorCanvas(wxWindow* pParent);
-
-private:
-  void OnPaint(wxPaintEvent& event);
-  void render(wxDC& dc);
-
-  wxDECLARE_EVENT_TABLE();
-};
-
-wxBEGIN_EVENT_TABLE(KeyEditorCanvas, wxWindow)
-EVT_PAINT(KeyEditorCanvas::OnPaint)
-wxEND_EVENT_TABLE()
-
-//-------------------------------------------------------------------------------------------------
-// KeyEditorWindow
-//-------------------------------------------------------------------------------------------------
-
-class KeyEditorWindow : public wxWindow {
-public:
-  KeyEditorWindow(wxWindow* pParent);
-
-private:
-  KeyEditorCanvas* pKeyEditorCanvas_{nullptr};
-};
+#include "keyeditor.h"
 
 //-------------------------------------------------------------------------------------------------
 // MainFrame

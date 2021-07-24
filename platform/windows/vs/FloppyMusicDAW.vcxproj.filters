@@ -36,6 +36,9 @@
     <ClCompile Include="..\..\..\src\lib\eMIDI\src\midiplayer.c">
       <Filter>Source Files\eMIDI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\keyeditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\main.h">
@@ -43,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\lib\eMIDI\src\hal\emidi_hal.h">
       <Filter>Source Files\eMIDI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\keyeditor.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
