@@ -81,7 +81,7 @@ wxEND_EVENT_TABLE()
 //-------------------------------------------------------------------------------------------------
 
 bool WxApp::OnInit() {
-  new MainFrame("Floppy Music DAW", wxDefaultPosition, wxSize(800, 600));
+  new MainFrame("Floppy Music DAW", wxDefaultPosition, wxSize(1440, 900));
 
   printf("Floppy Music DAW started.\n");
 
