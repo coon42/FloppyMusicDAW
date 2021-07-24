@@ -12,10 +12,10 @@ extern "C" {
 //-------------------------------------------------------------------------------------------------
 
 bool WxApp::OnInit() {
-  MainFrame* frame = new MainFrame("Floppy Music DAW", wxPoint(50, 50), wxSize(450, 340));
-  frame->Show(true);
+  new MainFrame("Floppy Music DAW", wxPoint(50, 50), wxSize(800, 600));
 
   printf("Floppy Music DAW started.\n");
+
   return true;
 }
 
