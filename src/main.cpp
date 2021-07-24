@@ -130,27 +130,27 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent)
 //-------------------------------------------------------------------------------------------------
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
-  : wxFrame(NULL, wxID_ANY, title, pos, size) {
-  wxMenu *menuFile = new wxMenu;
+    : wxFrame(NULL, wxID_ANY, title, pos, size) {
 
-  wxMenuItem* pGetBpItem = new wxMenuItem(menuFile, wxID_OPEN, "&Open MIDI File\tCtrl-O", "Open MIDI File");
-  menuFile->Append(pGetBpItem);
+  wxMenu* pFileMenu = new wxMenu;
+  pFileMenu->Append(new wxMenuItem(pFileMenu, wxID_OPEN, "&Open MIDI File\tCtrl-O", "Open MIDI File"));
+  pFileMenu->AppendSeparator();
+  pFileMenu->Append(wxID_EXIT);
 
-  menuFile->AppendSeparator();
-  menuFile->Append(wxID_EXIT);
+  wxMenu* pHelpMenu = new wxMenu;
+  pHelpMenu->Append(wxID_ABOUT);
 
-  wxMenu *menuHelp = new wxMenu;
-  menuHelp->Append(wxID_ABOUT);
+  wxMenuBar* pMenuBar = new wxMenuBar;
+  pMenuBar->Append(pFileMenu, "&File");
+  pMenuBar->Append(pHelpMenu, "&Help");
 
-  wxMenuBar *menuBar = new wxMenuBar;
-  menuBar->Append(menuFile, "&File");
-  menuBar->Append(menuHelp, "&Help");
-
-  SetMenuBar(menuBar);
+  SetMenuBar(pMenuBar);
   CreateStatusBar();
   SetStatusText("Ready.");
 
   new KeyEditorWindow(this);
+
+  Show(true);
 }
 
 void MainFrame::OnExit(wxCommandEvent& event) {
