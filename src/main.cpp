@@ -8,18 +8,6 @@ extern "C" {
 #include "main.h"
 
 //-------------------------------------------------------------------------------------------------
-// WxApp
-//-------------------------------------------------------------------------------------------------
-
-bool WxApp::OnInit() {
-  new MainFrame("Floppy Music DAW", wxPoint(50, 50), wxSize(800, 600));
-
-  printf("Floppy Music DAW started.\n");
-
-  return true;
-}
-
-//-------------------------------------------------------------------------------------------------
 // MainFrame
 //-------------------------------------------------------------------------------------------------
 
@@ -81,3 +69,23 @@ void MainFrame::OnOpen(wxCommandEvent& event) {
     return;
   }
 }
+
+wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
+EVT_MENU(wxID_EXIT, MainFrame::OnExit)
+EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
+EVT_MENU(wxID_OPEN, MainFrame::OnOpen)
+wxEND_EVENT_TABLE()
+
+//-------------------------------------------------------------------------------------------------
+// WxApp
+//-------------------------------------------------------------------------------------------------
+
+bool WxApp::OnInit() {
+  new MainFrame("Floppy Music DAW", wxDefaultPosition, wxSize(800, 600));
+
+  printf("Floppy Music DAW started.\n");
+
+  return true;
+}
+
+wxIMPLEMENT_APP_CONSOLE(WxApp);

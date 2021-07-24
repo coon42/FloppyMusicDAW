@@ -23,12 +23,6 @@ private:
   wxDECLARE_EVENT_TABLE();
 };
 
-wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
-EVT_MENU(wxID_EXIT, MainFrame::OnExit)
-EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
-EVT_MENU(wxID_OPEN, MainFrame::OnOpen)
-wxEND_EVENT_TABLE()
-
 //-------------------------------------------------------------------------------------------------
 // WxApp
 //-------------------------------------------------------------------------------------------------
@@ -37,8 +31,6 @@ class WxApp : public wxApp {
 private:
   virtual bool OnInit();
 };
-
-wxIMPLEMENT_APP_CONSOLE(WxApp);
 
 #endif // _MAIN_H
 
