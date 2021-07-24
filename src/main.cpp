@@ -20,6 +20,47 @@ bool WxApp::OnInit() {
 }
 
 //--------------------------------------------------------------------------------------------------------------
+// KeyEditorCanvas
+//--------------------------------------------------------------------------------------------------------------
+
+KeyEditorCanvas::KeyEditorCanvas(wxWindow* pParent)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
+}
+
+//--------------------------------------------------------------------------------------------------------------
+// KeyEditorWindow
+//--------------------------------------------------------------------------------------------------------------
+
+KeyEditorWindow::KeyEditorWindow(wxWindow* pParent)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_SUNKEN) {
+
+  wxFlexGridSizer* pTopSizer = new wxFlexGridSizer(2, 2, wxSize(0, 0));
+
+  wxSizer* pHorizontalBarSizer = new wxBoxSizer(wxHORIZONTAL);
+  wxScrollBar* pHorizontalScrollbar = new wxScrollBar(this, wxID_ANY, wxPoint(0, 100), wxSize(100, 10));
+  wxSlider* pHorizontalSlider = new wxSlider(this, wxID_ANY, 5, 0, 10, wxPoint(0, 100), wxSize(100, 10));
+
+  wxSizer* pVerticalBarSizer = new wxBoxSizer(wxVERTICAL);
+  wxScrollBar* pVerticalScrollbar = new wxScrollBar(this, wxID_ANY, wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
+  wxSlider* pVerticalSlider = new wxSlider(this, wxID_ANY, 5, 0, 10, wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
+
+  pHorizontalBarSizer->Add(pHorizontalScrollbar, 1);
+  pHorizontalBarSizer->Add(pHorizontalSlider, 0);
+
+  pVerticalBarSizer->Add(pVerticalScrollbar, 1);
+  pVerticalBarSizer->Add(pVerticalSlider, 0);
+
+  pTopSizer->Add(new KeyEditorCanvas(this), 1, wxEXPAND);
+  pTopSizer->Add(pVerticalBarSizer, 1, wxEXPAND);
+  pTopSizer->Add(pHorizontalBarSizer, 1, wxEXPAND);
+
+  pTopSizer->AddGrowableCol(0, 1);
+  pTopSizer->AddGrowableRow(0, 1);
+
+  SetSizer(pTopSizer);
+}
+
+//--------------------------------------------------------------------------------------------------------------
 // MainFrame
 //--------------------------------------------------------------------------------------------------------------
 
@@ -43,6 +84,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
   SetMenuBar(menuBar);
   CreateStatusBar();
   SetStatusText("Ready.");
+
+  new KeyEditorWindow(this);
 }
 
 void MainFrame::OnExit(wxCommandEvent& event) {
