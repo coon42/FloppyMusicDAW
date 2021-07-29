@@ -4,6 +4,7 @@
 #include <wx/wx.h>
 
 #include "keyeditor.h"
+#include "song.h"
 
 //-------------------------------------------------------------------------------------------------
 // MainFrame
@@ -18,7 +19,10 @@ private:
   void OnAbout(wxCommandEvent& event);
   void OnOpen(wxCommandEvent& event);
 
+  void generateNoteBlocks(MidiFile* pMidiFile);
   void openMidiFile(const std::string& path);
+
+  Song song_{0};
 
   wxDECLARE_EVENT_TABLE();
 };
@@ -33,4 +37,3 @@ private:
 };
 
 #endif // _MAIN_H
-
