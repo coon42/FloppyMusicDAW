@@ -31,7 +31,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
   CreateStatusBar();
   SetStatusText("Ready.");
 
-  new KeyEditorWindow(this);
+  new KeyEditorWindow(this, &song_);
 
   Show(true);
 }

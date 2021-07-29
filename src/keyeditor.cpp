@@ -10,8 +10,9 @@ extern "C" {
 // KeyEditorCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorCanvas::KeyEditorCanvas(wxWindow* pParent)
-    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
+KeyEditorCanvas::KeyEditorCanvas(wxWindow* pParent, Song* const pSong)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
+      pSong_(pSong) {
 }
 
 void KeyEditorCanvas::OnPaint(wxPaintEvent& event) {
@@ -85,8 +86,9 @@ wxEND_EVENT_TABLE()
 // KeyEditorWindow
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorWindow::KeyEditorWindow(wxWindow* pParent)
-    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_SUNKEN) {
+KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_SUNKEN),
+      pSong_(pSong) {
 
   wxFlexGridSizer* pTopSizer = new wxFlexGridSizer(2, 2, wxSize(0, 0));
 
@@ -104,7 +106,7 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent)
   pVerticalBarSizer->Add(pVerticalScrollbar, 1);
   pVerticalBarSizer->Add(pVerticalSlider, 0);
 
-  pTopSizer->Add(new KeyEditorCanvas(this), 1, wxEXPAND);
+  pTopSizer->Add(new KeyEditorCanvas(this, pSong), 1, wxEXPAND);
   pTopSizer->Add(pVerticalBarSizer, 1, wxEXPAND);
   pTopSizer->Add(pHorizontalBarSizer, 1, wxEXPAND);
 
