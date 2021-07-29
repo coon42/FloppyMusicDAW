@@ -23,7 +23,7 @@ void KeyEditorCanvas::OnPaint(wxPaintEvent& event) {
 void KeyEditorCanvas::render(wxDC& dc) {
   const wxSize canvasSize = GetClientSize();
 
-  const int xSpacing = 50;
+  const int pixelsPerQuarterNote = 50;
   const int ySpacing = 10;
   const int xPadding = 50;
   const int yPadding = 20;
@@ -31,8 +31,8 @@ void KeyEditorCanvas::render(wxDC& dc) {
   const int numMidiNotes = 128;
 
   // draw divisions
-  for (int x = 0; x < canvasSize.GetWidth() / xSpacing; ++x) {
-    const int xOffset = x * xSpacing;
+  for (int x = 0; x < canvasSize.GetWidth() / pixelsPerQuarterNote; ++x) {
+    const int xOffset = x * pixelsPerQuarterNote;
     const bool isFirst = x % 4 == 0;
     const int yEndPos = isFirst ? 30 : 10;
 
@@ -76,6 +76,20 @@ void KeyEditorCanvas::render(wxDC& dc) {
 
     dc.DrawText(pNoteStr, 0, 30 + yOffset);
   }
+
+  // draw note blocks
+  dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
+
+  for (const NoteBlock& noteBlock : pSong_->noteBlocks) {
+    const int x1 = xPadding + (noteBlock.startTick * pixelsPerQuarterNote) / pSong_->TPQN;
+    const int y1 = 30 + ySpacing * (127 - noteBlock.note);
+    const int width = (noteBlock.numTicks * pixelsPerQuarterNote) / pSong_->TPQN;
+
+    const int yOffset = ySpacing;
+    const int height = yOffset;
+
+    dc.DrawRectangle(x1, y1, width, height);
+  }
 }
 
 wxBEGIN_EVENT_TABLE(KeyEditorCanvas, wxWindow)
@@ -106,7 +120,7 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   pVerticalBarSizer->Add(pVerticalScrollbar, 1);
   pVerticalBarSizer->Add(pVerticalSlider, 0);
 
-  pTopSizer->Add(new KeyEditorCanvas(this, pSong), 1, wxEXPAND);
+  pTopSizer->Add(new KeyEditorCanvas(this, pSong_), 1, wxEXPAND);
   pTopSizer->Add(pVerticalBarSizer, 1, wxEXPAND);
   pTopSizer->Add(pHorizontalBarSizer, 1, wxEXPAND);
 
