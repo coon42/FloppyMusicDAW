@@ -47,16 +47,10 @@ void MainFrame::OnAbout(wxCommandEvent& event) {
                "Floppy Music DAW", wxOK | wxICON_INFORMATION);
 }
 
-void MainFrame::OnOpen(wxCommandEvent& event) {
-  wxFileDialog openFileDialog(this, _("Open Midi file"), "", "", "MIDI files (*.mid;*.midi)|*.mid;*.midi",
-      wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-
-  if (openFileDialog.ShowModal() == wxID_CANCEL)
-    return;
-
+void MainFrame::openMidiFile(const std::string& path) {
   MidiFile midiFile{0};
 
-  if (Error error = eMidi_open(&midiFile, openFileDialog.GetPath())) {
+  if (Error error = eMidi_open(&midiFile, path.c_str())) {
     printf("Error on opening midi file!\n");
     return;
   }
@@ -70,6 +64,16 @@ void MainFrame::OnOpen(wxCommandEvent& event) {
     printf("Error on closing midi file!\n");
     return;
   }
+}
+
+void MainFrame::OnOpen(wxCommandEvent& event) {
+  wxFileDialog openFileDialog(this, _("Open Midi file"), "", "", "MIDI files (*.mid;*.midi)|*.mid;*.midi",
+      wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+
+  if (openFileDialog.ShowModal() == wxID_CANCEL)
+    return;
+
+  openMidiFile(openFileDialog.GetPath().ToStdString());
 }
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)

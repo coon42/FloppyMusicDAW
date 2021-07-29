@@ -18,6 +18,8 @@ private:
   void OnAbout(wxCommandEvent& event);
   void OnOpen(wxCommandEvent& event);
 
+  void openMidiFile(const std::string& path);
+
   wxDECLARE_EVENT_TABLE();
 };
 
