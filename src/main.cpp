@@ -54,17 +54,19 @@ void MainFrame::OnOpen(wxCommandEvent& event) {
   if (openFileDialog.ShowModal() == wxID_CANCEL)
     return;
 
-  if (Error error = eMidi_open(&midiFile_, openFileDialog.GetPath())) {
+  MidiFile midiFile{0};
+
+  if (Error error = eMidi_open(&midiFile, openFileDialog.GetPath())) {
     printf("Error on opening midi file!\n");
     return;
   }
 
-  if (Error error = eMidi_printFileInfo(&midiFile_)) {
+  if (Error error = eMidi_printFileInfo(&midiFile)) {
     printf("Error on printing MIDI file info!\n");
     return;
   }
 
-  if (Error error = eMidi_close(&midiFile_)) {
+  if (Error error = eMidi_close(&midiFile)) {
     printf("Error on closing midi file!\n");
     return;
   }
