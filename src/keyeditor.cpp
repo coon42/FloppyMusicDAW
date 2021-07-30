@@ -126,6 +126,13 @@ void KeyEditorCanvas::render(wxDC& dc) {
   }
 }
 
+void KeyEditorCanvas::setXscrollPosition(int xScrollPosition) {
+  xScrollOffset_ = xScrollPosition;
+
+  wxClientDC dc(this);
+  render(dc);
+}
+
 void KeyEditorCanvas::setYscrollPosition(int yScrollPosition) {
   yScrollOffset_ = yScrollPosition;
 

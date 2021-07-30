@@ -13,6 +13,7 @@ class KeyEditorCanvas : public wxWindow {
 public:
   KeyEditorCanvas(wxWindow* pParent, Song* const pSong);
 
+  void setXscrollPosition(int xScrollPosition);
   void setYscrollPosition(int yScrollPosition);
 
 private:
@@ -21,6 +22,7 @@ private:
 
   Song* const pSong_;
 
+  int xScrollOffset_{0};
   int yScrollOffset_{0};
 
   wxDECLARE_EVENT_TABLE();
