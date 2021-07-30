@@ -137,7 +137,9 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   pVerticalBarSizer->Add(pVerticalScrollbar, 1);
   pVerticalBarSizer->Add(pVerticalSlider, 0);
 
-  pTopSizer->Add(new KeyEditorCanvas(this, pSong_), 1, wxEXPAND);
+  pKeyEditorCanvas_ = new KeyEditorCanvas(this, pSong_);
+
+  pTopSizer->Add(pKeyEditorCanvas_, 1, wxEXPAND);
   pTopSizer->Add(pVerticalBarSizer, 1, wxEXPAND);
   pTopSizer->Add(pHorizontalBarSizer, 1, wxEXPAND);
 
