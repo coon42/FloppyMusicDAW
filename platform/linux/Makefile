@@ -16,13 +16,12 @@ CFLAGS += -I../../src
 CFLAGS += -I../../src/lib/eMIDI/src
 CFLAGS += -I../../src/lib/eMIDI/src/hal
 CFLAGS += -I../../src/lib/wxWidgets/include
-#CFLAGS += -I../../src/lib/wxWidgets/gtk-build/lib/wx/include/gtk3-unicode-3.1
 
 ###################################################
 
 OBJDIR=obj
 BINDIR=bin
-MAIN_SRCS = main.cpp
+MAIN_SRCS = keyeditor.cpp main.cpp
 
 #LIB_SRCS = <TODO: add files if needed>
 
@@ -50,13 +49,13 @@ $(OBJDIR):
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -L$(OBJDIR)
 
+$(OBJDIR)/%.o: %.cpp | $(OBJDIR)
+	$(CXX) $(CFLAGS) -c $< -o $@ -L$(OBJDIR) `wx-config --cxxflags --libs`
+
 $(OBJDIR)/libemidi.a: $(EMIDI_LIB_OBJS)
 	$(AR) -r $@ $(EMIDI_LIB_OBJS)
 
-$(OBJDIR)/main.o: main.cpp
-	$(CXX) $(CFLAGS) -c $< -o $@ -L$(OBJDIR) `wx-config --cxxflags --libs`
-
-$(OUTPATH)/$(PROJ_NAME).elf: $(OBJDIR)/libemidi.a $(MAIN_OBJS) $(OBJDIR)/main.o
+$(OUTPATH)/$(PROJ_NAME).elf: $(OBJDIR)/libemidi.a $(MAIN_OBJS)
 	$(CXX) $(CFLAGS) $^ -o $@ -L. -Lobj -lemidi `wx-config --cxxflags --libs`
 	$(SIZE) $@
 
