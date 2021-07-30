@@ -32,7 +32,8 @@ void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
 
     case wxHORIZONTAL:
       printf("horizontal: pos: % d\n", event.GetPosition());
-      // TODO: implement
+
+      pKeyEditorCanvas_->setXscrollPosition(event.GetPosition());
       break;
 
     default:
@@ -79,8 +80,8 @@ void KeyEditorCanvas::render(wxDC& dc) {
     dc.DrawLine(xBlockStartOffset + xOffset, yBlockStartOffset, xBlockStartOffset + xOffset, yBlockStartOffset + numBlocksVisibleOnScreen * blockHeight);
 
     const int labelXoffset = isFirst ? xOffset + 5 : xOffset - 4;
-    const int major = 1 + x / 4;
-    const int minor = 1 + x % 4;
+    const int major = 1 + (xScrollOffset_ + x) / 4;
+    const int minor = 1 + (xScrollOffset_ + x) % 4;
 
     char pBuf[64]{0};
 
@@ -117,7 +118,7 @@ void KeyEditorCanvas::render(wxDC& dc) {
   dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
 
   for (const NoteBlock& noteBlock : pSong_->noteBlocks) {
-    const int x1 = xBlockStartOffset + (noteBlock.startTick * pixelsPerQuarterNote) / pSong_->TPQN;
+    const int x1 = xBlockStartOffset - xScrollOffset_ * pixelsPerQuarterNote + (noteBlock.startTick * pixelsPerQuarterNote) / pSong_->TPQN;
     const int y1 = yBlockStartOffset + blockHeight * (127 - noteBlock.note - yScrollOffset_);
     const int width = (noteBlock.numTicks * pixelsPerQuarterNote) / pSong_->TPQN;
 
@@ -156,6 +157,8 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
 
   wxSizer* pHorizontalBarSizer = new wxBoxSizer(wxHORIZONTAL);
   wxScrollBar* pHorizontalScrollbar = new wxScrollBar(this, wxID_ANY, wxPoint(0, 100), wxSize(100, 10));
+  pHorizontalScrollbar->SetScrollbar(24, 1, 128, 1);
+
   wxSlider* pHorizontalSlider = new wxSlider(this, wxID_ANY, 5, 0, 10, wxPoint(0, 100), wxSize(100, 10));
 
   wxSizer* pVerticalBarSizer = new wxBoxSizer(wxVERTICAL);
