@@ -70,10 +70,15 @@ void KeyEditorCanvas::render(wxDC& dc) {
     }
 
     dc.DrawLine(xBlockStartOffset + xOffset, 0, xBlockStartOffset + xOffset, yEndPos);
-    dc.DrawLine(xBlockStartOffset + xOffset, yBlockStartOffset, xBlockStartOffset + xOffset, yBlockStartOffset + numMidiNotes * blockHeight);
+
+    int numBlocksVisibleOnScreen = (canvasSize.GetHeight() - yBlockStartOffset - blockHeight / 2) / blockHeight;
+
+    if (numBlocksVisibleOnScreen + yScrollOffset_ > numMidiNotes)
+      numBlocksVisibleOnScreen = numMidiNotes - yScrollOffset_;
+
+    dc.DrawLine(xBlockStartOffset + xOffset, yBlockStartOffset, xBlockStartOffset + xOffset, yBlockStartOffset + numBlocksVisibleOnScreen * blockHeight);
 
     const int labelXoffset = isFirst ? xOffset + 5 : xOffset - 4;
-
     const int major = 1 + x / 4;
     const int minor = 1 + x % 4;
 
@@ -92,13 +97,20 @@ void KeyEditorCanvas::render(wxDC& dc) {
   dc.SetTextForeground(wxColor(0, 0, 0)); // set text color
 
   for (int y = 0; y < numMidiNotes; ++y) {
-    const int yOffset = y * blockHeight;
-    dc.DrawLine(xBlockStartOffset, yBlockStartOffset + yOffset, canvasSize.GetWidth(), yBlockStartOffset + yOffset);
+    const int midiNote = numMidiNotes - 1 - y - yScrollOffset_;
 
-    const int midiNote = numMidiNotes - 1 - y;
-    const char* pNoteStr = eMidi_numberToNote(midiNote);
+    if (midiNote >= 0) {
+      const int yOffset = y * blockHeight;
+      dc.DrawLine(xBlockStartOffset, yBlockStartOffset + yOffset, canvasSize.GetWidth(), yBlockStartOffset + yOffset);
 
-    dc.DrawText(pNoteStr, 0, yBlockStartOffset + yOffset);
+      if (midiNote == 0) {
+        const int yOffsetLast = (y + 1) * blockHeight;
+        dc.DrawLine(xBlockStartOffset, yBlockStartOffset + yOffsetLast, canvasSize.GetWidth(), yBlockStartOffset + yOffsetLast);
+      }
+
+      const char* pNoteStr = eMidi_numberToNote(midiNote);
+      dc.DrawText(pNoteStr, 0, yBlockStartOffset + yOffset);
+    }
   }
 
   // draw note blocks
@@ -106,10 +118,11 @@ void KeyEditorCanvas::render(wxDC& dc) {
 
   for (const NoteBlock& noteBlock : pSong_->noteBlocks) {
     const int x1 = xBlockStartOffset + (noteBlock.startTick * pixelsPerQuarterNote) / pSong_->TPQN;
-    const int y1 = yBlockStartOffset + blockHeight * (127 - noteBlock.note);
+    const int y1 = yBlockStartOffset + blockHeight * (127 - noteBlock.note - yScrollOffset_);
     const int width = (noteBlock.numTicks * pixelsPerQuarterNote) / pSong_->TPQN;
 
-    dc.DrawRectangle(x1, y1, width, blockHeight);
+    if (y1 >= yBlockStartOffset)
+      dc.DrawRectangle(x1, y1, width, blockHeight);
   }
 }
 
