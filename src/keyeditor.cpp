@@ -140,6 +140,10 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
 
   wxSizer* pVerticalBarSizer = new wxBoxSizer(wxVERTICAL);
   wxScrollBar* pVerticalScrollbar = new wxScrollBar(this, wxID_ANY, wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
+
+  const int numMidiNotes = 128;
+  pVerticalScrollbar->SetScrollbar(24, 1, numMidiNotes, 1);
+
   wxSlider* pVerticalSlider = new wxSlider(this, wxID_ANY, 5, 0, 10, wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
 
   pHorizontalBarSizer->Add(pHorizontalScrollbar, 1);
@@ -149,6 +153,7 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   pVerticalBarSizer->Add(pVerticalSlider, 0);
 
   pKeyEditorCanvas_ = new KeyEditorCanvas(this, pSong_);
+  pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar->GetThumbPosition());
 
   pTopSizer->Add(pKeyEditorCanvas_, 1, wxEXPAND);
   pTopSizer->Add(pVerticalBarSizer, 1, wxEXPAND);
