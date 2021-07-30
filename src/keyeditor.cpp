@@ -24,9 +24,9 @@ void KeyEditorCanvas::render(wxDC& dc) {
   const wxSize canvasSize = GetClientSize();
 
   const int pixelsPerQuarterNote = 50;
-  const int ySpacing = 10;
-  const int xPadding = 50;
-  const int yPadding = 20;
+  const int blockHeight = 10;
+  const int xBlockStartOffset = 50;
+  const int yBlockStartOffset = 30;
 
   const int numMidiNotes = 128;
 
@@ -34,7 +34,7 @@ void KeyEditorCanvas::render(wxDC& dc) {
   for (int x = 0; x < canvasSize.GetWidth() / pixelsPerQuarterNote; ++x) {
     const int xOffset = x * pixelsPerQuarterNote;
     const bool isFirst = x % 4 == 0;
-    const int yEndPos = isFirst ? 30 : 10;
+    const int yEndPos = isFirst ? yBlockStartOffset : 10;
 
     if (isFirst) {
       dc.SetPen(wxPen(wxColor(0, 0, 0), 1)); // black line, 1 pixels thick
@@ -45,8 +45,8 @@ void KeyEditorCanvas::render(wxDC& dc) {
       dc.SetTextForeground(wxColor(128, 128, 128)); // set text color
     }
 
-    dc.DrawLine(xPadding + xOffset, 0,  xPadding + xOffset, yEndPos);
-    dc.DrawLine(xPadding + xOffset, 30, xPadding + xOffset, 30 + numMidiNotes * ySpacing);
+    dc.DrawLine(xBlockStartOffset + xOffset, 0, xBlockStartOffset + xOffset, yEndPos);
+    dc.DrawLine(xBlockStartOffset + xOffset, yBlockStartOffset, xBlockStartOffset + xOffset, yBlockStartOffset + numMidiNotes * blockHeight);
 
     const int labelXoffset = isFirst ? xOffset + 5 : xOffset - 4;
 
@@ -60,7 +60,7 @@ void KeyEditorCanvas::render(wxDC& dc) {
     else
       snprintf(pBuf, sizeof(pBuf), "%d.%d", major, minor);
 
-    dc.DrawText(pBuf, xPadding + labelXoffset, 10);
+    dc.DrawText(pBuf, xBlockStartOffset + labelXoffset, 10);
   }
 
   // draw note lines
@@ -68,27 +68,24 @@ void KeyEditorCanvas::render(wxDC& dc) {
   dc.SetTextForeground(wxColor(0, 0, 0)); // set text color
 
   for (int y = 0; y < numMidiNotes; ++y) {
-    const int yOffset = y * ySpacing;
-    dc.DrawLine(xPadding, 30 + yOffset, canvasSize.GetWidth(), 30 + yOffset);
+    const int yOffset = y * blockHeight;
+    dc.DrawLine(xBlockStartOffset, yBlockStartOffset + yOffset, canvasSize.GetWidth(), yBlockStartOffset + yOffset);
 
     const int midiNote = numMidiNotes - 1 - y;
     const char* pNoteStr = eMidi_numberToNote(midiNote);
 
-    dc.DrawText(pNoteStr, 0, 30 + yOffset);
+    dc.DrawText(pNoteStr, 0, yBlockStartOffset + yOffset);
   }
 
   // draw note blocks
   dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
 
   for (const NoteBlock& noteBlock : pSong_->noteBlocks) {
-    const int x1 = xPadding + (noteBlock.startTick * pixelsPerQuarterNote) / pSong_->TPQN;
-    const int y1 = 30 + ySpacing * (127 - noteBlock.note);
+    const int x1 = xBlockStartOffset + (noteBlock.startTick * pixelsPerQuarterNote) / pSong_->TPQN;
+    const int y1 = yBlockStartOffset + blockHeight * (127 - noteBlock.note);
     const int width = (noteBlock.numTicks * pixelsPerQuarterNote) / pSong_->TPQN;
 
-    const int yOffset = ySpacing;
-    const int height = yOffset;
-
-    dc.DrawRectangle(x1, y1, width, height);
+    dc.DrawRectangle(x1, y1, width, blockHeight);
   }
 }
 
