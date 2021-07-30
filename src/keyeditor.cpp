@@ -43,6 +43,8 @@ void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
 }
 
 void KeyEditorCanvas::render(wxDC& dc) {
+  dc.Clear();
+
   const wxSize canvasSize = GetClientSize();
 
   const int pixelsPerQuarterNote = 50;
@@ -113,6 +115,9 @@ void KeyEditorCanvas::render(wxDC& dc) {
 
 void KeyEditorCanvas::setYscrollPosition(int yScrollPosition) {
   yScrollOffset_ = yScrollPosition;
+
+  wxClientDC dc(this);
+  render(dc);
 }
 
 wxBEGIN_EVENT_TABLE(KeyEditorCanvas, wxWindow)
