@@ -20,6 +20,26 @@ void KeyEditorCanvas::OnPaint(wxPaintEvent& event) {
   render(dc);
 }
 
+void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
+  printf("KeyEditorWindow::OnScroll; ");
+
+  switch (event.GetOrientation()) {
+    case wxVERTICAL:
+      printf("vertical: pos: % d\n", event.GetPosition());
+      break;
+
+    case wxHORIZONTAL:
+      printf("horizontal: pos: % d\n", event.GetPosition());
+      // TODO: implement
+      break;
+
+    default:
+      printf("unknown orientation\n");
+      // sliders do send this event!?
+      break;
+  }
+}
+
 void KeyEditorCanvas::render(wxDC& dc) {
   const wxSize canvasSize = GetClientSize();
 
@@ -126,3 +146,7 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
 
   SetSizer(pTopSizer);
 }
+
+wxBEGIN_EVENT_TABLE(KeyEditorWindow, wxWindow)
+EVT_SCROLL(KeyEditorWindow::OnScroll)
+wxEND_EVENT_TABLE()

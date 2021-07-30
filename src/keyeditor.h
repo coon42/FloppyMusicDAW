@@ -31,8 +31,12 @@ public:
   KeyEditorWindow(wxWindow* pParent, Song* pSong);
 
 private:
+  void OnScroll(wxScrollEvent& event);
+
   KeyEditorCanvas* pKeyEditorCanvas_{nullptr};
   Song* const pSong_;
+
+  wxDECLARE_EVENT_TABLE();
 };
 
 #endif // _KEY_EDITOR_H
