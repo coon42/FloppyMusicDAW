@@ -26,6 +26,8 @@ void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
   switch (event.GetOrientation()) {
     case wxVERTICAL:
       printf("vertical: pos: % d\n", event.GetPosition());
+
+      pKeyEditorCanvas_->setYscrollPosition(event.GetPosition());
       break;
 
     case wxHORIZONTAL:
@@ -107,6 +109,10 @@ void KeyEditorCanvas::render(wxDC& dc) {
 
     dc.DrawRectangle(x1, y1, width, blockHeight);
   }
+}
+
+void KeyEditorCanvas::setYscrollPosition(int yScrollPosition) {
+  yScrollOffset_ = yScrollPosition;
 }
 
 wxBEGIN_EVENT_TABLE(KeyEditorCanvas, wxWindow)
