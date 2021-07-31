@@ -58,7 +58,7 @@ void KeyEditorCanvas::render(wxDC& dc) {
   // draw divisions
   for (int x = 0; x < canvasSize.GetWidth() / pixelsPerQuarterNote; ++x) {
     const int xOffset = x * pixelsPerQuarterNote;
-    const bool isFirst = x % 4 == 0;
+    const bool isFirst = (xScrollOffset_ + x) % 4 == 0;
     const int yEndPos = isFirst ? yBlockStartOffset : 10;
 
     if (isFirst) {
