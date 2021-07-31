@@ -44,6 +44,7 @@ void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
     case KeyEditorCanvas::ScrollBarType::HorizontalZoom:
       printf("Horizontal Zoom: pos: %d\n", event.GetPosition());
 
+      pKeyEditorCanvas_->setXzoomFactor(event.GetPosition());
       break;
 
     default:
@@ -58,7 +59,7 @@ void KeyEditorCanvas::render(wxDC& dc) {
 
   const wxSize canvasSize = GetClientSize();
 
-  const int pixelsPerQuarterNote = 50;
+  const int pixelsPerQuarterNote = (1 + xZoomFactor_) * 10;
   const int blockHeight = 10;
   const int xBlockStartOffset = 50;
   const int yBlockStartOffset = 30;
@@ -158,6 +159,13 @@ void KeyEditorCanvas::setYscrollPosition(int yScrollPosition) {
   render(dc);
 }
 
+void KeyEditorCanvas::setXzoomFactor(int xZoomFactor) {
+  xZoomFactor_ = xZoomFactor;
+
+  wxClientDC dc(this);
+  render(dc);
+}
+
 wxBEGIN_EVENT_TABLE(KeyEditorCanvas, wxWindow)
 EVT_PAINT(KeyEditorCanvas::OnPaint)
 wxEND_EVENT_TABLE()
@@ -174,9 +182,9 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
 
   wxSizer* pHorizontalBarSizer = new wxBoxSizer(wxHORIZONTAL);
   wxScrollBar* pHorizontalScrollbar = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalScroll), wxPoint(0, 100), wxSize(100, 10), wxHORIZONTAL);
-  pHorizontalScrollbar->SetScrollbar(24, 1, 128, 1);
+  pHorizontalScrollbar->SetScrollbar(0, 1, 128, 1);
 
-  wxSlider* pHorizontalZoomSlider = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalZoom), 5, 0, 10, wxPoint(0, 100), wxSize(100, 10));
+  wxSlider* pHorizontalZoomSlider = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalZoom), 5, 0, 10, wxPoint(0, 100), wxSize(100, 10), wxHORIZONTAL);
 
   wxSizer* pVerticalBarSizer = new wxBoxSizer(wxVERTICAL);
   wxScrollBar* pVerticalScrollbar = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalScroll), wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
@@ -195,6 +203,7 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   pKeyEditorCanvas_ = new KeyEditorCanvas(this, pSong_);
   pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar->GetThumbPosition());
   pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar->GetThumbPosition());
+  pKeyEditorCanvas_->setXzoomFactor(pHorizontalZoomSlider->GetValue());
 
   pTopSizer->Add(pKeyEditorCanvas_, 1, wxEXPAND);
   pTopSizer->Add(pVerticalBarSizer, 1, wxEXPAND);
