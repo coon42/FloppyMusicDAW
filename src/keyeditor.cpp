@@ -39,6 +39,7 @@ void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
     case KeyEditorCanvas::ScrollBarType::VerticalZoom:
       printf("Vertical Zoom: pos: %d\n", event.GetPosition());
 
+      pKeyEditorCanvas_->setYzoomFactor(event.GetPosition());
       break;
 
     case KeyEditorCanvas::ScrollBarType::HorizontalZoom:
@@ -60,7 +61,7 @@ void KeyEditorCanvas::render(wxDC& dc) {
   const wxSize canvasSize = GetClientSize();
 
   const int pixelsPerQuarterNote = (1 + xZoomFactor_) * 10;
-  const int blockHeight = 10;
+  const int blockHeight = (1 + yZoomFactor_) * 10;
   const int xBlockStartOffset = 50;
   const int yBlockStartOffset = 30;
 
@@ -166,6 +167,13 @@ void KeyEditorCanvas::setXzoomFactor(int xZoomFactor) {
   render(dc);
 }
 
+void KeyEditorCanvas::setYzoomFactor(int yZoomFactor) {
+  yZoomFactor_ = yZoomFactor;
+
+  wxClientDC dc(this);
+  render(dc);
+}
+
 wxBEGIN_EVENT_TABLE(KeyEditorCanvas, wxWindow)
 EVT_PAINT(KeyEditorCanvas::OnPaint)
 wxEND_EVENT_TABLE()
@@ -204,6 +212,7 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar->GetThumbPosition());
   pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar->GetThumbPosition());
   pKeyEditorCanvas_->setXzoomFactor(pHorizontalZoomSlider->GetValue());
+  pKeyEditorCanvas_->setYzoomFactor(pVerticalZoomSlider->GetValue());
 
   pTopSizer->Add(pKeyEditorCanvas_, 1, wxEXPAND);
   pTopSizer->Add(pVerticalBarSizer, 1, wxEXPAND);

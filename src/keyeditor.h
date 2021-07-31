@@ -16,6 +16,7 @@ public:
   void setXscrollPosition(int xScrollPosition);
   void setYscrollPosition(int yScrollPosition);
   void setXzoomFactor(int xZoomFactor);
+  void setYzoomFactor(int yZoomFactor);
 
   enum class ScrollBarType {
     HorizontalScroll,
@@ -33,6 +34,7 @@ private:
   int xScrollOffset_{0};
   int yScrollOffset_{0};
   int xZoomFactor_{0};
+  int yZoomFactor_{0};
 
   wxDECLARE_EVENT_TABLE();
 };
