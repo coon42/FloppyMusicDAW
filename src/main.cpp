@@ -141,6 +141,8 @@ void MainFrame::OnOpen(wxCommandEvent& event) {
     return;
 
   openMidiFile(openFileDialog.GetPath().ToStdString());
+
+  pKeyEditorWindow_->render();
 }
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
