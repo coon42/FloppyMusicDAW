@@ -12,6 +12,7 @@
 class KeyEditorCanvas : public wxWindow {
 public:
   KeyEditorCanvas(wxWindow* pParent, Song* const pSong);
+  void render();
 
   void setXscrollPosition(int xScrollPosition);
   void setYscrollPosition(int yScrollPosition);
