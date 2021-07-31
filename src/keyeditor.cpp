@@ -176,6 +176,7 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   pVerticalBarSizer->Add(pVerticalSlider, 0);
 
   pKeyEditorCanvas_ = new KeyEditorCanvas(this, pSong_);
+  pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar->GetThumbPosition());
   pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar->GetThumbPosition());
 
   pTopSizer->Add(pKeyEditorCanvas_, 1, wxEXPAND);
