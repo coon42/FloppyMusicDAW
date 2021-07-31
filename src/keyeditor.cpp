@@ -189,28 +189,28 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   wxFlexGridSizer* pTopSizer = new wxFlexGridSizer(2, 2, wxSize(0, 0));
 
   wxSizer* pHorizontalBarSizer = new wxBoxSizer(wxHORIZONTAL);
-  wxScrollBar* pHorizontalScrollbar = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalScroll), wxPoint(0, 100), wxSize(100, 10), wxHORIZONTAL);
-  pHorizontalScrollbar->SetScrollbar(0, 1, 128, 1);
+  pHorizontalScrollbar_ = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalScroll), wxPoint(0, 100), wxSize(100, 10), wxHORIZONTAL);
+  pHorizontalScrollbar_->SetScrollbar(0, 1, 128, 1);
 
   wxSlider* pHorizontalZoomSlider = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalZoom), 5, 0, 10, wxPoint(0, 100), wxSize(100, 10), wxHORIZONTAL);
 
   wxSizer* pVerticalBarSizer = new wxBoxSizer(wxVERTICAL);
-  wxScrollBar* pVerticalScrollbar = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalScroll), wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
+  pVerticalScrollbar_ = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalScroll), wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
 
   const int numMidiNotes = 128;
-  pVerticalScrollbar->SetScrollbar(24, 1, numMidiNotes, 1);
+  pVerticalScrollbar_->SetScrollbar(24, 1, numMidiNotes, 1);
 
   wxSlider* pVerticalZoomSlider = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalZoom), 0, 0, 10, wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
 
-  pHorizontalBarSizer->Add(pHorizontalScrollbar, 1);
+  pHorizontalBarSizer->Add(pHorizontalScrollbar_, 1);
   pHorizontalBarSizer->Add(pHorizontalZoomSlider, 0);
 
-  pVerticalBarSizer->Add(pVerticalScrollbar, 1);
+  pVerticalBarSizer->Add(pVerticalScrollbar_, 1);
   pVerticalBarSizer->Add(pVerticalZoomSlider, 0);
 
   pKeyEditorCanvas_ = new KeyEditorCanvas(this, pSong_);
-  pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar->GetThumbPosition());
-  pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar->GetThumbPosition());
+  pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar_->GetThumbPosition());
+  pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar_->GetThumbPosition());
   pKeyEditorCanvas_->setXzoomFactor(pHorizontalZoomSlider->GetValue());
   pKeyEditorCanvas_->setYzoomFactor(pVerticalZoomSlider->GetValue());
 

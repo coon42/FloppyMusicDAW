@@ -51,6 +51,9 @@ private:
   void OnScroll(wxScrollEvent& event);
 
   KeyEditorCanvas* pKeyEditorCanvas_{nullptr};
+  wxScrollBar* pHorizontalScrollbar_{nullptr};
+  wxScrollBar* pVerticalScrollbar_{nullptr};
+
   Song* const pSong_;
 
   wxDECLARE_EVENT_TABLE();
