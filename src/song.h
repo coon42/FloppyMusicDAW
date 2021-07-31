@@ -27,7 +27,8 @@ private:
 // Song
 //-------------------------------------------------------------------------------------------------
 
-struct Song {
+class Song {
+public:
   uint16_t TPQN;
   std::list<NoteBlock> noteBlocks;
 };
