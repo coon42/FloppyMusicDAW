@@ -72,13 +72,13 @@ void MainFrame::generateNoteBlocks(MidiFile* pMidiFile) {
         if (onNotes.find(note) == onNotes.end()) { // ignore, double additional note on event if already active
           if (midiEvent.params.msg.noteOn.velocity > 0) {
             NoteBlock block;
-            block.note = midiEvent.params.msg.noteOn.note;
-            block.startTick = currentTick;
+            block.setNote(midiEvent.params.msg.noteOn.note);
+            block.setStartTick(currentTick);
 
             onNotes[note] = block;
           }
           else {
-            onNotes[note].numTicks = currentTick - onNotes[note].startTick;
+            onNotes[note].setNumTicks(currentTick - onNotes[note].startTick());
             song_.noteBlocks.push_back(onNotes[note]);
             onNotes.erase(note);
           }
@@ -92,7 +92,7 @@ void MainFrame::generateNoteBlocks(MidiFile* pMidiFile) {
 
         if (onNotes.find(note) != onNotes.end()) { // ignore, if there is no matching note on event active
           NoteBlock& noteBlock = onNotes[note];
-          noteBlock.numTicks = currentTick - noteBlock.startTick;
+          noteBlock.setNumTicks(currentTick - noteBlock.startTick());
 
           song_.noteBlocks.push_back(onNotes[note]);
           onNotes.erase(note);
@@ -109,7 +109,7 @@ void MainFrame::generateNoteBlocks(MidiFile* pMidiFile) {
   printf("Note blocks:\n");
 
   for (const NoteBlock& b : song_.noteBlocks)
-    printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note), b.startTick, b.numTicks);
+    printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
 }
 
 void MainFrame::openMidiFile(const std::string& path) {
