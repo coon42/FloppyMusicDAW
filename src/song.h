@@ -32,6 +32,7 @@ public:
   void clear();
   void setTpqn(uint16_t tpqn)                    { tpqn_ = tpqn; }
   void addNoteBlock(const NoteBlock& noteBlock)  { noteBlocks_.push_back(noteBlock); }
+  void debugPrintAllNoteBlocks() const;
 
   const uint16_t tpqn() const                    { return tpqn_; }
   const std::list<NoteBlock>& noteBlocks() const { return noteBlocks_; }

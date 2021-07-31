@@ -1,3 +1,7 @@
+extern "C" {
+#include "lib/eMIDI/src/helpers.h"
+}
+
 #include "song.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -7,4 +11,11 @@
 void Song::clear() {
   tpqn_ = 0;
   noteBlocks_.clear();
+}
+
+void Song::debugPrintAllNoteBlocks() const {
+  printf("Note blocks:\n");
+
+  for (const NoteBlock& b : noteBlocks_)
+    printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
 }

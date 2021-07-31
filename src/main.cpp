@@ -107,10 +107,7 @@ void MainFrame::generateNoteBlocks(MidiFile* pMidiFile) {
     }
   }
 
-  printf("Note blocks:\n");
-
-  for (const NoteBlock& b : song_.noteBlocks())
-    printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
+  song_.debugPrintAllNoteBlocks();
 }
 
 void MainFrame::openMidiFile(const std::string& path) {
