@@ -49,6 +49,7 @@ public:
 
 private:
   void OnScroll(wxScrollEvent& event);
+  void OnMouseWheel(wxMouseEvent& event);
 
   KeyEditorCanvas* pKeyEditorCanvas_{nullptr};
   wxScrollBar* pHorizontalScrollbar_{nullptr};

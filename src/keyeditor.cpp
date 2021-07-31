@@ -55,6 +55,24 @@ void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
   }
 }
 
+void KeyEditorWindow::OnMouseWheel(wxMouseEvent& event) {
+  printf("KeyEditorWindows::OnMouse; axis: %d, rotation: %d\n", event.GetWheelAxis(), event.GetWheelRotation());
+
+  const int scrollStep = 4;
+
+  switch (event.GetWheelAxis()) {
+    case wxMOUSE_WHEEL_VERTICAL:
+      pVerticalScrollbar_->SetThumbPosition(pVerticalScrollbar_->GetThumbPosition() + (event.GetWheelRotation() > 0 ? -scrollStep : scrollStep));
+      pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar_->GetThumbPosition());
+      break;
+
+    case wxMOUSE_WHEEL_HORIZONTAL:
+      pHorizontalScrollbar_->SetThumbPosition(pHorizontalScrollbar_->GetThumbPosition() + (event.GetWheelRotation() > 0 ? scrollStep : -scrollStep));
+      pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar_->GetThumbPosition());
+      break;
+  }
+}
+
 void KeyEditorCanvas::render(wxDC& dc) {
   dc.Clear();
 
@@ -226,4 +244,5 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
 
 wxBEGIN_EVENT_TABLE(KeyEditorWindow, wxWindow)
 EVT_SCROLL(KeyEditorWindow::OnScroll)
+EVT_MOUSEWHEEL(KeyEditorWindow::OnMouseWheel)
 wxEND_EVENT_TABLE()
