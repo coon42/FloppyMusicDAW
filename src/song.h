@@ -3,7 +3,8 @@
 
 #include <list>
 
-struct NoteBlock {
+class NoteBlock {
+public:
   uint8_t note;
   uint32_t startTick;
   uint32_t numTicks;
