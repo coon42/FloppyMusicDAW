@@ -26,6 +26,7 @@
     <ClCompile Include="..\..\..\src\lib\eMIDI\src\midiplayer.c" />
     <ClCompile Include="..\..\..\src\lib\eMIDI\src\midiport.c" />
     <ClCompile Include="..\..\..\src\main.cpp" />
+    <ClCompile Include="..\..\..\src\song.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\keyeditor.h" />

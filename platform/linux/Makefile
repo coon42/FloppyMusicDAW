@@ -21,7 +21,7 @@ CFLAGS += -I../../src/lib/wxWidgets/include
 
 OBJDIR=obj
 BINDIR=bin
-MAIN_SRCS = keyeditor.cpp main.cpp
+MAIN_SRCS = song.cpp keyeditor.cpp main.cpp
 
 #LIB_SRCS = <TODO: add files if needed>
 
