@@ -53,5 +53,17 @@
     <ClInclude Include="..\..\..\src\song.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\eMIDI\src\helpers.h">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\eMIDI\src\emiditypes.h">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\eMIDI\src\midiplayer.h">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\eMIDI\src\midiport.h">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
