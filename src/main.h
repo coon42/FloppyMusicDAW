@@ -22,6 +22,7 @@ private:
   void generateNoteBlocks(MidiFile* pMidiFile);
   void openMidiFile(const std::string& path);
 
+  KeyEditorWindow* pKeyEditorWindow_{nullptr};
   Song song_{0};
 
   wxDECLARE_EVENT_TABLE();
