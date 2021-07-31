@@ -192,7 +192,7 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   const int numMidiNotes = 128;
   pVerticalScrollbar->SetScrollbar(24, 1, numMidiNotes, 1);
 
-  wxSlider* pVerticalZoomSlider = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalZoom), 5, 0, 10, wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
+  wxSlider* pVerticalZoomSlider = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalZoom), 0, 0, 10, wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
 
   pHorizontalBarSizer->Add(pHorizontalScrollbar, 1);
   pHorizontalBarSizer->Add(pHorizontalZoomSlider, 0);
