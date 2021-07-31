@@ -20,59 +20,6 @@ void KeyEditorCanvas::OnPaint(wxPaintEvent& event) {
   render(dc);
 }
 
-void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
-  printf("KeyEditorWindow::OnScroll; ");
-
-  switch (static_cast<KeyEditorCanvas::ScrollBarType>(event.GetId())) {
-    case KeyEditorCanvas::ScrollBarType::VerticalScroll:
-      printf("Vertical Scroll: pos: %d\n", event.GetPosition());
-
-      pKeyEditorCanvas_->setYscrollPosition(event.GetPosition());
-      break;
-
-    case KeyEditorCanvas::ScrollBarType::HorizontalScroll:
-      printf("Horizontal Scroll: pos: %d\n", event.GetPosition());
-
-      pKeyEditorCanvas_->setXscrollPosition(event.GetPosition());
-      break;
-
-    case KeyEditorCanvas::ScrollBarType::VerticalZoom:
-      printf("Vertical Zoom: pos: %d\n", event.GetPosition());
-
-      pKeyEditorCanvas_->setYzoomFactor(event.GetPosition());
-      break;
-
-    case KeyEditorCanvas::ScrollBarType::HorizontalZoom:
-      printf("Horizontal Zoom: pos: %d\n", event.GetPosition());
-
-      pKeyEditorCanvas_->setXzoomFactor(event.GetPosition());
-      break;
-
-    default:
-      printf("unknown scrollbar ID: %d, pos %d\n", event.GetId(), event.GetPosition());
-      // sliders do send this event!?
-      break;
-  }
-}
-
-void KeyEditorWindow::OnMouseWheel(wxMouseEvent& event) {
-  printf("KeyEditorWindows::OnMouse; axis: %d, rotation: %d\n", event.GetWheelAxis(), event.GetWheelRotation());
-
-  const int scrollStep = 4;
-
-  switch (event.GetWheelAxis()) {
-    case wxMOUSE_WHEEL_VERTICAL:
-      pVerticalScrollbar_->SetThumbPosition(pVerticalScrollbar_->GetThumbPosition() + (event.GetWheelRotation() > 0 ? -scrollStep : scrollStep));
-      pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar_->GetThumbPosition());
-      break;
-
-    case wxMOUSE_WHEEL_HORIZONTAL:
-      pHorizontalScrollbar_->SetThumbPosition(pHorizontalScrollbar_->GetThumbPosition() + (event.GetWheelRotation() > 0 ? scrollStep : -scrollStep));
-      pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar_->GetThumbPosition());
-      break;
-  }
-}
-
 void KeyEditorCanvas::render(wxDC& dc) {
   dc.Clear();
 
@@ -241,6 +188,59 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
 
 void KeyEditorWindow::render() {
   pKeyEditorCanvas_->render();
+}
+
+void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
+  printf("KeyEditorWindow::OnScroll; ");
+
+  switch (static_cast<KeyEditorCanvas::ScrollBarType>(event.GetId())) {
+    case KeyEditorCanvas::ScrollBarType::VerticalScroll:
+      printf("Vertical Scroll: pos: %d\n", event.GetPosition());
+
+      pKeyEditorCanvas_->setYscrollPosition(event.GetPosition());
+      break;
+
+    case KeyEditorCanvas::ScrollBarType::HorizontalScroll:
+      printf("Horizontal Scroll: pos: %d\n", event.GetPosition());
+
+      pKeyEditorCanvas_->setXscrollPosition(event.GetPosition());
+      break;
+
+    case KeyEditorCanvas::ScrollBarType::VerticalZoom:
+      printf("Vertical Zoom: pos: %d\n", event.GetPosition());
+
+      pKeyEditorCanvas_->setYzoomFactor(event.GetPosition());
+      break;
+
+    case KeyEditorCanvas::ScrollBarType::HorizontalZoom:
+      printf("Horizontal Zoom: pos: %d\n", event.GetPosition());
+
+      pKeyEditorCanvas_->setXzoomFactor(event.GetPosition());
+      break;
+
+    default:
+      printf("unknown scrollbar ID: %d, pos %d\n", event.GetId(), event.GetPosition());
+      // sliders do send this event!?
+      break;
+  }
+}
+
+void KeyEditorWindow::OnMouseWheel(wxMouseEvent& event) {
+  printf("KeyEditorWindows::OnMouse; axis: %d, rotation: %d\n", event.GetWheelAxis(), event.GetWheelRotation());
+
+  const int scrollStep = 4;
+
+  switch (event.GetWheelAxis()) {
+    case wxMOUSE_WHEEL_VERTICAL:
+      pVerticalScrollbar_->SetThumbPosition(pVerticalScrollbar_->GetThumbPosition() + (event.GetWheelRotation() > 0 ? -scrollStep : scrollStep));
+      pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar_->GetThumbPosition());
+      break;
+
+    case wxMOUSE_WHEEL_HORIZONTAL:
+      pHorizontalScrollbar_->SetThumbPosition(pHorizontalScrollbar_->GetThumbPosition() + (event.GetWheelRotation() > 0 ? scrollStep : -scrollStep));
+      pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar_->GetThumbPosition());
+      break;
+  }
 }
 
 wxBEGIN_EVENT_TABLE(KeyEditorWindow, wxWindow)
