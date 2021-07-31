@@ -16,6 +16,13 @@ public:
   void setXscrollPosition(int xScrollPosition);
   void setYscrollPosition(int yScrollPosition);
 
+  enum class ScrollBarType {
+    HorizontalScroll,
+    VerticalScroll,
+    HorizontalZoom,
+    VerticalZoom
+  };
+
 private:
   void OnPaint(wxPaintEvent& event);
   void render(wxDC& dc);
