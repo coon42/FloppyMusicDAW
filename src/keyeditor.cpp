@@ -239,6 +239,10 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   SetSizer(pTopSizer);
 }
 
+void KeyEditorWindow::render() {
+  pKeyEditorCanvas_->render();
+}
+
 wxBEGIN_EVENT_TABLE(KeyEditorWindow, wxWindow)
 EVT_SCROLL(KeyEditorWindow::OnScroll)
 EVT_MOUSEWHEEL(KeyEditorWindow::OnMouseWheel)

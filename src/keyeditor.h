@@ -47,6 +47,7 @@ private:
 class KeyEditorWindow : public wxWindow {
 public:
   KeyEditorWindow(wxWindow* pParent, Song* pSong);
+  void render();
 
 private:
   void OnScroll(wxScrollEvent& event);
