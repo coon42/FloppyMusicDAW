@@ -164,33 +164,29 @@ void KeyEditorCanvas::render(wxDC& dc) {
   }
 }
 
-void KeyEditorCanvas::setXscrollPosition(int xScrollPosition) {
-  xScrollOffset_ = xScrollPosition;
-
 void KeyEditorCanvas::render() {
   wxClientDC dc(this);
   render(dc);
 }
 
+void KeyEditorCanvas::setXscrollPosition(int xScrollPosition) {
+  xScrollOffset_ = xScrollPosition;
+  render();
+}
+
 void KeyEditorCanvas::setYscrollPosition(int yScrollPosition) {
   yScrollOffset_ = yScrollPosition;
-
-  wxClientDC dc(this);
-  render(dc);
+  render();
 }
 
 void KeyEditorCanvas::setXzoomFactor(int xZoomFactor) {
   xZoomFactor_ = xZoomFactor;
-
-  wxClientDC dc(this);
-  render(dc);
+  render();
 }
 
 void KeyEditorCanvas::setYzoomFactor(int yZoomFactor) {
   yZoomFactor_ = yZoomFactor;
-
-  wxClientDC dc(this);
-  render(dc);
+  render();
 }
 
 wxBEGIN_EVENT_TABLE(KeyEditorCanvas, wxWindow)
