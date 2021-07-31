@@ -118,12 +118,19 @@ void KeyEditorCanvas::render(wxDC& dc) {
   dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
 
   for (const NoteBlock& noteBlock : pSong_->noteBlocks) {
-    const int x1 = xBlockStartOffset - xScrollOffset_ * pixelsPerQuarterNote + (noteBlock.startTick * pixelsPerQuarterNote) / pSong_->TPQN;
+    int x1 = xBlockStartOffset - xScrollOffset_ * pixelsPerQuarterNote + (noteBlock.startTick * pixelsPerQuarterNote) / pSong_->TPQN;
     const int y1 = yBlockStartOffset + blockHeight * (127 - noteBlock.note - yScrollOffset_);
-    const int width = (noteBlock.numTicks * pixelsPerQuarterNote) / pSong_->TPQN;
+    int width = (noteBlock.numTicks * pixelsPerQuarterNote) / pSong_->TPQN;
 
-    if (y1 >= yBlockStartOffset)
+    if ((x1 + width > xBlockStartOffset) && (y1 >= yBlockStartOffset)) {
+      if (x1 < xBlockStartOffset) {
+        const int cutPixels = xBlockStartOffset - x1;
+        x1 += cutPixels;
+        width -= cutPixels;
+      }
+
       dc.DrawRectangle(x1, y1, width, blockHeight);
+    }
   }
 }
 
