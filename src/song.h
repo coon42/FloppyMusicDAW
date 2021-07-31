@@ -29,8 +29,16 @@ private:
 
 class Song {
 public:
-  uint16_t TPQN;
-  std::list<NoteBlock> noteBlocks;
+  void clear()                                   { tpqn_ = 0; noteBlocks_.clear(); }
+  void setTpqn(uint16_t tpqn)                    { tpqn_ = tpqn; }
+  void addNoteBlock(const NoteBlock& noteBlock)  { noteBlocks_.push_back(noteBlock); }
+
+  const uint16_t tpqn() const                    { return tpqn_; }
+  const std::list<NoteBlock>& noteBlocks() const { return noteBlocks_; }
+
+private:
+  uint16_t tpqn_{0};
+  std::list<NoteBlock> noteBlocks_;
 };
 
 #endif // _SONG_H

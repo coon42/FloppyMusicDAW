@@ -94,10 +94,10 @@ void KeyEditorCanvas::render(wxDC& dc) {
   // draw note blocks
   dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
 
-  for (const NoteBlock& noteBlock : pSong_->noteBlocks) {
-    int x1 = xBlockStartOffset - xScrollOffset_ * pixelsPerQuarterNote + (noteBlock.startTick() * pixelsPerQuarterNote) / pSong_->TPQN;
+  for (const NoteBlock& noteBlock : pSong_->noteBlocks()) {
+    int x1 = xBlockStartOffset - xScrollOffset_ * pixelsPerQuarterNote + (noteBlock.startTick() * pixelsPerQuarterNote) / pSong_->tpqn();
     const int y1 = yBlockStartOffset + blockHeight * (127 - noteBlock.note() - yScrollOffset_);
-    int width = (noteBlock.numTicks() * pixelsPerQuarterNote) / pSong_->TPQN;
+    int width = (noteBlock.numTicks() * pixelsPerQuarterNote) / pSong_->tpqn();
 
     if ((x1 + width > xBlockStartOffset) && (y1 >= yBlockStartOffset)) {
       if (x1 < xBlockStartOffset) {

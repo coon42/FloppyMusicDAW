@@ -23,7 +23,7 @@ private:
   void openMidiFile(const std::string& path);
 
   KeyEditorWindow* pKeyEditorWindow_{nullptr};
-  Song song_{0};
+  Song song_;
 
   wxDECLARE_EVENT_TABLE();
 };

@@ -49,8 +49,9 @@ void MainFrame::OnAbout(wxCommandEvent& event) {
 }
 
 void MainFrame::generateNoteBlocks(MidiFile* pMidiFile) {
-  song_.TPQN = pMidiFile->header.division.tpqn.TPQN;
-  song_.noteBlocks.clear();
+  song_.clear();
+  song_.setTpqn(pMidiFile->header.division.tpqn.TPQN);
+
   std::map<uint8_t, NoteBlock> onNotes;
 
   printf("MIDI Events:\n");
@@ -79,7 +80,7 @@ void MainFrame::generateNoteBlocks(MidiFile* pMidiFile) {
           }
           else {
             onNotes[note].setNumTicks(currentTick - onNotes[note].startTick());
-            song_.noteBlocks.push_back(onNotes[note]);
+            song_.addNoteBlock(onNotes[note]);
             onNotes.erase(note);
           }
         }
@@ -94,7 +95,7 @@ void MainFrame::generateNoteBlocks(MidiFile* pMidiFile) {
           NoteBlock& noteBlock = onNotes[note];
           noteBlock.setNumTicks(currentTick - noteBlock.startTick());
 
-          song_.noteBlocks.push_back(onNotes[note]);
+          song_.addNoteBlock(onNotes[note]);
           onNotes.erase(note);
         }
 
@@ -108,7 +109,7 @@ void MainFrame::generateNoteBlocks(MidiFile* pMidiFile) {
 
   printf("Note blocks:\n");
 
-  for (const NoteBlock& b : song_.noteBlocks)
+  for (const NoteBlock& b : song_.noteBlocks())
     printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
 }
 
