@@ -35,8 +35,6 @@ private:
 
   int xScrollOffset_{0};
   int yScrollOffset_{0};
-  int xZoomFactor_{0};
-  int yZoomFactor_{0};
   int pixelsPerQuarterNote_{0};
   int blockHeight_{0};
 

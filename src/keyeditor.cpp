@@ -31,9 +31,6 @@ void KeyEditorCanvas::render(wxDC& dc) {
 
   const wxSize canvasSize = GetClientSize();
 
-  pixelsPerQuarterNote_ = (1 + xZoomFactor_) * 10;
-  blockHeight_ = (1 + yZoomFactor_) * 10;
-
   // draw divisions
   for (int x = 0; x < canvasSize.GetWidth() / pixelsPerQuarterNote_; ++x) {
     const int xOffset = x * pixelsPerQuarterNote_;
@@ -129,12 +126,12 @@ void KeyEditorCanvas::setYscrollPosition(int yScrollPosition) {
 }
 
 void KeyEditorCanvas::setXzoomFactor(int xZoomFactor) {
-  xZoomFactor_ = xZoomFactor;
+  pixelsPerQuarterNote_ = (1 + xZoomFactor) * 10;
   render();
 }
 
 void KeyEditorCanvas::setYzoomFactor(int yZoomFactor) {
-  yZoomFactor_ = yZoomFactor;
+  blockHeight_ = (1 + yZoomFactor) * 10;
   render();
 }
 
@@ -174,10 +171,10 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   pVerticalBarSizer->Add(pVerticalZoomSlider, 0);
 
   pKeyEditorCanvas_ = new KeyEditorCanvas(this, pSong_);
-  pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar_->GetThumbPosition());
-  pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar_->GetThumbPosition());
   pKeyEditorCanvas_->setXzoomFactor(pHorizontalZoomSlider->GetValue());
   pKeyEditorCanvas_->setYzoomFactor(pVerticalZoomSlider->GetValue());
+  pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar_->GetThumbPosition());
+  pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar_->GetThumbPosition());
 
   pTopSizer->Add(pKeyEditorCanvas_, 1, wxEXPAND);
   pTopSizer->Add(pVerticalBarSizer, 1, wxEXPAND);
