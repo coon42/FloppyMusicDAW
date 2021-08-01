@@ -45,8 +45,17 @@ void KeyEditorCanvas::OnMouseMotion(wxMouseEvent& event) {
 }
 
 void KeyEditorCanvas::OnMouseLeftDown(wxMouseEvent& event) {
+  const char* pClickedTarget = "None";
 
+  pSong_->unselectAllNotes();
 
+  if (NoteBlock* pNoteBlock = currentPointedNoteBlock(event.GetX(), event.GetY())) {
+    pNoteBlock->select();
+    pClickedTarget = eMidi_numberToNote(pNoteBlock->note());
+  }
+
+  printf("clicked on: %s\n", pClickedTarget);
+  render();
 }
 
 void KeyEditorCanvas::render(wxDC& dc) {
