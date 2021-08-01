@@ -29,6 +29,7 @@ public:
 private:
   void OnPaint(wxPaintEvent& event);
   void OnMouseMotion(wxMouseEvent& event);
+  void OnMouseLeftDown(wxMouseEvent& event);
   void render(wxDC& dc);
 
   Song* const pSong_;

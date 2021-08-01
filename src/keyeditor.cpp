@@ -22,6 +22,9 @@ void KeyEditorCanvas::OnPaint(wxPaintEvent& event) {
 
 void KeyEditorCanvas::OnMouseMotion(wxMouseEvent& event) {
   printf("KeyEditorCanvas::OnMouseMotion; x: %d, y: %d\n", event.GetX(), event.GetY());
+}
+
+void KeyEditorCanvas::OnMouseLeftDown(wxMouseEvent& event) {
 
 
 }
@@ -138,6 +141,7 @@ void KeyEditorCanvas::setYzoomFactor(int yZoomFactor) {
 wxBEGIN_EVENT_TABLE(KeyEditorCanvas, wxWindow)
 EVT_PAINT(KeyEditorCanvas::OnPaint)
 EVT_MOTION(KeyEditorCanvas::OnMouseMotion)
+EVT_LEFT_DOWN(KeyEditorCanvas::OnMouseLeftDown)
 wxEND_EVENT_TABLE()
 
 //-------------------------------------------------------------------------------------------------
