@@ -32,7 +32,9 @@ private:
   void OnMouseLeftDown(wxMouseEvent& event);
   void render(wxDC& dc);
 
-  Song* const pSong_;
+  NoteBlock* currentPointedNoteBlock(int mouseX, int mouseY);
+
+  Song* pSong_;
 
   int xScrollOffset_{0};
   int yScrollOffset_{0};

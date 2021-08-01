@@ -20,6 +20,26 @@ void KeyEditorCanvas::OnPaint(wxPaintEvent& event) {
   render(dc);
 }
 
+NoteBlock* KeyEditorCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
+  for (NoteBlock& noteBlock : pSong_->noteBlocks()) {
+    int x1 = xBlockStartOffset_ - xScrollOffset_ * pixelsPerQuarterNote_ + (noteBlock.startTick() * pixelsPerQuarterNote_) / pSong_->tpqn();
+    const int y1 = yBlockStartOffset_ + blockHeight_ * (127 - noteBlock.note() - yScrollOffset_);
+    int width = (noteBlock.numTicks() * pixelsPerQuarterNote_) / pSong_->tpqn();
+
+    if ((x1 + width > xBlockStartOffset_) && (y1 >= yBlockStartOffset_)) {
+      if (x1 < xBlockStartOffset_) {
+        const int cutPixels = xBlockStartOffset_ - x1;
+        x1 += cutPixels;
+        width -= cutPixels;
+      }
+    }
+
+    if (mouseX > x1 && mouseX < x1 + width && mouseY > y1 && mouseY < y1 + blockHeight_)
+      return &noteBlock;
+  }
+
+  return nullptr;
+}
 void KeyEditorCanvas::OnMouseMotion(wxMouseEvent& event) {
   printf("KeyEditorCanvas::OnMouseMotion; x: %d, y: %d\n", event.GetX(), event.GetY());
 }
