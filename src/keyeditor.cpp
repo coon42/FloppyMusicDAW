@@ -123,8 +123,6 @@ void KeyEditorCanvas::render(wxDC& dc) {
   }
 
   // draw note blocks
-  dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
-
   for (const NoteBlock& noteBlock : pSong_->noteBlocks()) {
     int x1 = xBlockStartOffset_ - xScrollOffset_ * pixelsPerQuarterNote_ + (noteBlock.startTick() * pixelsPerQuarterNote_) / pSong_->tpqn();
     const int y1 = yBlockStartOffset_ + blockHeight_ * (127 - noteBlock.note() - yScrollOffset_);
@@ -136,6 +134,11 @@ void KeyEditorCanvas::render(wxDC& dc) {
         x1 += cutPixels;
         width -= cutPixels;
       }
+
+      if (noteBlock.isSelected())
+        dc.SetBrush(wxBrush(wxColour(0, 255, 255)));
+      else
+        dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
 
       dc.DrawRectangle(x1, y1, width, blockHeight_);
     }
