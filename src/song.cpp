@@ -13,6 +13,11 @@ void Song::clear() {
   noteBlocks_.clear();
 }
 
+void Song::unselectAllNotes() {
+  for (NoteBlock& noteBlock : noteBlocks_)
+    noteBlock.unselect();
+}
+
 void Song::debugPrintAllNoteBlocks() const {
   printf("Note blocks:\n");
 
