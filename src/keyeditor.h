@@ -37,6 +37,12 @@ private:
   int yScrollOffset_{0};
   int xZoomFactor_{0};
   int yZoomFactor_{0};
+  int pixelsPerQuarterNote_{0};
+  int blockHeight_{0};
+
+  const int xBlockStartOffset_ = 50;
+  const int yBlockStartOffset_ = 30;
+  const int numMidiNotes_ = 128;
 
   wxDECLARE_EVENT_TABLE();
 };
