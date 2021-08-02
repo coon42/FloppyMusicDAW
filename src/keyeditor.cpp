@@ -10,7 +10,8 @@ extern "C" {
 // KeyEditorFreeCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorFreeCanvas::KeyEditorFreeCanvas(wxWindow* pParent) {
+KeyEditorFreeCanvas::KeyEditorFreeCanvas(wxWindow* pParent)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
 
 }
 
@@ -18,7 +19,8 @@ KeyEditorFreeCanvas::KeyEditorFreeCanvas(wxWindow* pParent) {
 // KeyEditorQuantizationCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(wxWindow* pParent) {
+KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(wxWindow* pParent)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
 
 }
 
@@ -26,7 +28,8 @@ KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(wxWindow* pParent) {
 // KeyEditorPianoCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorPianoCanvas::KeyEditorPianoCanvas(wxWindow* pParent) {
+KeyEditorPianoCanvas::KeyEditorPianoCanvas(wxWindow* pParent)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
 
 }
 
@@ -34,25 +37,13 @@ KeyEditorPianoCanvas::KeyEditorPianoCanvas(wxWindow* pParent) {
 // KeyEditorGridCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorGridCanvas::KeyEditorGridCanvas(wxWindow* pParent) {
-
-}
-
-//-------------------------------------------------------------------------------------------------
-// KeyEditorCanvas
-//-------------------------------------------------------------------------------------------------
-
-KeyEditorCanvas::KeyEditorCanvas(wxWindow* pParent, Song* const pSong)
+KeyEditorGridCanvas::KeyEditorGridCanvas(wxWindow* pParent, Song* pSong)
     : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
       pSong_(pSong) {
+
 }
 
-void KeyEditorCanvas::OnPaint(wxPaintEvent& event) {
-  wxPaintDC dc(this);
-  render(dc);
-}
-
-NoteBlock* KeyEditorCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
+NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
   for (NoteBlock& noteBlock : pSong_->noteBlocks()) {
     int x1 = xBlockStartOffset_ - xScrollOffset_ * pixelsPerQuarterNote_ + (noteBlock.startTick() * pixelsPerQuarterNote_) / pSong_->tpqn();
     const int y1 = yBlockStartOffset_ + blockHeight_ * (127 - noteBlock.note() - yScrollOffset_);
@@ -72,11 +63,8 @@ NoteBlock* KeyEditorCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
 
   return nullptr;
 }
-void KeyEditorCanvas::OnMouseMotion(wxMouseEvent& event) {
-  printf("KeyEditorCanvas::OnMouseMotion; x: %d, y: %d\n", event.GetX(), event.GetY());
-}
 
-void KeyEditorCanvas::OnMouseLeftDown(wxMouseEvent& event) {
+void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
   const char* pClickedTarget = "None";
 
   pSong_->unselectAllNotes();
@@ -90,7 +78,7 @@ void KeyEditorCanvas::OnMouseLeftDown(wxMouseEvent& event) {
   render();
 }
 
-void KeyEditorCanvas::render(wxDC& dc) {
+void KeyEditorGridCanvas::render(wxDC& dc) {
   dc.Clear();
 
   const wxSize canvasSize = GetClientSize();
@@ -177,36 +165,92 @@ void KeyEditorCanvas::render(wxDC& dc) {
   }
 }
 
-void KeyEditorCanvas::render() {
+void KeyEditorGridCanvas::render() {
   wxClientDC dc(this);
   render(dc);
 }
 
-void KeyEditorCanvas::setXscrollPosition(int xScrollPosition) {
+void KeyEditorGridCanvas::OnPaint(wxPaintEvent& event) {
+  printf("KeyEditorGridCanvas::OnPaint\n");
+
+  wxPaintDC dc(this);
+  render(dc);
+}
+
+void KeyEditorGridCanvas::OnMouseMotion(wxMouseEvent& event) {
+  printf("KeyEditorGridCanvas::OnMouseMotion; x: %d, y: %d\n", event.GetX(), event.GetY());
+}
+
+void KeyEditorGridCanvas::setXscrollPosition(int xScrollPosition) {
   xScrollOffset_ = xScrollPosition;
   render();
 }
 
-void KeyEditorCanvas::setYscrollPosition(int yScrollPosition) {
+void KeyEditorGridCanvas::setYscrollPosition(int yScrollPosition) {
   yScrollOffset_ = yScrollPosition;
   render();
 }
 
-void KeyEditorCanvas::setXzoomFactor(int xZoomFactor) {
+void KeyEditorGridCanvas::setXzoomFactor(int xZoomFactor) {
   pixelsPerQuarterNote_ = (1 + xZoomFactor) * 10;
   render();
 }
 
-void KeyEditorCanvas::setYzoomFactor(int yZoomFactor) {
+void KeyEditorGridCanvas::setYzoomFactor(int yZoomFactor) {
   blockHeight_ = (1 + yZoomFactor) * 10;
   render();
 }
 
-wxBEGIN_EVENT_TABLE(KeyEditorCanvas, wxWindow)
-EVT_PAINT(KeyEditorCanvas::OnPaint)
-EVT_MOTION(KeyEditorCanvas::OnMouseMotion)
-EVT_LEFT_DOWN(KeyEditorCanvas::OnMouseLeftDown)
+wxBEGIN_EVENT_TABLE(KeyEditorGridCanvas, wxWindow)
+EVT_PAINT(KeyEditorGridCanvas::OnPaint)
+EVT_MOTION(KeyEditorGridCanvas::OnMouseMotion)
+EVT_LEFT_DOWN(KeyEditorGridCanvas::OnMouseLeftDown)
 wxEND_EVENT_TABLE()
+
+//-------------------------------------------------------------------------------------------------
+// KeyEditorCanvas
+//-------------------------------------------------------------------------------------------------
+
+KeyEditorCanvas::KeyEditorCanvas(wxWindow* pParent, Song* const pSong)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
+
+  wxFlexGridSizer* pTopSizer = new wxFlexGridSizer(2, 2, wxSize(0, 0));
+
+  pKeyEditorFreeCanvas_ = new KeyEditorFreeCanvas(this);
+  pKeyEditorQuantizationCanvas_ = new KeyEditorQuantizationCanvas(this);
+  pKeyEditorPianoCanvas_ = new KeyEditorPianoCanvas(this);
+  pKeyEditorGridCanvas_ = new KeyEditorGridCanvas(this, pSong);
+
+  pTopSizer->Add(pKeyEditorFreeCanvas_);
+  pTopSizer->Add(pKeyEditorQuantizationCanvas_);
+  pTopSizer->Add(pKeyEditorPianoCanvas_);
+  pTopSizer->Add(pKeyEditorGridCanvas_, 1, wxEXPAND);
+
+  pTopSizer->AddGrowableCol(1, 1);
+  pTopSizer->AddGrowableRow(1, 1);
+
+  SetSizer(pTopSizer);
+}
+
+void KeyEditorCanvas::render() {
+  pKeyEditorGridCanvas_->render();
+}
+
+void KeyEditorCanvas::setXscrollPosition(int xScrollPosition) {
+  pKeyEditorGridCanvas_->setXscrollPosition(xScrollPosition);
+}
+
+void KeyEditorCanvas::setYscrollPosition(int yScrollPosition) {
+  pKeyEditorGridCanvas_->setYscrollPosition(yScrollPosition);
+}
+
+void KeyEditorCanvas::setXzoomFactor(int xZoomFactor) {
+  pKeyEditorGridCanvas_->setXzoomFactor(xZoomFactor);
+}
+
+void KeyEditorCanvas::setYzoomFactor(int yZoomFactor) {
+  pKeyEditorGridCanvas_->setYzoomFactor(yZoomFactor);
+}
 
 //-------------------------------------------------------------------------------------------------
 // KeyEditorWindow
