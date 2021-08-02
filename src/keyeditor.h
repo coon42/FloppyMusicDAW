@@ -12,6 +12,8 @@
 class KeyEditorCanvasSegment : public wxWindow {
 public:
   KeyEditorCanvasSegment(wxWindow* pParent);
+
+  virtual void render() = 0;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -21,6 +23,8 @@ public:
 class KeyEditorFreeCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorFreeCanvas(wxWindow* pParent);
+
+  void render() final;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -30,6 +34,8 @@ public:
 class KeyEditorQuantizationCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorQuantizationCanvas(wxWindow* pParent);
+
+  void render() final;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -39,6 +45,8 @@ public:
 class KeyEditorPianoCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorPianoCanvas(wxWindow* pParent);
+
+  void render() final;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -48,7 +56,7 @@ public:
 class KeyEditorGridCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorGridCanvas(wxWindow* pParent, Song* pSong);
-  void render();
+  void render() final;
 
   void setXscrollPosition(int xScrollPosition);
   void setYscrollPosition(int yScrollPosition);

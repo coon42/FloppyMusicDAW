@@ -23,6 +23,10 @@ KeyEditorFreeCanvas::KeyEditorFreeCanvas(wxWindow* pParent) : KeyEditorCanvasSeg
 
 }
 
+void KeyEditorFreeCanvas::render() {
+
+}
+
 //-------------------------------------------------------------------------------------------------
 // KeyEditorQuantizationCanvas
 //-------------------------------------------------------------------------------------------------
@@ -31,11 +35,19 @@ KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(wxWindow* pParent) : Ke
 
 }
 
+void KeyEditorQuantizationCanvas::render() {
+
+}
+
 //-------------------------------------------------------------------------------------------------
 // KeyEditorPianoCanvas
 //-------------------------------------------------------------------------------------------------
 
 KeyEditorPianoCanvas::KeyEditorPianoCanvas(wxWindow* pParent) : KeyEditorCanvasSegment(pParent) {
+
+}
+
+void KeyEditorPianoCanvas::render() {
 
 }
 
@@ -48,39 +60,9 @@ KeyEditorGridCanvas::KeyEditorGridCanvas(wxWindow* pParent, Song* pSong) : KeyEd
 
 }
 
-NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
-  for (NoteBlock& noteBlock : pSong_->noteBlocks()) {
-    int x1 = xBlockStartOffset_ - xScrollOffset_ * pixelsPerQuarterNote_ + (noteBlock.startTick() * pixelsPerQuarterNote_) / pSong_->tpqn();
-    const int y1 = yBlockStartOffset_ + blockHeight_ * (127 - noteBlock.note() - yScrollOffset_);
-    int width = (noteBlock.numTicks() * pixelsPerQuarterNote_) / pSong_->tpqn();
-
-    if ((x1 + width > xBlockStartOffset_) && (y1 >= yBlockStartOffset_)) {
-      if (x1 < xBlockStartOffset_) {
-        const int cutPixels = xBlockStartOffset_ - x1;
-        x1 += cutPixels;
-        width -= cutPixels;
-      }
-    }
-
-    if (mouseX > x1 && mouseX < x1 + width && mouseY > y1 && mouseY < y1 + blockHeight_)
-      return &noteBlock;
-  }
-
-  return nullptr;
-}
-
-void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
-  const char* pClickedTarget = "None";
-
-  pSong_->unselectAllNotes();
-
-  if (NoteBlock* pNoteBlock = currentPointedNoteBlock(event.GetX(), event.GetY())) {
-    pNoteBlock->select();
-    pClickedTarget = eMidi_numberToNote(pNoteBlock->note());
-  }
-
-  printf("clicked on: %s\n", pClickedTarget);
-  render();
+void KeyEditorGridCanvas::render() {
+  wxClientDC dc(this);
+  render(dc);
 }
 
 void KeyEditorGridCanvas::render(wxDC& dc) {
@@ -170,9 +152,39 @@ void KeyEditorGridCanvas::render(wxDC& dc) {
   }
 }
 
-void KeyEditorGridCanvas::render() {
-  wxClientDC dc(this);
-  render(dc);
+NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
+  for (NoteBlock& noteBlock : pSong_->noteBlocks()) {
+    int x1 = xBlockStartOffset_ - xScrollOffset_ * pixelsPerQuarterNote_ + (noteBlock.startTick() * pixelsPerQuarterNote_) / pSong_->tpqn();
+    const int y1 = yBlockStartOffset_ + blockHeight_ * (127 - noteBlock.note() - yScrollOffset_);
+    int width = (noteBlock.numTicks() * pixelsPerQuarterNote_) / pSong_->tpqn();
+
+    if ((x1 + width > xBlockStartOffset_) && (y1 >= yBlockStartOffset_)) {
+      if (x1 < xBlockStartOffset_) {
+        const int cutPixels = xBlockStartOffset_ - x1;
+        x1 += cutPixels;
+        width -= cutPixels;
+      }
+    }
+
+    if (mouseX > x1 && mouseX < x1 + width && mouseY > y1 && mouseY < y1 + blockHeight_)
+      return &noteBlock;
+  }
+
+  return nullptr;
+}
+
+void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
+  const char* pClickedTarget = "None";
+
+  pSong_->unselectAllNotes();
+
+  if (NoteBlock* pNoteBlock = currentPointedNoteBlock(event.GetX(), event.GetY())) {
+    pNoteBlock->select();
+    pClickedTarget = eMidi_numberToNote(pNoteBlock->note());
+  }
+
+  printf("clicked on: %s\n", pClickedTarget);
+  render();
 }
 
 void KeyEditorGridCanvas::OnPaint(wxPaintEvent& event) {
