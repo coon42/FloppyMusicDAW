@@ -7,11 +7,19 @@ extern "C" {
 #include "keyeditor.h"
 
 //-------------------------------------------------------------------------------------------------
+// KeyEditorCanvasCanvasSegment
+//-------------------------------------------------------------------------------------------------
+
+KeyEditorCanvasSegment::KeyEditorCanvasSegment(wxWindow* pParent)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
+
+}
+
+//-------------------------------------------------------------------------------------------------
 // KeyEditorFreeCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorFreeCanvas::KeyEditorFreeCanvas(wxWindow* pParent)
-    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
+KeyEditorFreeCanvas::KeyEditorFreeCanvas(wxWindow* pParent) : KeyEditorCanvasSegment(pParent) {
 
 }
 
@@ -19,8 +27,7 @@ KeyEditorFreeCanvas::KeyEditorFreeCanvas(wxWindow* pParent)
 // KeyEditorQuantizationCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(wxWindow* pParent)
-    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
+KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(wxWindow* pParent) : KeyEditorCanvasSegment(pParent) {
 
 }
 
@@ -28,8 +35,7 @@ KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(wxWindow* pParent)
 // KeyEditorPianoCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorPianoCanvas::KeyEditorPianoCanvas(wxWindow* pParent)
-    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
+KeyEditorPianoCanvas::KeyEditorPianoCanvas(wxWindow* pParent) : KeyEditorCanvasSegment(pParent) {
 
 }
 
@@ -37,9 +43,8 @@ KeyEditorPianoCanvas::KeyEditorPianoCanvas(wxWindow* pParent)
 // KeyEditorGridCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorGridCanvas::KeyEditorGridCanvas(wxWindow* pParent, Song* pSong)
-    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
-      pSong_(pSong) {
+KeyEditorGridCanvas::KeyEditorGridCanvas(wxWindow* pParent, Song* pSong) : KeyEditorCanvasSegment(pParent),
+    pSong_(pSong) {
 
 }
 

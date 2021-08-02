@@ -6,10 +6,19 @@
 #include "song.h"
 
 //-------------------------------------------------------------------------------------------------
+// KeyEditorCanvasCanvasSegment
+//-------------------------------------------------------------------------------------------------
+
+class KeyEditorCanvasSegment : public wxWindow {
+public:
+  KeyEditorCanvasSegment(wxWindow* pParent);
+};
+
+//-------------------------------------------------------------------------------------------------
 // KeyEditorFreeCanvas
 //-------------------------------------------------------------------------------------------------
 
-class KeyEditorFreeCanvas : public wxWindow {
+class KeyEditorFreeCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorFreeCanvas(wxWindow* pParent);
 };
@@ -18,7 +27,7 @@ public:
 // KeyEditorQuantizationCanvas
 //-------------------------------------------------------------------------------------------------
 
-class KeyEditorQuantizationCanvas : public wxWindow {
+class KeyEditorQuantizationCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorQuantizationCanvas(wxWindow* pParent);
 };
@@ -27,7 +36,7 @@ public:
 // KeyEditorPianoCanvas
 //-------------------------------------------------------------------------------------------------
 
-class KeyEditorPianoCanvas : public wxWindow {
+class KeyEditorPianoCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorPianoCanvas(wxWindow* pParent);
 };
@@ -36,7 +45,7 @@ public:
 // KeyEditorGridCanvas
 //-------------------------------------------------------------------------------------------------
 
-class KeyEditorGridCanvas : public wxWindow {
+class KeyEditorGridCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorGridCanvas(wxWindow* pParent, Song* pSong);
   void render();
