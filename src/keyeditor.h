@@ -29,6 +29,7 @@ class KeyEditorQuantizationCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorQuantizationCanvas(wxWindow* pParent);
 
+private:
   void onRender(wxDC& dc) final;
 };
 
@@ -40,6 +41,7 @@ class KeyEditorPianoCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorPianoCanvas(wxWindow* pParent);
 
+private:
   void onRender(wxDC& dc) final;
 };
 
