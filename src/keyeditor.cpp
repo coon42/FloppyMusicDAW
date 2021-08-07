@@ -67,14 +67,14 @@ void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
     const int major = 1 + (canvas()->xScrollOffset() + segment) / 4;
     const int minor = 1 + (canvas()->xScrollOffset() + segment) % 4;
 
-    char pBuf[64]{0};
+    wxString label;
 
     if (isFirst)
-      snprintf(pBuf, sizeof(pBuf), "%d", major);
+      label = wxString::Format("%d", major);
     else
-      snprintf(pBuf, sizeof(pBuf), "%d.%d", major, minor);
+      label = wxString::Format("%d.%d", major, minor);
 
-    dc.DrawText(pBuf, canvas()->xBlockStartOffset() + labelXoffset, 10);
+    dc.DrawText(label, canvas()->xBlockStartOffset() + labelXoffset, 10);
   }
 }
 
