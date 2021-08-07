@@ -85,8 +85,8 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
 
     int numBlocksVisibleOnScreen = (canvasSize.GetHeight() - yBlockStartOffset_ - blockHeight_ / 2) / blockHeight_;
 
-    if (numBlocksVisibleOnScreen + yScrollOffset_ > numMidiNotes_)
-      numBlocksVisibleOnScreen = numMidiNotes_ - yScrollOffset_;
+    if (numBlocksVisibleOnScreen + yScrollOffset_ > NUM_MIDI_NOTES)
+      numBlocksVisibleOnScreen = NUM_MIDI_NOTES - yScrollOffset_;
 
     dc.DrawLine(xBlockStartOffset_ + xOffset, yBlockStartOffset_, xBlockStartOffset_ + xOffset, yBlockStartOffset_ + numBlocksVisibleOnScreen * blockHeight_);
 
@@ -108,8 +108,8 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   dc.SetPen(wxPen(wxColor(0, 0, 0), 1)); // black line, 1 pixels thick
   dc.SetTextForeground(wxColor(0, 0, 0)); // set text color
 
-  for (int y = 0; y < numMidiNotes_; ++y) {
-    const int midiNote = numMidiNotes_ - 1 - y - yScrollOffset_;
+  for (int y = 0; y < NUM_MIDI_NOTES; ++y) {
+    const int midiNote = NUM_MIDI_NOTES - 1 - y - yScrollOffset_;
 
     if (midiNote >= 0) {
       const int yOffset = y * blockHeight_;
@@ -281,9 +281,7 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
 
   wxSizer* pVerticalBarSizer = new wxBoxSizer(wxVERTICAL);
   pVerticalScrollbar_ = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalScroll), wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
-
-  const int numMidiNotes = 128;
-  pVerticalScrollbar_->SetScrollbar(24, 1, numMidiNotes, 1);
+  pVerticalScrollbar_->SetScrollbar(24, 1, NUM_MIDI_NOTES, 1);
 
   wxSlider* pVerticalZoomSlider = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalZoom), 0, 0, 10, wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
 

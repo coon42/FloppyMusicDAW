@@ -73,7 +73,6 @@ private:
 
   const int xBlockStartOffset_ = 50;
   const int yBlockStartOffset_ = 30;
-  const int numMidiNotes_ = 128;
 
   Song* const pSong_;
 
