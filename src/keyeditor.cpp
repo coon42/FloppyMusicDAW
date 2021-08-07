@@ -10,7 +10,7 @@ extern "C" {
 // KeyEditorCanvasCanvasSegment
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorCanvasSegment::KeyEditorCanvasSegment(wxWindow* pParent, const wxSize& size = wxDefaultSize)
+KeyEditorCanvasSegment::KeyEditorCanvasSegment(KeyEditorCanvas* pParent, const wxSize& size = wxDefaultSize)
     : wxWindow(pParent, wxID_ANY, wxDefaultPosition, size) {
 
 }
@@ -34,7 +34,7 @@ wxEND_EVENT_TABLE()
 // KeyEditorQuantizationCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(wxWindow* pParent) : KeyEditorCanvasSegment(pParent) {
+KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(KeyEditorCanvas* pParent) : KeyEditorCanvasSegment(pParent) {
 
 }
 
@@ -46,7 +46,7 @@ void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
 // KeyEditorPianoCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorPianoCanvas::KeyEditorPianoCanvas(wxWindow* pParent) : KeyEditorCanvasSegment(pParent) {
+KeyEditorPianoCanvas::KeyEditorPianoCanvas(KeyEditorCanvas* pParent) : KeyEditorCanvasSegment(pParent) {
 
 }
 
@@ -58,8 +58,8 @@ void KeyEditorPianoCanvas::onRender(wxDC& dc) {
 // KeyEditorGridCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorGridCanvas::KeyEditorGridCanvas(wxWindow* pParent, Song* pSong) : KeyEditorCanvasSegment(pParent),
-    pSong_(pSong) {
+KeyEditorGridCanvas::KeyEditorGridCanvas(KeyEditorCanvas* pParent, Song* pSong) : KeyEditorCanvasSegment(pParent),
+  pSong_(pSong) {
 
 }
 

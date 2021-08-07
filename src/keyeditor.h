@@ -5,13 +5,15 @@
 
 #include "song.h"
 
+class KeyEditorCanvas;
+
 //-------------------------------------------------------------------------------------------------
 // KeyEditorCanvasCanvasSegment
 //-------------------------------------------------------------------------------------------------
 
 class KeyEditorCanvasSegment : public wxWindow {
 public:
-  KeyEditorCanvasSegment(wxWindow* pParent, const wxSize& size);
+  KeyEditorCanvasSegment(KeyEditorCanvas* pParent, const wxSize& size);
   void render();
 
 private:
@@ -27,7 +29,7 @@ private:
 
 class KeyEditorQuantizationCanvas : public KeyEditorCanvasSegment {
 public:
-  KeyEditorQuantizationCanvas(wxWindow* pParent);
+  KeyEditorQuantizationCanvas(KeyEditorCanvas* pParent);
 
 private:
   void onRender(wxDC& dc) final;
@@ -39,7 +41,7 @@ private:
 
 class KeyEditorPianoCanvas : public KeyEditorCanvasSegment {
 public:
-  KeyEditorPianoCanvas(wxWindow* pParent);
+  KeyEditorPianoCanvas(KeyEditorCanvas* pParent);
 
 private:
   void onRender(wxDC& dc) final;
@@ -51,7 +53,7 @@ private:
 
 class KeyEditorGridCanvas : public KeyEditorCanvasSegment {
 public:
-  KeyEditorGridCanvas(wxWindow* pParent, Song* pSong);
+  KeyEditorGridCanvas(KeyEditorCanvas* pParent, Song* pSong);
 
   void setXscrollPosition(int xScrollPosition);
   void setYscrollPosition(int yScrollPosition);
