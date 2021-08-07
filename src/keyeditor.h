@@ -58,11 +58,6 @@ class KeyEditorGridCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorGridCanvas(KeyEditorCanvas* pParent, Song* pSong);
 
-  void setXscrollPosition(int xScrollPosition);
-  void setYscrollPosition(int yScrollPosition);
-  void setXzoomFactor(int xZoomFactor);
-  void setYzoomFactor(int yZoomFactor);
-
 private:
   void OnPaint(wxPaintEvent& event);
   void OnMouseMotion(wxMouseEvent& event);
@@ -70,15 +65,6 @@ private:
   virtual void onRender(wxDC& dc) final;
 
   NoteBlock* currentPointedNoteBlock(int mouseX, int mouseY);
-
-  int xScrollOffset_{0};
-  int yScrollOffset_{0};
-  int pixelsPerQuarterNote_{10};
-  int blockHeight_{10};
-
-  const int xBlockStartOffset_ = 50;
-  const int yBlockStartOffset_ = 30;
-
   Song* const pSong_;
 
   wxDECLARE_EVENT_TABLE();
@@ -105,10 +91,24 @@ public:
     VerticalZoom
   };
 
+  int xBlockStartOffset() const    { return xBlockStartOffset_; }
+  int yBlockStartOffset() const    { return yBlockStartOffset_; }
+  int xScrollOffset() const        { return xScrollOffset_; }
+  int yScrollOffset() const        { return yScrollOffset_; }
+  int pixelsPerQuarterNote() const { return pixelsPerQuarterNote_; }
+  int blockHeight() const          { return blockHeight_; }
+
 private:
   KeyEditorQuantizationCanvas* pKeyEditorQuantizationCanvas_{nullptr};
   KeyEditorPianoCanvas* pKeyEditorPianoCanvas_{nullptr};
   KeyEditorGridCanvas* pKeyEditorGridCanvas_{nullptr};
+
+  const int xBlockStartOffset_ = 50;
+  const int yBlockStartOffset_ = 30;
+  int xScrollOffset_{0};
+  int yScrollOffset_{0};
+  int pixelsPerQuarterNote_{10};
+  int blockHeight_{10};
 };
 
 //-------------------------------------------------------------------------------------------------
