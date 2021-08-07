@@ -113,7 +113,7 @@ KeyEditorGridCanvas::KeyEditorGridCanvas(KeyEditorCanvas* pParent, Song* pSong) 
 }
 
 void KeyEditorGridCanvas::onRender(wxDC& dc) {
-  const wxSize canvasSize = GetClientSize();
+  const wxSize& canvasSize = GetClientSize();
   const int canvasWidth = canvasSize.GetWidth() / canvas()->pixelsPerQuarterNote();
   const int numSegments = canvasWidth / canvas()->pixelsPerQuarterNote() + canvas()->pixelsPerQuarterNote();
 
