@@ -12,8 +12,10 @@
 class KeyEditorCanvasSegment : public wxWindow {
 public:
   KeyEditorCanvasSegment(wxWindow* pParent, const wxSize& size);
+  void render();
 
-  virtual void render() = 0;
+private:
+  virtual void onRender(wxDC& dc) = 0;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -24,7 +26,7 @@ class KeyEditorQuantizationCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorQuantizationCanvas(wxWindow* pParent);
 
-  void render() final;
+  void onRender(wxDC& dc) final;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -35,7 +37,7 @@ class KeyEditorPianoCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorPianoCanvas(wxWindow* pParent);
 
-  void render() final;
+  void onRender(wxDC& dc) final;
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -45,7 +47,6 @@ public:
 class KeyEditorGridCanvas : public KeyEditorCanvasSegment {
 public:
   KeyEditorGridCanvas(wxWindow* pParent, Song* pSong);
-  void render() final;
 
   void setXscrollPosition(int xScrollPosition);
   void setYscrollPosition(int yScrollPosition);
@@ -56,7 +57,7 @@ private:
   void OnPaint(wxPaintEvent& event);
   void OnMouseMotion(wxMouseEvent& event);
   void OnMouseLeftDown(wxMouseEvent& event);
-  void render(wxDC& dc);
+  virtual void onRender(wxDC& dc) final;
 
   NoteBlock* currentPointedNoteBlock(int mouseX, int mouseY);
 

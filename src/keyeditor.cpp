@@ -15,6 +15,11 @@ KeyEditorCanvasSegment::KeyEditorCanvasSegment(wxWindow* pParent, const wxSize& 
 
 }
 
+void KeyEditorCanvasSegment::render() {
+  wxClientDC dc(this);
+  onRender(dc);
+}
+
 //-------------------------------------------------------------------------------------------------
 // KeyEditorQuantizationCanvas
 //-------------------------------------------------------------------------------------------------
@@ -23,7 +28,7 @@ KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(wxWindow* pParent) : Ke
 
 }
 
-void KeyEditorQuantizationCanvas::render() {
+void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
 
 }
 
@@ -35,7 +40,7 @@ KeyEditorPianoCanvas::KeyEditorPianoCanvas(wxWindow* pParent) : KeyEditorCanvasS
 
 }
 
-void KeyEditorPianoCanvas::render() {
+void KeyEditorPianoCanvas::onRender(wxDC& dc) {
 
 }
 
@@ -48,12 +53,7 @@ KeyEditorGridCanvas::KeyEditorGridCanvas(wxWindow* pParent, Song* pSong) : KeyEd
 
 }
 
-void KeyEditorGridCanvas::render() {
-  wxClientDC dc(this);
-  render(dc);
-}
-
-void KeyEditorGridCanvas::render(wxDC& dc) {
+void KeyEditorGridCanvas::onRender(wxDC& dc) {
   dc.Clear();
 
   const wxSize canvasSize = GetClientSize();
@@ -179,7 +179,7 @@ void KeyEditorGridCanvas::OnPaint(wxPaintEvent& event) {
   printf("KeyEditorGridCanvas::OnPaint\n");
 
   wxPaintDC dc(this);
-  render(dc);
+  onRender(dc);
 }
 
 void KeyEditorGridCanvas::OnMouseMotion(wxMouseEvent& event) {
