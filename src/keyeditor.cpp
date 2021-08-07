@@ -45,7 +45,7 @@ KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(KeyEditorCanvas* pParen
 
 void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
   for (int x = 0; x < GetClientSize().GetWidth() / canvas()->pixelsPerQuarterNote(); ++x) {
-    const int xOffset = x * canvas()->pixelsPerQuarterNote() + 1; // TODO: remove + 1, when KeyEditorPianoCanvas rendering is implemented!
+    const int xOffset = x * canvas()->pixelsPerQuarterNote();
     const bool isFirst = (canvas()->xScrollOffset() + x) % 4 == 0;
     const int yEndPos = isFirst ? GetClientSize().GetHeight() : 10;
 
@@ -79,12 +79,25 @@ void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
 // KeyEditorPianoCanvas
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorPianoCanvas::KeyEditorPianoCanvas(KeyEditorCanvas* pParent) : KeyEditorCanvasSegment(pParent) {
+KeyEditorPianoCanvas::KeyEditorPianoCanvas(KeyEditorCanvas* pParent)
+    : KeyEditorCanvasSegment(pParent, wxSize(50, 0)) {
 
 }
 
 void KeyEditorPianoCanvas::onRender(wxDC& dc) {
+  dc.SetPen(wxPen(wxColor(0, 0, 0), 1)); // black line, 1 pixels thick
+  dc.SetTextForeground(wxColor(0, 0, 0)); // set text color
 
+  for (int y = 0; y < NUM_MIDI_NOTES; ++y) {
+    const int midiNote = NUM_MIDI_NOTES - 1 - y - canvas()->yScrollOffset();
+
+    if (midiNote >= 0) {
+      const int yOffset = y * canvas()->blockHeight();
+      const char* pNoteStr = eMidi_numberToNote(midiNote);
+
+      dc.DrawText(pNoteStr, 0, yOffset);
+    }
+  }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -118,7 +131,7 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
     if (numBlocksVisibleOnScreen + canvas()->yScrollOffset() > NUM_MIDI_NOTES)
       numBlocksVisibleOnScreen = NUM_MIDI_NOTES - canvas()->yScrollOffset();
 
-    dc.DrawLine(canvas()->xBlockStartOffset() + xOffset, 0, canvas()->xBlockStartOffset() + xOffset, numBlocksVisibleOnScreen * canvas()->blockHeight());
+    dc.DrawLine(xOffset, 0, xOffset, numBlocksVisibleOnScreen * canvas()->blockHeight());
   }
 
   // draw note lines
@@ -130,27 +143,24 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
 
     if (midiNote >= 0) {
       const int yOffset = y * canvas()->blockHeight();
-      dc.DrawLine(canvas()->xBlockStartOffset(), yOffset, canvasSize.GetWidth(), yOffset);
+      dc.DrawLine(0, yOffset, canvasSize.GetWidth(), yOffset);
 
       if (midiNote == 0) {
         const int yOffsetLast = (y + 1) * canvas()->blockHeight();
-        dc.DrawLine(canvas()->xBlockStartOffset(), yOffsetLast, canvasSize.GetWidth(), yOffsetLast);
+        dc.DrawLine(0, yOffsetLast, canvasSize.GetWidth(), yOffsetLast);
       }
-
-      const char* pNoteStr = eMidi_numberToNote(midiNote);
-      dc.DrawText(pNoteStr, 0, yOffset);
     }
   }
 
   // draw note blocks
   for (const NoteBlock& noteBlock : pSong_->noteBlocks()) {
-    int x1 = canvas()->xBlockStartOffset() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote() + (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
+    int x1 = -canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote() + (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
     const int y1 = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
     int width = (noteBlock.numTicks() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
 
-    if ((x1 + width > canvas()->xBlockStartOffset()) && (y1 >= 0)) {
-      if (x1 < canvas()->xBlockStartOffset()) {
-        const int cutPixels = canvas()->xBlockStartOffset() - x1;
+    if ((x1 + width > 0) && (y1 >= 0)) {
+      if (x1 < 0) {
+        const int cutPixels = -x1;
         x1 += cutPixels;
         width -= cutPixels;
       }
@@ -167,13 +177,13 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
 
 NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
   for (NoteBlock& noteBlock : pSong_->noteBlocks()) {
-    int x1 = canvas()->xBlockStartOffset() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote() + (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
+    int x1 = -canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote() + (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
     const int y1 = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
     int width = (noteBlock.numTicks() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
 
-    if ((x1 + width > canvas()->xBlockStartOffset()) && (y1 >= 0)) {
-      if (x1 < canvas()->xBlockStartOffset()) {
-        const int cutPixels = canvas()->xBlockStartOffset() - x1;
+    if ((x1 + width > 0) && (y1 >= 0)) {
+      if (x1 < 0) {
+        const int cutPixels = -x1;
         x1 += cutPixels;
         width -= cutPixels;
       }
@@ -240,6 +250,7 @@ KeyEditorCanvas::KeyEditorCanvas(wxWindow* pParent, Song* const pSong)
 
 void KeyEditorCanvas::render() {
   pKeyEditorQuantizationCanvas_->render();
+  pKeyEditorPianoCanvas_->render();
   pKeyEditorGridCanvas_->render();
 }
 
