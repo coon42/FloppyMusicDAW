@@ -20,6 +20,14 @@ void KeyEditorCanvasSegment::render() {
   onRender(dc);
 }
 
+void KeyEditorCanvasSegment::OnPaint(wxPaintEvent& event) {
+  render();
+}
+
+wxBEGIN_EVENT_TABLE(KeyEditorCanvasSegment, wxWindow)
+EVT_PAINT(KeyEditorCanvasSegment::OnPaint)
+wxEND_EVENT_TABLE()
+
 //-------------------------------------------------------------------------------------------------
 // KeyEditorQuantizationCanvas
 //-------------------------------------------------------------------------------------------------

@@ -15,7 +15,10 @@ public:
   void render();
 
 private:
+  void OnPaint(wxPaintEvent& event);
   virtual void onRender(wxDC& dc) = 0;
+
+  wxDECLARE_EVENT_TABLE();
 };
 
 //-------------------------------------------------------------------------------------------------
