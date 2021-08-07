@@ -154,7 +154,7 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
 
   // draw note blocks
   for (const NoteBlock& noteBlock : pSong_->noteBlocks()) {
-    int x1 = -canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote() + (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
+    int x1 = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
     const int y1 = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
     int width = (noteBlock.numTicks() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
 
@@ -177,7 +177,7 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
 
 NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
   for (NoteBlock& noteBlock : pSong_->noteBlocks()) {
-    int x1 = -canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote() + (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
+    int x1 = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
     const int y1 = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
     int width = (noteBlock.numTicks() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
 
