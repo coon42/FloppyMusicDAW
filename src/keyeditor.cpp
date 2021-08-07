@@ -44,9 +44,12 @@ KeyEditorQuantizationCanvas::KeyEditorQuantizationCanvas(KeyEditorCanvas* pParen
 }
 
 void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
-  for (int x = 0; x < GetClientSize().GetWidth() / canvas()->pixelsPerQuarterNote(); ++x) {
-    const int xOffset = x * canvas()->pixelsPerQuarterNote();
-    const bool isFirst = (canvas()->xScrollOffset() + x) % 4 == 0;
+  const int canvasWidth = GetClientSize().GetWidth() - canvas()->xBlockStartOffset();
+  const int numSegments = canvasWidth / canvas()->pixelsPerQuarterNote() + canvas()->pixelsPerQuarterNote();
+
+  for (int segment = 0; segment < numSegments; ++segment) {
+    const int xOffset = segment * canvas()->pixelsPerQuarterNote();
+    const bool isFirst = (canvas()->xScrollOffset() + segment) % 4 == 0;
     const int yEndPos = isFirst ? GetClientSize().GetHeight() : 10;
 
     if (isFirst) {
@@ -61,8 +64,8 @@ void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
     dc.DrawLine(canvas()->xBlockStartOffset() + xOffset, 0, canvas()->xBlockStartOffset() + xOffset, yEndPos);
 
     const int labelXoffset = isFirst ? xOffset + 5 : xOffset - 4;
-    const int major = 1 + (canvas()->xScrollOffset() + x) / 4;
-    const int minor = 1 + (canvas()->xScrollOffset() + x) % 4;
+    const int major = 1 + (canvas()->xScrollOffset() + segment) / 4;
+    const int minor = 1 + (canvas()->xScrollOffset() + segment) % 4;
 
     char pBuf[64]{0};
 
@@ -111,11 +114,13 @@ KeyEditorGridCanvas::KeyEditorGridCanvas(KeyEditorCanvas* pParent, Song* pSong) 
 
 void KeyEditorGridCanvas::onRender(wxDC& dc) {
   const wxSize canvasSize = GetClientSize();
+  const int canvasWidth = canvasSize.GetWidth() / canvas()->pixelsPerQuarterNote();
+  const int numSegments = canvasWidth / canvas()->pixelsPerQuarterNote() + canvas()->pixelsPerQuarterNote();
 
   // draw divisions
-  for (int x = 0; x < canvasSize.GetWidth() / canvas()->pixelsPerQuarterNote(); ++x) {
-    const int xOffset = x * canvas()->pixelsPerQuarterNote();
-    const bool isFirst = (canvas()->xScrollOffset() + x) % 4 == 0;
+  for (int segment = 0; segment < numSegments; ++segment) {
+    const int xOffset = segment * canvas()->pixelsPerQuarterNote();
+    const bool isFirst = (canvas()->xScrollOffset() + segment) % 4 == 0;
 
     if (isFirst) {
       dc.SetPen(wxPen(wxColor(0, 0, 0), 1)); // black line, 1 pixels thick
