@@ -219,19 +219,18 @@ wxEND_EVENT_TABLE()
 KeyEditorCanvas::KeyEditorCanvas(wxWindow* pParent, Song* const pSong)
     : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
 
-  wxFlexGridSizer* pTopSizer = new wxFlexGridSizer(2, 2, wxSize(0, 0));
+  wxSizer* pTopSizer = new wxBoxSizer(wxVERTICAL);
 
   pKeyEditorQuantizationCanvas_ = new KeyEditorQuantizationCanvas(this);
   pKeyEditorPianoCanvas_ = new KeyEditorPianoCanvas(this);
   pKeyEditorGridCanvas_ = new KeyEditorGridCanvas(this, pSong);
 
-  pTopSizer->Add(new wxWindow());
-  pTopSizer->Add(pKeyEditorQuantizationCanvas_);
-  pTopSizer->Add(pKeyEditorPianoCanvas_);
-  pTopSizer->Add(pKeyEditorGridCanvas_, 1, wxEXPAND);
+  wxSizer* pPianoGridSizer = new wxBoxSizer(wxHORIZONTAL);
+  pPianoGridSizer->Add(pKeyEditorPianoCanvas_, 0, wxEXPAND);
+  pPianoGridSizer->Add(pKeyEditorGridCanvas_, 1, wxEXPAND);
 
-  pTopSizer->AddGrowableCol(1, 1);
-  pTopSizer->AddGrowableRow(1, 1);
+  pTopSizer->Add(pKeyEditorQuantizationCanvas_, 0, wxEXPAND);
+  pTopSizer->Add(pPianoGridSizer, 1, wxEXPAND);
 
   SetSizer(pTopSizer);
 }
