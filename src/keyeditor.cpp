@@ -201,8 +201,6 @@ void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
 }
 
 void KeyEditorGridCanvas::OnPaint(wxPaintEvent& event) {
-  printf("KeyEditorGridCanvas::OnPaint\n");
-
   wxPaintDC dc(this);
   onRender(dc);
 }
@@ -349,8 +347,6 @@ void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
 }
 
 void KeyEditorWindow::OnMouseWheel(wxMouseEvent& event) {
-  printf("KeyEditorWindows::OnMouse; axis: %d, rotation: %d\n", event.GetWheelAxis(), event.GetWheelRotation());
-
   const int scrollStep = 4;
 
   switch (event.GetWheelAxis()) {
