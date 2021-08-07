@@ -10,8 +10,8 @@ extern "C" {
 // KeyEditorCanvasCanvasSegment
 //-------------------------------------------------------------------------------------------------
 
-KeyEditorCanvasSegment::KeyEditorCanvasSegment(wxWindow* pParent)
-    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
+KeyEditorCanvasSegment::KeyEditorCanvasSegment(wxWindow* pParent, const wxSize& size = wxDefaultSize)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, size) {
 
 }
 

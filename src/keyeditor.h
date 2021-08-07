@@ -11,7 +11,7 @@
 
 class KeyEditorCanvasSegment : public wxWindow {
 public:
-  KeyEditorCanvasSegment(wxWindow* pParent);
+  KeyEditorCanvasSegment(wxWindow* pParent, const wxSize& size);
 
   virtual void render() = 0;
 };
