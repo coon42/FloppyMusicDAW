@@ -17,6 +17,8 @@ KeyEditorCanvasSegment::KeyEditorCanvasSegment(wxWindow* pParent, const wxSize& 
 
 void KeyEditorCanvasSegment::render() {
   wxClientDC dc(this);
+  dc.Clear();
+
   onRender(dc);
 }
 
@@ -62,8 +64,6 @@ KeyEditorGridCanvas::KeyEditorGridCanvas(wxWindow* pParent, Song* pSong) : KeyEd
 }
 
 void KeyEditorGridCanvas::onRender(wxDC& dc) {
-  dc.Clear();
-
   const wxSize canvasSize = GetClientSize();
 
   // draw divisions
