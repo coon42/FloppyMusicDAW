@@ -16,18 +16,6 @@ KeyEditorCanvasSegment::KeyEditorCanvasSegment(wxWindow* pParent)
 }
 
 //-------------------------------------------------------------------------------------------------
-// KeyEditorFreeCanvas
-//-------------------------------------------------------------------------------------------------
-
-KeyEditorFreeCanvas::KeyEditorFreeCanvas(wxWindow* pParent) : KeyEditorCanvasSegment(pParent) {
-
-}
-
-void KeyEditorFreeCanvas::render() {
-
-}
-
-//-------------------------------------------------------------------------------------------------
 // KeyEditorQuantizationCanvas
 //-------------------------------------------------------------------------------------------------
 
@@ -233,12 +221,11 @@ KeyEditorCanvas::KeyEditorCanvas(wxWindow* pParent, Song* const pSong)
 
   wxFlexGridSizer* pTopSizer = new wxFlexGridSizer(2, 2, wxSize(0, 0));
 
-  pKeyEditorFreeCanvas_ = new KeyEditorFreeCanvas(this);
   pKeyEditorQuantizationCanvas_ = new KeyEditorQuantizationCanvas(this);
   pKeyEditorPianoCanvas_ = new KeyEditorPianoCanvas(this);
   pKeyEditorGridCanvas_ = new KeyEditorGridCanvas(this, pSong);
 
-  pTopSizer->Add(pKeyEditorFreeCanvas_);
+  pTopSizer->Add(new wxWindow());
   pTopSizer->Add(pKeyEditorQuantizationCanvas_);
   pTopSizer->Add(pKeyEditorPianoCanvas_);
   pTopSizer->Add(pKeyEditorGridCanvas_, 1, wxEXPAND);

@@ -17,17 +17,6 @@ public:
 };
 
 //-------------------------------------------------------------------------------------------------
-// KeyEditorFreeCanvas
-//-------------------------------------------------------------------------------------------------
-
-class KeyEditorFreeCanvas : public KeyEditorCanvasSegment {
-public:
-  KeyEditorFreeCanvas(wxWindow* pParent);
-
-  void render() final;
-};
-
-//-------------------------------------------------------------------------------------------------
 // KeyEditorQuantizationCanvas
 //-------------------------------------------------------------------------------------------------
 
@@ -107,7 +96,6 @@ public:
   };
 
 private:
-  KeyEditorFreeCanvas* pKeyEditorFreeCanvas_{nullptr};
   KeyEditorQuantizationCanvas* pKeyEditorQuantizationCanvas_{nullptr};
   KeyEditorPianoCanvas* pKeyEditorPianoCanvas_{nullptr};
   KeyEditorGridCanvas* pKeyEditorGridCanvas_{nullptr};
