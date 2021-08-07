@@ -16,6 +16,9 @@ public:
   KeyEditorCanvasSegment(KeyEditorCanvas* pParent, const wxSize& size);
   void render();
 
+protected:
+  KeyEditorCanvas* canvas();
+
 private:
   void OnPaint(wxPaintEvent& event);
   virtual void onRender(wxDC& dc) = 0;
