@@ -67,7 +67,10 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\lib\eMIDI\src\midiport.h">
       <Filter>Source Files\eMIDI</Filter>
-    </ClInclude>  
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\eMIDI\src\midifile.h">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res.rc">

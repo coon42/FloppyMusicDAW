@@ -33,6 +33,7 @@
     <ClInclude Include="..\..\..\src\lib\eMIDI\src\emiditypes.h" />
     <ClInclude Include="..\..\..\src\lib\eMIDI\src\hal\emidi_hal.h" />
     <ClInclude Include="..\..\..\src\lib\eMIDI\src\helpers.h" />
+    <ClInclude Include="..\..\..\src\lib\eMIDI\src\midifile.h" />
     <ClInclude Include="..\..\..\src\lib\eMIDI\src\midiplayer.h" />
     <ClInclude Include="..\..\..\src\lib\eMIDI\src\midiport.h" />
     <ClInclude Include="..\..\..\src\main.h" />
