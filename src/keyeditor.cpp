@@ -185,14 +185,14 @@ KeyEditorGridCanvas::CellPosition KeyEditorGridCanvas::currentPointedCell(int mo
   const int yOffset = canvas()->yScrollOffset() * canvas()->blockHeight();
 
   CellPosition pos;
-  pos.absoluteX = (mouseX + xOffset) / canvas()->pixelsPerQuarterNote();
-  pos.absoluteY = (mouseY + yOffset) / canvas()->blockHeight();
+  pos.absoluteXindex = (mouseX + xOffset) / canvas()->pixelsPerQuarterNote();
+  pos.absoluteYindex = (mouseY + yOffset) / canvas()->blockHeight();
 
-  if (pos.absoluteY > (NUM_MIDI_NOTES - 1))
-    pos.absoluteY = NUM_MIDI_NOTES - 1;
+  if (pos.absoluteYindex > (NUM_MIDI_NOTES - 1))
+    pos.absoluteYindex = NUM_MIDI_NOTES - 1;
 
-  pos.relativeX = pos.absoluteX - xOffset / canvas()->pixelsPerQuarterNote();
-  pos.relativeY = pos.absoluteY - yOffset / canvas()->blockHeight();
+  pos.relativeXindex = pos.absoluteXindex - xOffset / canvas()->pixelsPerQuarterNote();
+  pos.relativeYindex = pos.absoluteYindex - yOffset / canvas()->blockHeight();
 
   return pos;
 }

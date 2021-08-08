@@ -60,10 +60,10 @@ public:
 
 private:
   struct CellPosition {
-    int absoluteX;
-    int absoluteY;
-    int relativeX;
-    int relativeY;
+    int absoluteXindex;
+    int absoluteYindex;
+    int relativeXindex;
+    int relativeYindex;
   };
 
   void OnPaint(wxPaintEvent& event);
