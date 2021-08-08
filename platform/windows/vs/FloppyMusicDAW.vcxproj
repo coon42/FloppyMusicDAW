@@ -38,6 +38,9 @@
     <ClInclude Include="..\..\..\src\main.h" />
     <ClInclude Include="..\..\..\src\song.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
