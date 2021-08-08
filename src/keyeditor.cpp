@@ -197,6 +197,14 @@ KeyEditorGridCanvas::CellPosition KeyEditorGridCanvas::currentPointedCell(int mo
   return pos;
 }
 
+KeyEditorGridCanvas::CellPosition KeyEditorGridCanvas::currentPointedCell() {
+  const wxPoint pt = wxGetMousePosition();
+  const int mouseX = pt.x - GetScreenPosition().x;
+  const int mouseY = pt.y - GetScreenPosition().y;
+
+  return currentPointedCell(mouseX, mouseY);
+}
+
 NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
   for (NoteBlock& noteBlock : pSong_->noteBlocks()) {
     int x = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();

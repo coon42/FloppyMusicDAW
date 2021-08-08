@@ -72,6 +72,8 @@ private:
   virtual void onRender(wxDC& dc) final;
 
   CellPosition currentPointedCell(int mouseX, int mouseY);
+  CellPosition currentPointedCell();
+
   NoteBlock* currentPointedNoteBlock(int mouseX, int mouseY);
   Song* const pSong_;
 
