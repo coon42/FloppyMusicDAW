@@ -180,6 +180,23 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   }
 }
 
+KeyEditorGridCanvas::CellPosition KeyEditorGridCanvas::currentPointedCell(int mouseX, int mouseY) {
+  const int xOffset = canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
+  const int yOffset = canvas()->yScrollOffset() * canvas()->blockHeight();
+
+  CellPosition pos;
+  pos.absoluteX = (mouseX + xOffset) / canvas()->pixelsPerQuarterNote();
+  pos.absoluteY = (mouseY + yOffset) / canvas()->blockHeight();
+
+  if (pos.absoluteY > (NUM_MIDI_NOTES - 1))
+    pos.absoluteY = NUM_MIDI_NOTES - 1;
+
+  pos.relativeX = pos.absoluteX - xOffset / canvas()->pixelsPerQuarterNote();
+  pos.relativeY = pos.absoluteY - yOffset / canvas()->blockHeight();
+
+  return pos;
+}
+
 NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
   for (NoteBlock& noteBlock : pSong_->noteBlocks()) {
     int x1 = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();

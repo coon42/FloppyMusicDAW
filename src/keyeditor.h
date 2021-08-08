@@ -59,11 +59,19 @@ public:
   KeyEditorGridCanvas(KeyEditorCanvas* pParent, Song* pSong);
 
 private:
+  struct CellPosition {
+    int absoluteX;
+    int absoluteY;
+    int relativeX;
+    int relativeY;
+  };
+
   void OnPaint(wxPaintEvent& event);
   void OnMouseMotion(wxMouseEvent& event);
   void OnMouseLeftDown(wxMouseEvent& event);
   virtual void onRender(wxDC& dc) final;
 
+  CellPosition currentPointedCell(int mouseX, int mouseY);
   NoteBlock* currentPointedNoteBlock(int mouseX, int mouseY);
   Song* const pSong_;
 
