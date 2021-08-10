@@ -250,7 +250,6 @@ void KeyEditorGridCanvas::OnPaint(wxPaintEvent& event) {
 }
 
 void KeyEditorGridCanvas::OnMouseMotion(wxMouseEvent& event) {
-  // printf("KeyEditorGridCanvas::OnMouseMotion; x: %d, y: %d\n", event.GetX(), event.GetY());
 }
 
 wxBEGIN_EVENT_TABLE(KeyEditorGridCanvas, wxWindow)
