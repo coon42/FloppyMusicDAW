@@ -163,14 +163,14 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
 
   // draw note blocks
   for (const NoteBlock& noteBlock : pSong_->noteBlocks()) {
-    int x1 = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
-    const int y1 = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
+    int x = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
+    const int y = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
     int width = (noteBlock.numTicks() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
 
-    if ((x1 + width > 0) && (y1 >= 0)) {
-      if (x1 < 0) {
-        const int cutPixels = -x1;
-        x1 += cutPixels;
+    if ((x + width > 0) && (y >= 0)) {
+      if (x < 0) {
+        const int cutPixels = -x;
+        x += cutPixels;
         width -= cutPixels;
       }
 
@@ -179,7 +179,7 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
       else
         dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
 
-      dc.DrawRectangle(x1, y1, width, canvas()->blockHeight());
+      dc.DrawRectangle(x, y, width, canvas()->blockHeight());
     }
   }
 }
