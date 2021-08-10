@@ -273,6 +273,24 @@ void KeyEditorGridCanvas::OnPaint(wxPaintEvent& event) {
 }
 
 void KeyEditorGridCanvas::OnMouseMotion(wxMouseEvent& event) {
+  const int mouseX = event.GetX();
+  const int mouseY = event.GetY();
+
+  if (const NoteBlock* pNoteBlock = currentPointedNoteBlock(mouseX, mouseY)) {
+    // TODO: - Only set mouse arrow when area changes.
+    //       - Why is default arrow set automatically when leaving a note block?
+
+    switch (noteBlockResizeArea(*pNoteBlock, mouseX, mouseY)) {
+      case ResizeArea::Left:
+      case ResizeArea::Right:
+        wxSetCursor(wxCursor(wxCURSOR_SIZEWE));
+        break;
+
+      case ResizeArea::None:
+        wxSetCursor(wxCursor(wxCURSOR_SIZING));
+        break;
+    }
+  }
 }
 
 wxBEGIN_EVENT_TABLE(KeyEditorGridCanvas, wxWindow)
