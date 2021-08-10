@@ -26,6 +26,10 @@ void KeyEditorCanvasSegment::OnPaint(wxPaintEvent& event) {
   render();
 }
 
+const KeyEditorCanvas* KeyEditorCanvasSegment::canvas() const {
+  return static_cast<const KeyEditorCanvas*>(GetParent());
+}
+
 KeyEditorCanvas* KeyEditorCanvasSegment::canvas() {
   return static_cast<KeyEditorCanvas*>(GetParent());
 }

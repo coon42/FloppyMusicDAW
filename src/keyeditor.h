@@ -17,6 +17,7 @@ public:
   void render();
 
 protected:
+  const KeyEditorCanvas* canvas() const;
   KeyEditorCanvas* canvas();
 
 private:
