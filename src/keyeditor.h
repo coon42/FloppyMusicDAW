@@ -67,6 +67,12 @@ private:
     int relativeYindex;
   };
 
+  enum class ResizeArea {
+    None,
+    Left,
+    Right
+  };
+
   void OnPaint(wxPaintEvent& event);
   void OnMouseMotion(wxMouseEvent& event);
   void OnMouseLeftDown(wxMouseEvent& event);
@@ -74,6 +80,7 @@ private:
 
   CellPosition currentPointedCell(int mouseX, int mouseY);
   CellPosition currentPointedCell();
+  ResizeArea noteBlockResizeArea(const NoteBlock& noteBlock, int mouseX, int mouseY) const;
 
   NoteBlock* currentPointedNoteBlock(int mouseX, int mouseY);
   Song* const pSong_;

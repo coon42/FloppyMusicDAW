@@ -209,6 +209,29 @@ KeyEditorGridCanvas::CellPosition KeyEditorGridCanvas::currentPointedCell() {
   return currentPointedCell(mouseX, mouseY);
 }
 
+KeyEditorGridCanvas::ResizeArea KeyEditorGridCanvas::noteBlockResizeArea(const NoteBlock& noteBlock, int mouseX, int mouseY) const {
+  int x = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
+  const int y = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
+  int width = (noteBlock.numTicks() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
+
+  if ((x + width > 0) && (y >= 0)) {
+    if (x < 0) {
+      const int cutPixels = -x;
+      x += cutPixels;
+      width -= cutPixels;
+    }
+  }
+
+  const int margin = 10;
+
+  if (mouseX > x && mouseX < x + margin)
+    return ResizeArea::Left;
+  else if (mouseX > x + width - margin)
+    return ResizeArea::Right;
+  else
+    return ResizeArea::None;
+}
+
 NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
   for (NoteBlock& noteBlock : pSong_->noteBlocks()) {
     int x = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
