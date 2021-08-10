@@ -67,6 +67,12 @@ private:
     int relativeYindex;
   };
 
+  struct BlockDimensions {
+    int x;
+    int y;
+    int width;
+  };
+
   enum class ResizeArea {
     None,
     Left,
@@ -81,7 +87,7 @@ private:
   CellPosition currentPointedCell(int mouseX, int mouseY);
   CellPosition currentPointedCell();
   ResizeArea noteBlockResizeArea(const NoteBlock& noteBlock, int mouseX, int mouseY) const;
-
+  BlockDimensions getNoteBlockDimensions(const NoteBlock& noteBlock) const;
   NoteBlock* currentPointedNoteBlock(int mouseX, int mouseY);
   Song* const pSong_;
 

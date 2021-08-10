@@ -184,6 +184,27 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   }
 }
 
+KeyEditorGridCanvas::BlockDimensions KeyEditorGridCanvas::getNoteBlockDimensions(const NoteBlock& noteBlock) const {
+  int x = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
+  const int y = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
+  int width = (noteBlock.numTicks() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
+
+  if ((x + width > 0) && (y >= 0)) {
+    if (x < 0) {
+      const int cutPixels = -x;
+      x += cutPixels;
+      width -= cutPixels;
+    }
+  }
+
+  BlockDimensions blockDimensions;
+  blockDimensions.x = x;
+  blockDimensions.y = y;
+  blockDimensions.width = width;
+
+  return blockDimensions;
+}
+
 KeyEditorGridCanvas::CellPosition KeyEditorGridCanvas::currentPointedCell(int mouseX, int mouseY) {
   const int xOffset = canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
   const int yOffset = canvas()->yScrollOffset() * canvas()->blockHeight();
