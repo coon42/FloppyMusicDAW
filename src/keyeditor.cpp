@@ -173,14 +173,14 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
         x += cutPixels;
         width -= cutPixels;
       }
-
-      if (noteBlock.isSelected())
-        dc.SetBrush(wxBrush(wxColour(0, 255, 255)));
-      else
-        dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
-
-      dc.DrawRectangle(x, y, width, canvas()->blockHeight());
     }
+
+    if (noteBlock.isSelected())
+      dc.SetBrush(wxBrush(wxColour(0, 255, 255)));
+    else
+      dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
+
+    dc.DrawRectangle(x, y, width, canvas()->blockHeight());
   }
 }
 
