@@ -322,7 +322,7 @@ void KeyEditorGridCanvas::OnMouseMotion(wxMouseEvent& event) {
       if (newWidth <= 30)
         break;
 
-      const int newTicks = (newWidth * pSong_->tpqn()) / canvas()->pixelsPerQuarterNote();
+      const int newTicks = pCurrentEditNoteBlock_->numTicks() + pCurrentEditNoteBlock_->startTick() - newStart;
 
       pCurrentEditNoteBlock_->setStartTick(newStart);
       pCurrentEditNoteBlock_->setNumTicks(newTicks);
