@@ -255,12 +255,24 @@ NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) 
 void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
   const char* pClickedTarget = "None";
 
-  pSong_->unselectAllNotes();
+  const int mouseX = event.GetX();
+  const int mouseY = event.GetY();
 
-  if (NoteBlock* pNoteBlock = currentPointedNoteBlock(event.GetX(), event.GetY())) {
+  if (NoteBlock* pNoteBlock = currentPointedNoteBlock(mouseX, mouseY)) {
+    switch (noteBlockResizeArea(*pNoteBlock, mouseX, mouseY)) {
+      case ResizeArea::Right:
+        pCurrentEditNoteBlock_ = pNoteBlock;
+        editState_ = EditState::ResizingNoteRight;
+        break;
+
+    }
+
+    pSong_->unselectAllNotes();
     pNoteBlock->select();
     pClickedTarget = eMidi_numberToNote(pNoteBlock->note());
   }
+  else
+    pSong_->unselectAllNotes();
 
   printf("clicked on: %s\n", pClickedTarget);
   render();
@@ -279,20 +291,41 @@ void KeyEditorGridCanvas::OnPaint(wxPaintEvent& event) {
 void KeyEditorGridCanvas::OnMouseMotion(wxMouseEvent& event) {
   const int mouseX = event.GetX();
   const int mouseY = event.GetY();
+  const int mouseXabs = event.GetX() + canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
 
-  if (const NoteBlock* pNoteBlock = currentPointedNoteBlock(mouseX, mouseY)) {
-    // TODO: - Only set mouse arrow when area changes.
-    //       - Why is default arrow set automatically when leaving a note block?
+  switch (editState_) {
+    case EditState::ResizingNoteRight: {
+      const BlockDimensions dm = getAbsoluteNoteBlockDimensions(*pCurrentEditNoteBlock_);
+      const int newWidth = mouseXabs - dm.x;
 
-    switch (noteBlockResizeArea(*pNoteBlock, mouseX, mouseY)) {
-      case ResizeArea::Left:
-      case ResizeArea::Right:
-        wxSetCursor(wxCursor(wxCURSOR_SIZEWE));
+      if (newWidth <= 30)
         break;
 
-      case ResizeArea::None:
-        wxSetCursor(wxCursor(wxCURSOR_SIZING));
+      const int newTicks = (newWidth * pSong_->tpqn()) / canvas()->pixelsPerQuarterNote();
+
+      pCurrentEditNoteBlock_->setNumTicks(newTicks);
+      render();
+
+      break;
+    }
         break;
+
+    default: {
+      if (NoteBlock* pNoteBlock = currentPointedNoteBlock(mouseX, mouseY)) {
+        // TODO: - Only set mouse arrow when area changes.
+        //       - Why is default arrow set automatically when leaving a note block?
+
+        switch (noteBlockResizeArea(*pNoteBlock, mouseX, mouseY)) {
+          case ResizeArea::Left:
+          case ResizeArea::Right:
+            wxSetCursor(wxCursor(wxCURSOR_SIZEWE));
+            break;
+
+          case ResizeArea::None:
+            wxSetCursor(wxCursor(wxCURSOR_SIZING));
+            break;
+        }
+      }
     }
   }
 }

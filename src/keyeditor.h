@@ -81,6 +81,7 @@ private:
 
   enum class EditState {
     Idle,
+    ResizingNoteRight,
   } editState_{EditState::Idle};
 
   void OnPaint(wxPaintEvent& event);
