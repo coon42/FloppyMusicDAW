@@ -188,24 +188,19 @@ KeyEditorGridCanvas::BlockDimensions KeyEditorGridCanvas::getAbsoluteNoteBlockDi
 }
 
 KeyEditorGridCanvas::BlockDimensions KeyEditorGridCanvas::getVisibleNoteBlockDimensions(const NoteBlock& noteBlock) const {
-  int x = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
-  const int y = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
-  int width = (noteBlock.numTicks() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
+  BlockDimensions bd = getAbsoluteNoteBlockDimensions(noteBlock);
+  bd.x -= canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
+  bd.y -= canvas()->blockHeight() * canvas()->yScrollOffset();
 
-  if ((x + width > 0) && (y >= 0)) {
-    if (x < 0) {
-      const int cutPixels = -x;
-      x += cutPixels;
-      width -= cutPixels;
+  if ((bd.x + bd.width > 0) && (bd.y >= 0)) {
+    if (bd.x < 0) {
+      const int cutPixels = -bd.x;
+      bd.x += cutPixels;
+      bd.width -= cutPixels;
     }
   }
 
-  BlockDimensions blockDimensions;
-  blockDimensions.x = x;
-  blockDimensions.y = y;
-  blockDimensions.width = width;
-
-  return blockDimensions;
+  return bd;
 }
 
 KeyEditorGridCanvas::CellPosition KeyEditorGridCanvas::currentPointedCell(int mouseX, int mouseY) {
