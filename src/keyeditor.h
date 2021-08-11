@@ -82,6 +82,7 @@ private:
   void OnPaint(wxPaintEvent& event);
   void OnMouseMotion(wxMouseEvent& event);
   void OnMouseLeftDown(wxMouseEvent& event);
+  void OnMouseLeftUp(wxMouseEvent& event);
   virtual void onRender(wxDC& dc) final;
 
   CellPosition currentPointedCell(int mouseX, int mouseY);

@@ -266,6 +266,9 @@ void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
   render();
 }
 
+void KeyEditorGridCanvas::OnMouseLeftUp(wxMouseEvent& event) {
+}
+
 void KeyEditorGridCanvas::OnPaint(wxPaintEvent& event) {
   wxPaintDC dc(this);
   onRender(dc);
@@ -296,6 +299,7 @@ wxBEGIN_EVENT_TABLE(KeyEditorGridCanvas, wxWindow)
 EVT_PAINT(KeyEditorGridCanvas::OnPaint)
 EVT_MOTION(KeyEditorGridCanvas::OnMouseMotion)
 EVT_LEFT_DOWN(KeyEditorGridCanvas::OnMouseLeftDown)
+EVT_LEFT_UP(KeyEditorGridCanvas::OnMouseLeftUp)
 wxEND_EVENT_TABLE()
 
 //-------------------------------------------------------------------------------------------------
