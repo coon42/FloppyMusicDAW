@@ -260,6 +260,11 @@ void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
 
   if (NoteBlock* pNoteBlock = currentPointedNoteBlock(mouseX, mouseY)) {
     switch (noteBlockResizeArea(*pNoteBlock, mouseX, mouseY)) {
+      case ResizeArea::Left:
+        pCurrentEditNoteBlock_ = pNoteBlock;
+        editState_ = EditState::ResizingNoteLeft;
+        break;
+
       case ResizeArea::Right:
         pCurrentEditNoteBlock_ = pNoteBlock;
         editState_ = EditState::ResizingNoteRight;
@@ -308,7 +313,23 @@ void KeyEditorGridCanvas::OnMouseMotion(wxMouseEvent& event) {
 
       break;
     }
+
+    case EditState::ResizingNoteLeft: {
+      const BlockDimensions dm = getAbsoluteNoteBlockDimensions(*pCurrentEditNoteBlock_);
+      const int newStart = (mouseXabs * pSong_->tpqn()) / canvas()->pixelsPerQuarterNote();
+      const int newWidth = dm.x + dm.width - mouseXabs;
+
+      if (newWidth <= 30)
         break;
+
+      const int newTicks = (newWidth * pSong_->tpqn()) / canvas()->pixelsPerQuarterNote();
+
+      pCurrentEditNoteBlock_->setStartTick(newStart);
+      pCurrentEditNoteBlock_->setNumTicks(newTicks);
+      render();
+
+      break;
+    }
 
     default: {
       if (NoteBlock* pNoteBlock = currentPointedNoteBlock(mouseX, mouseY)) {

@@ -81,6 +81,7 @@ private:
 
   enum class EditState {
     Idle,
+    ResizingNoteLeft,
     ResizingNoteRight,
   } editState_{EditState::Idle};
 
