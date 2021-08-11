@@ -91,6 +91,7 @@ private:
   BlockDimensions getAbsoluteNoteBlockDimensions(const NoteBlock& noteBlock) const;
   BlockDimensions getVisibleNoteBlockDimensions(const NoteBlock& noteBlock) const;
   NoteBlock* currentPointedNoteBlock(int mouseX, int mouseY);
+  NoteBlock* pCurrentEditNoteBlock_{nullptr};
   Song* const pSong_;
 
   wxDECLARE_EVENT_TABLE();
