@@ -267,6 +267,8 @@ void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
 }
 
 void KeyEditorGridCanvas::OnMouseLeftUp(wxMouseEvent& event) {
+  pCurrentEditNoteBlock_ = nullptr;
+  editState_ = EditState::Idle;
 }
 
 void KeyEditorGridCanvas::OnPaint(wxPaintEvent& event) {
