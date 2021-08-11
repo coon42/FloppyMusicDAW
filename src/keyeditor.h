@@ -79,6 +79,10 @@ private:
     Right
   };
 
+  enum class EditState {
+    Idle,
+  } editState_{EditState::Idle};
+
   void OnPaint(wxPaintEvent& event);
   void OnMouseMotion(wxMouseEvent& event);
   void OnMouseLeftDown(wxMouseEvent& event);
