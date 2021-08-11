@@ -163,7 +163,7 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
 
   // draw note blocks
   for (const NoteBlock& noteBlock : pSong_->noteBlocks()) {
-    const BlockDimensions bd = getNoteBlockDimensions(noteBlock);
+    const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);
 
     if (noteBlock.isSelected())
       dc.SetBrush(wxBrush(wxColour(0, 255, 255)));
@@ -174,7 +174,7 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   }
 }
 
-KeyEditorGridCanvas::BlockDimensions KeyEditorGridCanvas::getNoteBlockDimensions(const NoteBlock& noteBlock) const {
+KeyEditorGridCanvas::BlockDimensions KeyEditorGridCanvas::getVisibleNoteBlockDimensions(const NoteBlock& noteBlock) const {
   int x = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
   const int y = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
   int width = (noteBlock.numTicks() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
@@ -221,7 +221,7 @@ KeyEditorGridCanvas::CellPosition KeyEditorGridCanvas::currentPointedCell() {
 }
 
 KeyEditorGridCanvas::ResizeArea KeyEditorGridCanvas::noteBlockResizeArea(const NoteBlock& noteBlock, int mouseX, int mouseY) const {
-  const BlockDimensions bd = getNoteBlockDimensions(noteBlock);
+  const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);
 
   const int margin = 10;
 
@@ -235,7 +235,7 @@ KeyEditorGridCanvas::ResizeArea KeyEditorGridCanvas::noteBlockResizeArea(const N
 
 NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
   for (NoteBlock& noteBlock : pSong_->noteBlocks()) {
-    const BlockDimensions bd = getNoteBlockDimensions(noteBlock);
+    const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);
 
     if (mouseX > bd.x && mouseX < bd.x + bd.width && mouseY > bd.y && mouseY < bd.y + canvas()->blockHeight())
       return &noteBlock;
