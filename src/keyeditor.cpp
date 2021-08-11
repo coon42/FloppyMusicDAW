@@ -174,6 +174,19 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   }
 }
 
+KeyEditorGridCanvas::BlockDimensions KeyEditorGridCanvas::getAbsoluteNoteBlockDimensions(const NoteBlock& noteBlock) const {
+  int x = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
+  const int y = canvas()->blockHeight() * (127 - noteBlock.note());
+  int width = (noteBlock.numTicks() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn();
+
+  BlockDimensions blockDimensions;
+  blockDimensions.x = x;
+  blockDimensions.y = y;
+  blockDimensions.width = width;
+
+  return blockDimensions;
+}
+
 KeyEditorGridCanvas::BlockDimensions KeyEditorGridCanvas::getVisibleNoteBlockDimensions(const NoteBlock& noteBlock) const {
   int x = (noteBlock.startTick() * canvas()->pixelsPerQuarterNote()) / pSong_->tpqn() - canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
   const int y = canvas()->blockHeight() * (127 - noteBlock.note() - canvas()->yScrollOffset());
