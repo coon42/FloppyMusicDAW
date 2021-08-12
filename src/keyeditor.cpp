@@ -341,6 +341,10 @@ void KeyEditorGridCanvas::OnMouseMotion(wxMouseEvent& event) {
       if (newStart < 0)
         newStart = 0;
 
+      const CellPosition pos = currentPointedCell(mouseX, mouseY);
+      const uint8_t newNote = static_cast<uint8_t>(127 - pos.absoluteYindex);
+
+      pCurrentEditNoteBlock_->setNote(newNote);
       pCurrentEditNoteBlock_->setStartTick(newStart);
       render();
 
