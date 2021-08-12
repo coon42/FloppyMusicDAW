@@ -83,6 +83,7 @@ private:
     Idle,
     ResizingNoteLeft,
     ResizingNoteRight,
+    Moving
   } editState_{EditState::Idle};
 
   void OnPaint(wxPaintEvent& event);
@@ -98,6 +99,8 @@ private:
   BlockDimensions getVisibleNoteBlockDimensions(const NoteBlock& noteBlock) const;
   NoteBlock* currentPointedNoteBlock(int mouseX, int mouseY);
   NoteBlock* pCurrentEditNoteBlock_{nullptr};
+  int editStartBlockXClickPosition_{0};
+
   Song* const pSong_;
 
   wxDECLARE_EVENT_TABLE();

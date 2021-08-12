@@ -266,6 +266,12 @@ void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
         editState_ = EditState::ResizingNoteRight;
         break;
 
+      case ResizeArea::None:
+        const BlockDimensions dm = getVisibleNoteBlockDimensions(*pNoteBlock);
+        pCurrentEditNoteBlock_ = pNoteBlock;
+        editStartBlockXClickPosition_ = mouseX - dm.x;
+        editState_ = EditState::Moving;
+        break;
     }
 
     pSong_->unselectAllNotes();
@@ -281,6 +287,7 @@ void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
 
 void KeyEditorGridCanvas::OnMouseLeftUp(wxMouseEvent& event) {
   pCurrentEditNoteBlock_ = nullptr;
+  editStartBlockXClickPosition_ = 0;
   editState_ = EditState::Idle;
 }
 
@@ -322,6 +329,19 @@ void KeyEditorGridCanvas::OnMouseMotion(wxMouseEvent& event) {
 
       pCurrentEditNoteBlock_->setStartTick(newStart);
       pCurrentEditNoteBlock_->setNumTicks(newTicks);
+      render();
+
+      break;
+    }
+
+    case EditState::Moving: {
+      const BlockDimensions dm = getAbsoluteNoteBlockDimensions(*pCurrentEditNoteBlock_);
+      int newStart = ((mouseXabs - editStartBlockXClickPosition_) * pSong_->tpqn()) / canvas()->pixelsPerQuarterNote();
+
+      if (newStart < 0)
+        newStart = 0;
+
+      pCurrentEditNoteBlock_->setStartTick(newStart);
       render();
 
       break;
