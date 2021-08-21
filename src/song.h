@@ -112,6 +112,7 @@ public:
   void unselectAllNotes();
 
   const uint16_t tpqn() const                    { return tpqn_; }
+  const std::list<NoteBlock>& noteBlocks() const { return noteBlocks_; }
   std::list<NoteBlock>& noteBlocks()             { return noteBlocks_; }
 
 private:
