@@ -111,6 +111,7 @@ public:
   void addNoteBlock(const NoteBlock& noteBlock)  { noteBlocks_.push_back(noteBlock); }
   void debugPrintAllNoteBlocks() const;
   void unselectAllNotes();
+  void importFromMidi0(const std::string& path);
   void exportAsMidi0(const std::string& path) const;
 
   const uint16_t tpqn() const                    { return tpqn_; }

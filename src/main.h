@@ -20,9 +20,6 @@ private:
   void OnOpen(wxCommandEvent& event);
   void OnSaveAs(wxCommandEvent& event);
 
-  void generateNoteBlocks(MidiFile* pMidiFile);
-  void openMidiFile(const std::string& path);
-
   KeyEditorWindow* pKeyEditorWindow_{nullptr};
   Song song_;
 
