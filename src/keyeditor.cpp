@@ -475,6 +475,24 @@ void KeyEditorWindow::render() {
   pKeyEditorCanvas_->render();
 }
 
+void KeyEditorWindow::setDefaultScrollPositions() {
+  pHorizontalScrollbar_->SetScrollbar(0, 1, 128, 1);
+  pVerticalScrollbar_->SetScrollbar(24, 1, NUM_MIDI_NOTES, 1);
+
+  pHorizontalZoomSlider_->SetMin(0);
+  pHorizontalZoomSlider_->SetMax(10);
+  pHorizontalZoomSlider_->SetValue(5);
+
+  pVerticalZoomSlider_->SetMin(0);
+  pVerticalZoomSlider_->SetMax(10);
+  pVerticalZoomSlider_->SetValue(0);
+
+  pKeyEditorCanvas_->setXzoomFactor(pHorizontalZoomSlider_->GetValue());
+  pKeyEditorCanvas_->setYzoomFactor(pVerticalZoomSlider_->GetValue());
+  pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar_->GetThumbPosition());
+  pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar_->GetThumbPosition());
+}
+
 void KeyEditorWindow::OnScroll(wxScrollEvent& event) {
   printf("KeyEditorWindow::OnScroll; ");
 

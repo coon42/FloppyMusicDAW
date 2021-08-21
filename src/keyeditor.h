@@ -156,6 +156,8 @@ public:
   KeyEditorWindow(wxWindow* pParent, Song* pSong);
   void render();
 
+  void setDefaultScrollPositions();
+
 private:
   void OnScroll(wxScrollEvent& event);
   void OnMouseWheel(wxMouseEvent& event);
