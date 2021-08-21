@@ -163,6 +163,8 @@ private:
   KeyEditorCanvas* pKeyEditorCanvas_{nullptr};
   wxScrollBar* pHorizontalScrollbar_{nullptr};
   wxScrollBar* pVerticalScrollbar_{nullptr};
+  wxSlider* pVerticalZoomSlider_{nullptr};
+  wxSlider* pHorizontalZoomSlider_{nullptr};
 
   Song* const pSong_;
 

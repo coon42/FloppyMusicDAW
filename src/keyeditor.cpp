@@ -441,23 +441,23 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   pHorizontalScrollbar_ = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalScroll), wxPoint(0, 100), wxSize(100, 10), wxHORIZONTAL);
   pHorizontalScrollbar_->SetScrollbar(0, 1, 128, 1);
 
-  wxSlider* pHorizontalZoomSlider = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalZoom), 5, 0, 10, wxPoint(0, 100), wxSize(100, 10), wxHORIZONTAL);
+  pHorizontalZoomSlider_ = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalZoom), 5, 0, 10, wxPoint(0, 100), wxSize(100, 10), wxHORIZONTAL);
 
   wxSizer* pVerticalBarSizer = new wxBoxSizer(wxVERTICAL);
   pVerticalScrollbar_ = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalScroll), wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
   pVerticalScrollbar_->SetScrollbar(24, 1, NUM_MIDI_NOTES, 1);
 
-  wxSlider* pVerticalZoomSlider = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalZoom), 0, 0, 10, wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
+  pVerticalZoomSlider_ = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalZoom), 0, 0, 10, wxPoint(100, 0), wxSize(10, 100), wxVERTICAL);
 
   pHorizontalBarSizer->Add(pHorizontalScrollbar_, 1);
-  pHorizontalBarSizer->Add(pHorizontalZoomSlider, 0);
+  pHorizontalBarSizer->Add(pHorizontalZoomSlider_, 0);
 
   pVerticalBarSizer->Add(pVerticalScrollbar_, 1);
-  pVerticalBarSizer->Add(pVerticalZoomSlider, 0);
+  pVerticalBarSizer->Add(pVerticalZoomSlider_, 0);
 
   pKeyEditorCanvas_ = new KeyEditorCanvas(this, pSong_);
-  pKeyEditorCanvas_->setXzoomFactor(pHorizontalZoomSlider->GetValue());
-  pKeyEditorCanvas_->setYzoomFactor(pVerticalZoomSlider->GetValue());
+  pKeyEditorCanvas_->setXzoomFactor(pHorizontalZoomSlider_->GetValue());
+  pKeyEditorCanvas_->setYzoomFactor(pVerticalZoomSlider_->GetValue());
   pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar_->GetThumbPosition());
   pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar_->GetThumbPosition());
 
