@@ -56,6 +56,7 @@ void MainFrame::OnOpen(wxCommandEvent& event) {
     return;
 
   song_.importFromMidi0(openFileDialog.GetPath().ToStdString());
+  pKeyEditorWindow_->setDefaultScrollPositions();
 
   pKeyEditorWindow_->render();
 }
