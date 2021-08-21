@@ -437,7 +437,12 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
 
   wxFlexGridSizer* pTopSizer = new wxFlexGridSizer(2, 2, wxSize(0, 0));
 
+#ifdef __linux__
+  constexpr int controlBarWidth = 26; // minimum size allowed by GTK
+#elif _WIN32
   constexpr int controlBarWidth = 10;
+#endif // __linux__ | _WIN32_
+
   constexpr int zoomSliderWidth = 100;
 
   wxSizer* pHorizontalBarSizer = new wxBoxSizer(wxHORIZONTAL);
