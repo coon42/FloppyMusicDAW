@@ -2,6 +2,7 @@
 #define _SONG_H
 
 #include <list>
+#include <string>
 
 constexpr int NUM_MIDI_NOTES = 128;
 
@@ -110,6 +111,7 @@ public:
   void addNoteBlock(const NoteBlock& noteBlock)  { noteBlocks_.push_back(noteBlock); }
   void debugPrintAllNoteBlocks() const;
   void unselectAllNotes();
+  void exportAsMidi0(const std::string& path) const;
 
   const uint16_t tpqn() const                    { return tpqn_; }
   const std::list<NoteBlock>& noteBlocks() const { return noteBlocks_; }
