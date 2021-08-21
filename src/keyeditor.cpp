@@ -456,10 +456,6 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   pVerticalBarSizer->Add(pVerticalZoomSlider_, 0);
 
   pKeyEditorCanvas_ = new KeyEditorCanvas(this, pSong_);
-  pKeyEditorCanvas_->setXzoomFactor(pHorizontalZoomSlider_->GetValue());
-  pKeyEditorCanvas_->setYzoomFactor(pVerticalZoomSlider_->GetValue());
-  pKeyEditorCanvas_->setXscrollPosition(pHorizontalScrollbar_->GetThumbPosition());
-  pKeyEditorCanvas_->setYscrollPosition(pVerticalScrollbar_->GetThumbPosition());
 
   pTopSizer->Add(pKeyEditorCanvas_, 1, wxEXPAND);
   pTopSizer->Add(pVerticalBarSizer, 1, wxEXPAND);
@@ -469,6 +465,8 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
   pTopSizer->AddGrowableRow(0, 1);
 
   SetSizer(pTopSizer);
+
+  setDefaultScrollPositions();
 }
 
 void KeyEditorWindow::render() {
