@@ -15,7 +15,7 @@ public:
   SongEvent(MidiFile* pMidiFile, uint32_t absoluteTick)
       : pMidiFile_(pMidiFile), absoluteTick_(absoluteTick) {}
 
-  virtual ~SongEvent()                          = 0 {}
+  virtual ~SongEvent()                          = 0;
   virtual uint8_t eventId() const               = 0;
   virtual Error write(uint32_t deltaTime) const = 0;
 
