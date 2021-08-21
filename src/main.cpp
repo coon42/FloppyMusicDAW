@@ -17,6 +17,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
   wxMenu* pFileMenu = new wxMenu;
   pFileMenu->Append(new wxMenuItem(pFileMenu, wxID_OPEN, "&Open MIDI File\tCtrl-O", "Open MIDI File"));
+  pFileMenu->Append(new wxMenuItem(pFileMenu, wxID_SAVEAS, "&Export as Midi 0 file\tCtrl-S", "Export as Midi 0 file"));
   pFileMenu->AppendSeparator();
   pFileMenu->Append(wxID_EXIT);
 
@@ -143,10 +144,21 @@ void MainFrame::OnOpen(wxCommandEvent& event) {
   pKeyEditorWindow_->render();
 }
 
+void MainFrame::OnSaveAs(wxCommandEvent& event) {
+  wxFileDialog saveFileDialog(this, _("Export as Midi 0 file"), "", "", "MIDI files (*.mid;*.midi)|*.mid;*.midi",
+      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+  if (saveFileDialog.ShowModal() == wxID_CANCEL)
+    return;
+
+  song_.exportAsMidi0(saveFileDialog.GetPath().ToStdString());
+}
+
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 EVT_MENU(wxID_EXIT, MainFrame::OnExit)
 EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 EVT_MENU(wxID_OPEN, MainFrame::OnOpen)
+EVT_MENU(wxID_SAVEAS, MainFrame::OnSaveAs)
 wxEND_EVENT_TABLE()
 
 //-------------------------------------------------------------------------------------------------

@@ -18,6 +18,7 @@ private:
   void OnExit(wxCommandEvent& event);
   void OnAbout(wxCommandEvent& event);
   void OnOpen(wxCommandEvent& event);
+  void OnSaveAs(wxCommandEvent& event);
 
   void generateNoteBlocks(MidiFile* pMidiFile);
   void openMidiFile(const std::string& path);
