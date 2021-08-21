@@ -6,6 +6,75 @@
 constexpr int NUM_MIDI_NOTES = 128;
 
 //-------------------------------------------------------------------------------------------------
+// SongEvent
+//-------------------------------------------------------------------------------------------------
+
+class SongEvent {
+public:
+  SongEvent(MidiFile* pMidiFile, uint32_t absoluteTick)
+      : pMidiFile_(pMidiFile), absoluteTick_(absoluteTick) {}
+
+  virtual ~SongEvent()                          = 0 {}
+  virtual uint8_t eventId() const               = 0;
+  virtual Error write(uint32_t deltaTime) const = 0;
+
+  uint32_t absoluteTick() const               { return absoluteTick_; }
+
+protected:
+  MidiFile* pMidiFile_{nullptr};
+
+private:
+  const uint32_t absoluteTick_;
+};
+
+//-------------------------------------------------------------------------------------------------
+// NoteEvent
+//-------------------------------------------------------------------------------------------------
+
+class NoteEvent : public SongEvent {
+public:
+  NoteEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint8_t channel, uint8_t note, uint8_t velocity)
+      : SongEvent(pMidiFile, absoluteTick), channel_(channel), note_(note), velocity_(velocity) {}
+
+  uint8_t eventId() const override               = 0;
+  Error write(uint32_t deltaTime) const override = 0;
+
+  uint8_t note()     const                    { return note_; }
+  uint8_t velocity() const                    { return velocity_; }
+
+private:
+  const uint8_t channel_{0};
+  const uint8_t note_{0};
+  const uint8_t velocity_{0};
+};
+
+//-------------------------------------------------------------------------------------------------
+// NoteOnEvent
+//-------------------------------------------------------------------------------------------------
+
+class NoteOnEvent : public NoteEvent {
+public:
+  NoteOnEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint8_t channel, uint8_t note, uint8_t velocity)
+      : NoteEvent(pMidiFile, absoluteTick, channel, note, velocity) {}
+
+  uint8_t eventId() const final               { return MIDI_EVENT_NOTE_ON; }
+  Error write(uint32_t deltaTime) const final;
+};
+
+//-------------------------------------------------------------------------------------------------
+// NoteOffEvent
+//-------------------------------------------------------------------------------------------------
+
+class NoteOffEvent : public NoteEvent {
+public:
+  NoteOffEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint8_t channel, uint8_t note, uint8_t velocity)
+      : NoteEvent(pMidiFile, absoluteTick, channel, note, velocity) {}
+
+  uint8_t eventId() const final               { return MIDI_EVENT_NOTE_OFF; }
+  Error write(uint32_t deltaTime) const final;
+};
+
+//-------------------------------------------------------------------------------------------------
 // NoteBlock
 //-------------------------------------------------------------------------------------------------
 
