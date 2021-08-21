@@ -435,8 +435,6 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
     : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_SUNKEN),
       pSong_(pSong) {
 
-  wxFlexGridSizer* pTopSizer = new wxFlexGridSizer(2, 2, wxSize(0, 0));
-
 #ifdef __linux__
   constexpr int controlBarWidth = 26; // minimum size allowed by GTK
 #elif _WIN32
@@ -445,22 +443,23 @@ KeyEditorWindow::KeyEditorWindow(wxWindow* pParent, Song* pSong)
 
   constexpr int zoomSliderWidth = 100;
 
-  wxSizer* pHorizontalBarSizer = new wxBoxSizer(wxHORIZONTAL);
   pHorizontalScrollbar_ = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalScroll), wxDefaultPosition, wxSize(0, controlBarWidth), wxHORIZONTAL);
   pHorizontalZoomSlider_ = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::HorizontalZoom), 0, 0, 1, wxDefaultPosition, wxSize(zoomSliderWidth, controlBarWidth), wxHORIZONTAL);
 
-  wxSizer* pVerticalBarSizer = new wxBoxSizer(wxVERTICAL);
   pVerticalScrollbar_ = new wxScrollBar(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalScroll), wxDefaultPosition, wxSize(controlBarWidth, 0), wxVERTICAL);
   pVerticalZoomSlider_ = new wxSlider(this, static_cast<int>(KeyEditorCanvas::ScrollBarType::VerticalZoom), 0, 0, 1, wxDefaultPosition, wxSize(controlBarWidth, zoomSliderWidth), wxVERTICAL);
 
+  wxSizer* pHorizontalBarSizer = new wxBoxSizer(wxHORIZONTAL);
   pHorizontalBarSizer->Add(pHorizontalScrollbar_, 1);
   pHorizontalBarSizer->Add(pHorizontalZoomSlider_, 0);
 
+  wxSizer* pVerticalBarSizer = new wxBoxSizer(wxVERTICAL);
   pVerticalBarSizer->Add(pVerticalScrollbar_, 1);
   pVerticalBarSizer->Add(pVerticalZoomSlider_, 0);
 
   pKeyEditorCanvas_ = new KeyEditorCanvas(this, pSong_);
 
+  wxFlexGridSizer* pTopSizer = new wxFlexGridSizer(2, 2, wxSize(0, 0));
   pTopSizer->Add(pKeyEditorCanvas_, 1, wxEXPAND);
   pTopSizer->Add(pVerticalBarSizer, 1, wxEXPAND);
   pTopSizer->Add(pHorizontalBarSizer, 1, wxEXPAND);
