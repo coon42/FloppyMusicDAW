@@ -109,9 +109,13 @@ public:
   void addNoteBlock(const NoteBlock& noteBlock)   { noteBlocks_.push_back(noteBlock); }
   const std::list<NoteBlock>& noteBlocks() const  { return noteBlocks_; }
   std::list<NoteBlock>& noteBlocks()              { return noteBlocks_; }
+  const std::string& name() const                 { return name_; }
+  int midiChannel() const                         { return midiChannel_; }
 
 private:
   std::list<NoteBlock> noteBlocks_;
+  std::string name_{"Track1"};
+  int midiChannel_{0};
 };
 
 //-------------------------------------------------------------------------------------------------
