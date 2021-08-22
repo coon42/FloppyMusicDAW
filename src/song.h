@@ -101,26 +101,41 @@ private:
 };
 
 //-------------------------------------------------------------------------------------------------
+// Track
+//-------------------------------------------------------------------------------------------------
+
+class Track {
+public:
+  void addNoteBlock(const NoteBlock& noteBlock)   { noteBlocks_.push_back(noteBlock); }
+  const std::list<NoteBlock>& noteBlocks() const  { return noteBlocks_; }
+  std::list<NoteBlock>& noteBlocks()              { return noteBlocks_; }
+
+private:
+  std::list<NoteBlock> noteBlocks_;
+};
+
+//-------------------------------------------------------------------------------------------------
 // Song
 //-------------------------------------------------------------------------------------------------
 
 class Song {
 public:
   void clear();
-  void setTpqn(uint16_t tpqn)                    { tpqn_ = tpqn; }
-  void addNoteBlock(const NoteBlock& noteBlock)  { noteBlocks_.push_back(noteBlock); }
+  void setTpqn(uint16_t tpqn)  { tpqn_ = tpqn; }
+  Track* track1()              { return &track1_; }
+  const Track* track1() const  { return &track1_; }
+
   void debugPrintAllNoteBlocks() const;
   void unselectAllNotes();
   void importFromMidi0(const std::string& path);
   void exportAsMidi0(const std::string& path) const;
 
   const uint16_t tpqn() const                    { return tpqn_; }
-  const std::list<NoteBlock>& noteBlocks() const { return noteBlocks_; }
-  std::list<NoteBlock>& noteBlocks()             { return noteBlocks_; }
 
 private:
+  int currentSelectedTrack_{0};
   uint16_t tpqn_{0};
-  std::list<NoteBlock> noteBlocks_;
+  Track track1_;
 };
 
 #endif // _SONG_H
