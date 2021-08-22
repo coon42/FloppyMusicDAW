@@ -4,6 +4,10 @@
 #include <list>
 #include <string>
 
+extern "C" {
+#include "lib/eMIDI/src/midifile.h"
+}
+
 constexpr int NUM_MIDI_NOTES = 128;
 
 //-------------------------------------------------------------------------------------------------
