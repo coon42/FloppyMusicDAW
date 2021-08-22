@@ -4,6 +4,7 @@
 #include <wx/wx.h>
 
 #include "keyeditor.h"
+#include "trackeditor.h"
 #include "song.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -20,6 +21,7 @@ private:
   void OnOpen(wxCommandEvent& event);
   void OnSaveAs(wxCommandEvent& event);
 
+  TrackEditorWindow* pTrackEditorWindow_{nullptr};
   KeyEditorWindow* pKeyEditorWindow_{nullptr};
   Song song_;
 

@@ -27,6 +27,7 @@
     <ClCompile Include="..\..\..\src\lib\eMIDI\src\midiport.c" />
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\song.cpp" />
+    <ClCompile Include="..\..\..\src\trackeditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\keyeditor.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="..\..\..\src\lib\eMIDI\src\midiport.h" />
     <ClInclude Include="..\..\..\src\main.h" />
     <ClInclude Include="..\..\..\src\song.h" />
+    <ClInclude Include="..\..\..\src\trackeditor.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res.rc" />

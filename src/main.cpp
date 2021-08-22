@@ -1,5 +1,4 @@
 #include <iostream>
-#include <wx/grid.h>
 
 extern "C" {
 #include "lib/eMIDI/src/midifile.h"
@@ -32,35 +31,11 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
   CreateStatusBar();
   SetStatusText("Ready.");
 
-  wxGrid* pTrackWindow = new wxGrid(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-  pTrackWindow->CreateGrid(1, 3);
-  pTrackWindow->HideRowLabels();
-  pTrackWindow->SetSelectionMode(wxGrid::wxGridSelectionModes::wxGridSelectNone);
-
-  pTrackWindow->SetColLabelValue(0, "Selected");
-  pTrackWindow->SetColLabelValue(1, "Track Name");
-  pTrackWindow->SetColLabelValue(2, "Channel");
-
-  pTrackWindow->SetCellValue(0, 0, "X");
-  pTrackWindow->SetCellValue(0, 1, "Track 1");
-  pTrackWindow->SetCellValue(0, 2, "1");
-
-  for (int row = 0; row < pTrackWindow->GetNumberRows(); ++row) {
-    for (int col = 0; col < pTrackWindow->GetNumberCols(); ++col) {
-      pTrackWindow->SetReadOnly(row, col);
-
-      pTrackWindow->SetCellAlignment(row, col, wxALIGN_CENTER, 0);
-      pTrackWindow->SetCellAlignment(row, col, wxALIGN_CENTER, 0);
-      pTrackWindow->SetCellAlignment(row, col, wxALIGN_CENTER, 0);
-    }
-  }
-
-  pTrackWindow->SetColLabelSize(pTrackWindow->GetCharHeight() + 4);
-
+  pTrackEditorWindow_ = new TrackEditorWindow(this);
   pKeyEditorWindow_ = new KeyEditorWindow(this, &song_);
 
   wxSizer* pTopSizer = new wxBoxSizer(wxVERTICAL);
-  pTopSizer->Add(pTrackWindow, 0, wxEXPAND);
+  pTopSizer->Add(pTrackEditorWindow_, 0, wxEXPAND);
   pTopSizer->Add(pKeyEditorWindow_, 1, wxEXPAND);
 
   SetSizer(pTopSizer);
