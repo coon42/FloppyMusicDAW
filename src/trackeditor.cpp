@@ -17,8 +17,8 @@ TrackEditorWindow::TrackEditorWindow(wxWindow* pParent, Song* pSong)
   pTrackWindow_->SetColLabelValue(2, "Channel");
 
   pTrackWindow_->SetCellValue(0, 0, "X");
-  pTrackWindow_->SetCellValue(0, 1, "Track 1");
-  pTrackWindow_->SetCellValue(0, 2, "1");
+  pTrackWindow_->SetCellValue(0, 1, pSong_->track1()->name());
+  pTrackWindow_->SetCellValue(0, 2, wxString::Format("%d", pSong_->track1()->midiChannel() + 1));
 
   for (int row = 0; row < pTrackWindow_->GetNumberRows(); ++row) {
     for (int col = 0; col < pTrackWindow_->GetNumberCols(); ++col) {
