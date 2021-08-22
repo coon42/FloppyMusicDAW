@@ -31,7 +31,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
   CreateStatusBar();
   SetStatusText("Ready.");
 
-  pTrackEditorWindow_ = new TrackEditorWindow(this);
+  pTrackEditorWindow_ = new TrackEditorWindow(this, &song_);
   pKeyEditorWindow_ = new KeyEditorWindow(this, &song_);
 
   wxSizer* pTopSizer = new wxBoxSizer(wxVERTICAL);

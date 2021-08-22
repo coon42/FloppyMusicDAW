@@ -4,8 +4,8 @@
 // TrackEditorWindow
 //-------------------------------------------------------------------------------------------------
 
-TrackEditorWindow::TrackEditorWindow(wxWindow* pParent)
-    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize) {
+TrackEditorWindow::TrackEditorWindow(wxWindow* pParent, Song* pSong)
+    : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize), pSong_(pSong) {
 
   pTrackWindow_ = new wxGrid(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
   pTrackWindow_->CreateGrid(1, 3);
