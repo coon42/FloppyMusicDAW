@@ -47,10 +47,14 @@ void Song::unselectAllNotes() {
 }
 
 void Song::debugPrintAllNoteBlocks() const {
-  printf("Note blocks:\n");
+  for (int trackNo = 0; trackNo < tracks_.size(); ++trackNo) {
+    const Track& track = tracks_[trackNo];
 
-  for (const NoteBlock& b : tracks_[0].noteBlocks())
-    printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
+    printf("Note blocks of track %d '%s':\n", trackNo + 1, track.name().c_str());
+
+    for (const NoteBlock& b : track.noteBlocks())
+      printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
+  }
 }
 
 void Song::importFromMidi0(const std::string& path) {
