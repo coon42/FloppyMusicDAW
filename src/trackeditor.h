@@ -17,7 +17,7 @@ public:
   void updateTrackList();
 
 private:
-  wxGrid* pTrackWindow_{nullptr};
+  wxGrid* pTrackListGrid_{nullptr};
   Song* const pSong_;
 };
 
