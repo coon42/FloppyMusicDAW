@@ -45,6 +45,7 @@ public:
   uint8_t eventId() const override               = 0;
   Error write(uint32_t deltaTime) const override = 0;
 
+  uint8_t channel()  const                    { return channel_; }
   uint8_t note()     const                    { return note_; }
   uint8_t velocity() const                    { return velocity_; }
 
