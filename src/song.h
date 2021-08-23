@@ -137,6 +137,7 @@ public:
   void setTpqn(uint16_t tpqn)            { tpqn_ = tpqn; }
   Track* track(int trackNo)              { return &tracks_[trackNo]; }
   const Track* track(int trackNo) const  { return &tracks_[trackNo]; }
+  size_t numberOfTracks() const          { return tracks_.size(); }
 
   void debugPrintAllNoteBlocks() const;
   void unselectAllNotes();
