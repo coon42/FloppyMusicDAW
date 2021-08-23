@@ -19,7 +19,7 @@ SongEvent::~SongEvent() {
 //-------------------------------------------------------------------------------------------------
 
 Error NoteOnEvent::write(uint32_t deltaTime) const {
-  return eMidi_writeNoteOnEvent(pMidiFile_, deltaTime, 0, note(), velocity());
+  return eMidi_writeNoteOnEvent(pMidiFile_, deltaTime, channel(), note(), velocity());
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ Error NoteOnEvent::write(uint32_t deltaTime) const {
 //-------------------------------------------------------------------------------------------------
 
 Error NoteOffEvent::write(uint32_t deltaTime) const {
-  return eMidi_writeNoteOffEvent(pMidiFile_, deltaTime, 0, note(), velocity());
+  return eMidi_writeNoteOffEvent(pMidiFile_, deltaTime, channel(), note(), velocity());
 }
 
 //-------------------------------------------------------------------------------------------------
