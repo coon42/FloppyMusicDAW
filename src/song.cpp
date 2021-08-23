@@ -137,9 +137,11 @@ void Song::exportAsMidi0(const std::string& path) const {
 
   std::list<SongEvent*> eventList;
 
-  for (const NoteBlock& noteBlock : tracks_[0].noteBlocks()) {
-    eventList.push_back(new NoteOnEvent(&midiFile, noteBlock.startTick(), 0, noteBlock.note(), MIDI_DEFAULT_VELOCITY));
-    eventList.push_back(new NoteOffEvent(&midiFile, noteBlock.startTick() + noteBlock.numTicks(), 0, noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+  for (const Track& track : tracks_) {
+    for (const NoteBlock& noteBlock : track.noteBlocks()) {
+      eventList.push_back(new NoteOnEvent(&midiFile, noteBlock.startTick(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+      eventList.push_back(new NoteOffEvent(&midiFile, noteBlock.startTick() + noteBlock.numTicks(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+    }
   }
 
   // comparison, not case sensitive.
