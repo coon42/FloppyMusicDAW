@@ -3,6 +3,7 @@
 
 #include <list>
 #include <string>
+#include <vector>
 
 extern "C" {
 #include "lib/eMIDI/src/midifile.h"
@@ -128,22 +129,23 @@ private:
 
 class Song {
 public:
+  Song()                                 { clear(); }
   void clear();
-  void setTpqn(uint16_t tpqn)  { tpqn_ = tpqn; }
-  Track* track1()              { return &track1_; }
-  const Track* track1() const  { return &track1_; }
+  void setTpqn(uint16_t tpqn)            { tpqn_ = tpqn; }
+  Track* track(int trackNo)              { return &tracks_[trackNo]; }
+  const Track* track(int trackNo) const  { return &tracks_[trackNo]; }
 
   void debugPrintAllNoteBlocks() const;
   void unselectAllNotes();
   void importFromMidi0(const std::string& path);
   void exportAsMidi0(const std::string& path) const;
 
-  const uint16_t tpqn() const                    { return tpqn_; }
+  const uint16_t tpqn() const            { return tpqn_; }
 
 private:
   int currentSelectedTrack_{0};
   uint16_t tpqn_{0};
-  Track track1_;
+  std::vector<Track> tracks_;
 };
 
 #endif // _SONG_H

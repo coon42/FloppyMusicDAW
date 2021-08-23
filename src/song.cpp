@@ -35,19 +35,21 @@ Error NoteOffEvent::write(uint32_t deltaTime) const {
 //-------------------------------------------------------------------------------------------------
 
 void Song::clear() {
-  tpqn_ = 0;
-  track1_.noteBlocks().clear();
+  tpqn_ = MIDI_DEFAULT_TPQN;
+  tracks_.clear();
+
+  tracks_.push_back(Track());
 }
 
 void Song::unselectAllNotes() {
-  for (NoteBlock& noteBlock : track1_.noteBlocks())
+  for (NoteBlock& noteBlock : tracks_[0].noteBlocks())
     noteBlock.unselect();
 }
 
 void Song::debugPrintAllNoteBlocks() const {
   printf("Note blocks:\n");
 
-  for (const NoteBlock& b : track1_.noteBlocks())
+  for (const NoteBlock& b : tracks_[0].noteBlocks())
     printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
 }
 
@@ -83,7 +85,7 @@ void Song::importFromMidi0(const std::string& path) {
           }
           else {
             onNotes[note].setNumTicks(currentTick - onNotes[note].startTick());
-            track1_.addNoteBlock(onNotes[note]);
+            tracks_[0].addNoteBlock(onNotes[note]);
             onNotes.erase(note);
           }
         }
@@ -98,7 +100,7 @@ void Song::importFromMidi0(const std::string& path) {
           NoteBlock& noteBlock = onNotes[note];
           noteBlock.setNumTicks(currentTick - noteBlock.startTick());
 
-          track1_.addNoteBlock(onNotes[note]);
+          tracks_[0].addNoteBlock(onNotes[note]);
           onNotes.erase(note);
         }
 
@@ -131,7 +133,7 @@ void Song::exportAsMidi0(const std::string& path) const {
 
   std::list<SongEvent*> eventList;
 
-  for (const NoteBlock& noteBlock : track1_.noteBlocks()) {
+  for (const NoteBlock& noteBlock : tracks_[0].noteBlocks()) {
     eventList.push_back(new NoteOnEvent(&midiFile, noteBlock.startTick(), 0, noteBlock.note(), MIDI_DEFAULT_VELOCITY));
     eventList.push_back(new NoteOffEvent(&midiFile, noteBlock.startTick() + noteBlock.numTicks(), 0, noteBlock.note(), MIDI_DEFAULT_VELOCITY));
   }

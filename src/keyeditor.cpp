@@ -162,7 +162,7 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   }
 
   // draw note blocks
-  for (const NoteBlock& noteBlock : pSong_->track1()->noteBlocks()) {
+  for (const NoteBlock& noteBlock : pSong_->track(0)->noteBlocks()) {
     const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);
 
     if (noteBlock.isSelected())
@@ -238,7 +238,7 @@ KeyEditorGridCanvas::ResizeArea KeyEditorGridCanvas::noteBlockResizeArea(const N
 }
 
 NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
-  for (NoteBlock& noteBlock : pSong_->track1()->noteBlocks()) {
+  for (NoteBlock& noteBlock : pSong_->track(0)->noteBlocks()) {
     const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);
 
     if (mouseX > bd.x && mouseX < bd.x + bd.width && mouseY > bd.y && mouseY < bd.y + canvas()->blockHeight())
