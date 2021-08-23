@@ -14,6 +14,8 @@ class TrackEditorWindow : public wxWindow {
 public:
   TrackEditorWindow(wxWindow* pParent, Song* pSong);
 
+  void updateTrackList();
+
 private:
   wxGrid* pTrackWindow_{nullptr};
   Song* const pSong_;

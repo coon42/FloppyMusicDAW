@@ -16,7 +16,21 @@ TrackEditorWindow::TrackEditorWindow(wxWindow* pParent, Song* pSong)
   pTrackWindow_->SetColLabelValue(1, "Track Name");
   pTrackWindow_->SetColLabelValue(2, "Channel");
 
+  pTrackWindow_->SetColLabelSize(pTrackWindow_->GetCharHeight() + 4);
+
+  wxSizer* pTopSizer = new wxBoxSizer(wxHORIZONTAL);
+  pTopSizer->Add(pTrackWindow_);
+
+  SetSizer(pTopSizer);
+
+  updateTrackList();
+}
+
+void TrackEditorWindow::updateTrackList() {
+  pTrackWindow_->DeleteRows(0, pTrackWindow_->GetNumberRows());
+
   for (int trackNo = 0; trackNo < pSong_->numberOfTracks(); ++trackNo) {
+    pTrackWindow_->AppendRows(1);
     pTrackWindow_->SetCellValue(trackNo, 0, trackNo == 0 ? "X" : "");
     pTrackWindow_->SetCellValue(trackNo, 1, pSong_->track(trackNo)->name());
     pTrackWindow_->SetCellValue(trackNo, 2, wxString::Format("%d", pSong_->track(trackNo)->midiChannel() + 1));
@@ -31,11 +45,4 @@ TrackEditorWindow::TrackEditorWindow(wxWindow* pParent, Song* pSong)
       }
     }
   }
-
-  pTrackWindow_->SetColLabelSize(pTrackWindow_->GetCharHeight() + 4);
-
-  wxSizer* pTopSizer = new wxBoxSizer(wxHORIZONTAL);
-  pTopSizer->Add(pTrackWindow_);
-
-  SetSizer(pTopSizer);
 }
