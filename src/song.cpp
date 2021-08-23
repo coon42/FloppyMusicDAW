@@ -153,7 +153,7 @@ void Song::exportAsMidi0(const std::string& path) const {
 
   uint32_t lastTick = 0;
 
-  for (SongEvent* pEvent : eventList) {
+  for (const SongEvent* pEvent : eventList) {
     const uint32_t deltaTick = pEvent->absoluteTick() - lastTick;
 
     if (Error error = pEvent->write(deltaTick))
