@@ -38,7 +38,7 @@ void Song::clear() {
   tpqn_ = MIDI_DEFAULT_TPQN;
   tracks_.clear();
 
-  tracks_.push_back(Track());
+  tracks_.push_back(Track("Track 1", 0));
 }
 
 void Song::unselectAllNotes() {

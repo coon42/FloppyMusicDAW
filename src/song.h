@@ -111,6 +111,9 @@ private:
 
 class Track {
 public:
+  Track(std::string name, int midiChannel)
+      : name_(name), midiChannel_(midiChannel) {};
+
   void addNoteBlock(const NoteBlock& noteBlock)   { noteBlocks_.push_back(noteBlock); }
   const std::list<NoteBlock>& noteBlocks() const  { return noteBlocks_; }
   std::list<NoteBlock>& noteBlocks()              { return noteBlocks_; }
