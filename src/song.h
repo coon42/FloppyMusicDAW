@@ -50,9 +50,9 @@ public:
   uint8_t velocity() const                    { return velocity_; }
 
 private:
-  const uint8_t channel_{0};
-  const uint8_t note_{0};
-  const uint8_t velocity_{0};
+  const uint8_t channel_;
+  const uint8_t note_;
+  const uint8_t velocity_;
 };
 
 //-------------------------------------------------------------------------------------------------
