@@ -18,10 +18,10 @@ TrackEditorWindow::TrackEditorWindow(wxWindow* pParent, Song* pSong)
 
   pTrackListGrid_->SetColLabelSize(pTrackListGrid_->GetCharHeight() + 4);
 
-  wxSizer* pTopSizer = new wxBoxSizer(wxHORIZONTAL);
-  pTopSizer->Add(pTrackListGrid_);
+  pTopSizer_ = new wxBoxSizer(wxHORIZONTAL);
+  pTopSizer_->Add(pTrackListGrid_);
 
-  SetSizer(pTopSizer);
+  SetSizer(pTopSizer_);
 
   updateTrackList();
 }

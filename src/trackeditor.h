@@ -17,6 +17,7 @@ public:
   void updateTrackList();
 
 private:
+  wxSizer* pTopSizer_{nullptr};
   wxGrid* pTrackListGrid_{nullptr};
   Song* const pSong_;
 };
