@@ -45,4 +45,6 @@ void TrackEditorWindow::updateTrackList() {
       }
     }
   }
+
+  GetParent()->Layout();
 }
