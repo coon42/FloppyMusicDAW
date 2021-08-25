@@ -97,6 +97,9 @@ void Song::importFromMidi0(const std::string& path) {
       channelToTrackNo[channel] = tracks_.size() - 1;
     }
 
+    const int trackNo = 0;
+
+    Track* pTrack = &tracks_[trackNo];
     currentTick += midiEvent.deltaTime;
 
     auto noteOn = [&](uint8_t note) {
@@ -110,7 +113,7 @@ void Song::importFromMidi0(const std::string& path) {
     auto noteOff = [&](uint8_t note) {
       NoteBlock& noteBlock = onNotes[note];
       noteBlock.setNumTicks(currentTick - noteBlock.startTick());
-      tracks_[0].addSongEvent(onNotes[note]);
+      pTrack->addSongEvent(onNotes[note]);
       onNotes.erase(note);
     };
 
@@ -138,7 +141,7 @@ void Song::importFromMidi0(const std::string& path) {
       }
 
       default:
-        tracks_[0].addSongEvent(NotImplementedEvent(currentTick, 0));
+        pTrack->addSongEvent(NotImplementedEvent(currentTick, 0));
         break;
     }
   }
