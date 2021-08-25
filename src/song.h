@@ -87,6 +87,7 @@ public:
 
 enum class SongEventType {
   Undefined,
+  NotImplementedEvent,
   NoteBlock
 };
 
@@ -108,6 +109,21 @@ private:
   uint32_t startTick_{0};
   uint32_t numTicks_{0};
   bool isSelected_{false};
+};
+
+//-------------------------------------------------------------------------------------------------
+// NotImplementedEvent
+//-------------------------------------------------------------------------------------------------
+
+class NotImplementedEvent : public SongEvent {
+public:
+  NotImplementedEvent(uint32_t startTick, uint32_t numTicks) {
+    setStartTick(startTick);
+    setNumTicks(numTicks);
+  }
+
+  SongEvent* clone() const final   { return new NotImplementedEvent(*this); }
+  SongEventType type() const final { return SongEventType::NotImplementedEvent; }
 };
 
 //-------------------------------------------------------------------------------------------------
