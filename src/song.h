@@ -134,15 +134,17 @@ class Track {
 public:
   Track(std::string name, int midiChannel)
       : name_(name), midiChannel_(midiChannel) {};
+  Track(const Track& track);
+  ~Track();
 
-  void addNoteBlock(const NoteBlock& noteBlock)   { noteBlocks_.push_back(noteBlock); }
-  const std::list<NoteBlock>& noteBlocks() const  { return noteBlocks_; }
-  std::list<NoteBlock>& noteBlocks()              { return noteBlocks_; }
+  void addNoteBlock(const NoteBlock& noteBlock)   { songEvents_.push_back(noteBlock.clone()); }
+  const std::list<SongEvent*>& noteBlocks() const { return songEvents_; }
+  std::list<SongEvent*>& noteBlocks()             { return songEvents_; }
   const std::string& name() const                 { return name_; }
   int midiChannel() const                         { return midiChannel_; }
 
 private:
-  std::list<NoteBlock> noteBlocks_;
+  std::list<SongEvent*> songEvents_;
   std::string name_{"Undefined"};
   int midiChannel_{0};
 };

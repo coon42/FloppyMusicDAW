@@ -42,8 +42,11 @@ void Song::clear() {
 }
 
 void Song::unselectAllNotes() {
-  for (NoteBlock& noteBlock : tracks_[0].noteBlocks())
+  for (SongEvent* pSongEvent : tracks_[0].noteBlocks()) {
+    NoteBlock& noteBlock = *static_cast<NoteBlock*>(pSongEvent);
+
     noteBlock.unselect();
+  }
 }
 
 void Song::debugPrintAllNoteBlocks() const {
@@ -52,8 +55,11 @@ void Song::debugPrintAllNoteBlocks() const {
 
     printf("Note blocks of track %d '%s':\n", trackNo + 1, track.name().c_str());
 
-    for (const NoteBlock& b : track.noteBlocks())
+    for (const SongEvent* pSongEvent : track.noteBlocks()) {
+      const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
+
       printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
+    }
   }
 }
 
@@ -138,7 +144,9 @@ void Song::exportAsMidi0(const std::string& path) const {
   std::list<EmMidiEvent*> eventList;
 
   for (const Track& track : tracks_) {
-    for (const NoteBlock& noteBlock : track.noteBlocks()) {
+    for (const SongEvent* pSongEvent : track.noteBlocks()) {
+      const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
+
       eventList.push_back(new EmNoteOnEvent(&midiFile, noteBlock.startTick(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
       eventList.push_back(new EmNoteOffEvent(&midiFile, noteBlock.startTick() + noteBlock.numTicks(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
     }
@@ -169,4 +177,20 @@ void Song::exportAsMidi0(const std::string& path) const {
 
   if (Error error = eMidi_close(&midiFile))
     eMidi_printError(error);
+}
+
+//-------------------------------------------------------------------------------------------------
+// Track
+//-------------------------------------------------------------------------------------------------
+
+Track::Track(const Track& track) : Track(track.name_, track.midiChannel_) {
+  for (const SongEvent* pSongEvent : track.songEvents_)
+    songEvents_.push_back(pSongEvent->clone());
+}
+
+Track::~Track() {
+  for (SongEvent* pSongEvent : songEvents_)
+    delete pSongEvent;
+
+  songEvents_.clear();
 }
