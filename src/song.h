@@ -141,7 +141,7 @@ public:
 
 private:
   std::list<NoteBlock> noteBlocks_;
-  std::string name_{"Track1"};
+  std::string name_{"Undefined"};
   int midiChannel_{0};
 };
 
