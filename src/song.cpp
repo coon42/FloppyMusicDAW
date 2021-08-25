@@ -1,4 +1,5 @@
 #include <map>
+#include <sstream>
 
 extern "C" {
 #include "lib/eMIDI/src/helpers.h"
@@ -71,6 +72,14 @@ void Song::importFromMidi0(const std::string& path) {
   }
 
   clear();
+  tracks_.clear();
+
+  const int channel = 0;
+
+  std::ostringstream trackName;
+  trackName << "Track " << channel + 1;
+  tracks_.push_back(Track(trackName.str(), channel));
+
   setTpqn(midiFile.header.division.tpqn.TPQN);
 
   std::map<uint8_t, NoteBlock> onNotes;
