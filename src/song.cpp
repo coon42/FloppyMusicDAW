@@ -15,18 +15,18 @@ EmMidiEvent::~EmMidiEvent() {
 }
 
 //-------------------------------------------------------------------------------------------------
-// NoteOnEvent
+// EmNoteOnEvent
 //-------------------------------------------------------------------------------------------------
 
-Error NoteOnEvent::write(uint32_t deltaTime) const {
+Error EmNoteOnEvent::write(uint32_t deltaTime) const {
   return eMidi_writeNoteOnEvent(pMidiFile_, deltaTime, channel(), note(), velocity());
 }
 
 //-------------------------------------------------------------------------------------------------
-// NoteOffEvent
+// EmNoteOffEvent
 //-------------------------------------------------------------------------------------------------
 
-Error NoteOffEvent::write(uint32_t deltaTime) const {
+Error EmNoteOffEvent::write(uint32_t deltaTime) const {
   return eMidi_writeNoteOffEvent(pMidiFile_, deltaTime, channel(), note(), velocity());
 }
 
@@ -139,8 +139,8 @@ void Song::exportAsMidi0(const std::string& path) const {
 
   for (const Track& track : tracks_) {
     for (const NoteBlock& noteBlock : track.noteBlocks()) {
-      eventList.push_back(new NoteOnEvent(&midiFile, noteBlock.startTick(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
-      eventList.push_back(new NoteOffEvent(&midiFile, noteBlock.startTick() + noteBlock.numTicks(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+      eventList.push_back(new EmNoteOnEvent(&midiFile, noteBlock.startTick(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+      eventList.push_back(new EmNoteOffEvent(&midiFile, noteBlock.startTick() + noteBlock.numTicks(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
     }
   }
 

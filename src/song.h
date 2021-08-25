@@ -34,12 +34,12 @@ private:
 };
 
 //-------------------------------------------------------------------------------------------------
-// NoteEvent
+// EmNoteEvent
 //-------------------------------------------------------------------------------------------------
 
-class NoteEvent : public EmMidiEvent {
+class EmNoteEvent : public EmMidiEvent {
 public:
-  NoteEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint8_t channel, uint8_t note, uint8_t velocity)
+  EmNoteEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint8_t channel, uint8_t note, uint8_t velocity)
       : EmMidiEvent(pMidiFile, absoluteTick), channel_(channel), note_(note), velocity_(velocity) {}
 
   uint8_t eventId() const override               = 0;
@@ -56,26 +56,26 @@ private:
 };
 
 //-------------------------------------------------------------------------------------------------
-// NoteOnEvent
+// EmNoteOnEvent
 //-------------------------------------------------------------------------------------------------
 
-class NoteOnEvent : public NoteEvent {
+class EmNoteOnEvent : public EmNoteEvent {
 public:
-  NoteOnEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint8_t channel, uint8_t note, uint8_t velocity)
-      : NoteEvent(pMidiFile, absoluteTick, channel, note, velocity) {}
+  EmNoteOnEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint8_t channel, uint8_t note, uint8_t velocity)
+      : EmNoteEvent(pMidiFile, absoluteTick, channel, note, velocity) {}
 
   uint8_t eventId() const final               { return MIDI_EVENT_NOTE_ON; }
   Error write(uint32_t deltaTime) const final;
 };
 
 //-------------------------------------------------------------------------------------------------
-// NoteOffEvent
+// EmNoteOffEvent
 //-------------------------------------------------------------------------------------------------
 
-class NoteOffEvent : public NoteEvent {
+class EmNoteOffEvent : public EmNoteEvent {
 public:
-  NoteOffEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint8_t channel, uint8_t note, uint8_t velocity)
-      : NoteEvent(pMidiFile, absoluteTick, channel, note, velocity) {}
+  EmNoteOffEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint8_t channel, uint8_t note, uint8_t velocity)
+      : EmNoteEvent(pMidiFile, absoluteTick, channel, note, velocity) {}
 
   uint8_t eventId() const final               { return MIDI_EVENT_NOTE_OFF; }
   Error write(uint32_t deltaTime) const final;
