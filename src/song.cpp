@@ -91,9 +91,11 @@ void Song::importFromMidi0(const std::string& path) {
     if (midiEvent.eventId == 0xFF) // skip meta events for now.
       continue;
 
+    const int eventId = midiEvent.eventId & 0xF0;
+    const int channel = midiEvent.eventId & 0x0F;
     currentTick += midiEvent.deltaTime;
 
-    switch (midiEvent.eventId) {
+    switch (eventId) {
       case MIDI_EVENT_NOTE_ON: {
         const uint8_t note = midiEvent.params.msg.noteOn.note;
 
