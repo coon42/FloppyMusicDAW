@@ -97,7 +97,7 @@ void Song::importFromMidi0(const std::string& path) {
           }
           else {
             onNotes[note].setNumTicks(currentTick - onNotes[note].startTick());
-            tracks_[0].addNoteBlock(onNotes[note]);
+            tracks_[0].addSongEvent(onNotes[note]);
             onNotes.erase(note);
           }
         }
@@ -112,7 +112,7 @@ void Song::importFromMidi0(const std::string& path) {
           NoteBlock& noteBlock = onNotes[note];
           noteBlock.setNumTicks(currentTick - noteBlock.startTick());
 
-          tracks_[0].addNoteBlock(onNotes[note]);
+          tracks_[0].addSongEvent(onNotes[note]);
           onNotes.erase(note);
         }
 

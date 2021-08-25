@@ -137,7 +137,7 @@ public:
   Track(const Track& track);
   ~Track();
 
-  void addNoteBlock(const NoteBlock& noteBlock)   { songEvents_.push_back(noteBlock.clone()); }
+  void addSongEvent(const SongEvent& songEvent)   { songEvents_.push_back(songEvent.clone()); }
   const std::list<SongEvent*>& noteBlocks() const { return songEvents_; }
   std::list<SongEvent*>& noteBlocks()             { return songEvents_; }
   const std::string& name() const                 { return name_; }
