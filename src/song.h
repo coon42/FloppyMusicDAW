@@ -82,28 +82,37 @@ public:
 };
 
 //-------------------------------------------------------------------------------------------------
-// NoteBlock
+// SongEvent
 //-------------------------------------------------------------------------------------------------
 
-class NoteBlock {
+class SongEvent {
 public:
-  void setNote(uint8_t midiNote)        { note_ = midiNote; }
-  void setStartTick(uint32_t startTick) { startTick_ = startTick; }
-  void setNumTicks(uint32_t numTicks)   { numTicks_ = numTicks; }
+  void setStartTick(uint32_t startTick)   { startTick_ = startTick; }
+  void setNumTicks(uint32_t numTicks)     { numTicks_ = numTicks; }
+  void select()                           { isSelected_ = true; }
+  void unselect()                         { isSelected_ = false; }
 
-  void select()                         { isSelected_ = true; }
-  void unselect()                       { isSelected_ = false; }
-
-  const uint8_t note() const            { return note_; }
-  const uint32_t startTick() const      { return startTick_; }
-  const uint32_t numTicks() const       { return numTicks_; }
-  const bool isSelected() const         { return isSelected_;}
+  const uint32_t startTick() const        { return startTick_; }
+  const uint32_t numTicks() const         { return numTicks_; }
+  const bool isSelected() const           { return isSelected_; }
 
 private:
-  uint8_t note_{0};
   uint32_t startTick_{0};
   uint32_t numTicks_{0};
   bool isSelected_{false};
+};
+
+//-------------------------------------------------------------------------------------------------
+// NoteBlock
+//-------------------------------------------------------------------------------------------------
+
+class NoteBlock : public SongEvent {
+public:
+  void setNote(uint8_t midiNote)        { note_ = midiNote; }
+  const uint8_t note() const            { return note_; }
+
+private:
+  uint8_t note_{0};
 };
 
 //-------------------------------------------------------------------------------------------------
