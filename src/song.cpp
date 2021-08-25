@@ -74,12 +74,6 @@ void Song::importFromMidi0(const std::string& path) {
   clear();
   tracks_.clear();
 
-  const int channel = 0;
-
-  std::ostringstream trackName;
-  trackName << "Track " << channel + 1;
-  tracks_.push_back(Track(trackName.str(), channel));
-
   setTpqn(midiFile.header.division.tpqn.TPQN);
 
   std::map<uint8_t, NoteBlock> onNotes;
@@ -94,6 +88,15 @@ void Song::importFromMidi0(const std::string& path) {
 
     const int eventId = midiEvent.eventId & 0xF0;
     const int channel = midiEvent.eventId & 0x0F;
+
+    if (channelToTrackNo.find(channel) == channelToTrackNo.end()) {
+      std::ostringstream trackName;
+      trackName << "Track " << channel + 1;
+      tracks_.push_back(Track(trackName.str(), channel));
+
+      channelToTrackNo[channel] = tracks_.size() - 1;
+    }
+
     currentTick += midiEvent.deltaTime;
 
     auto noteOn = [&](uint8_t note) {
