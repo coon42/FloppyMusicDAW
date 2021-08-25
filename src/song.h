@@ -92,6 +92,7 @@ enum class SongEventType {
 
 class SongEvent {
 public:
+  virtual SongEvent* clone() const = 0;
   virtual SongEventType type() const = 0;
 
   void setStartTick(uint32_t startTick)   { startTick_ = startTick; }
@@ -115,10 +116,11 @@ private:
 
 class NoteBlock : public SongEvent {
 public:
-  SongEventType type() const final      { return SongEventType::NoteBlock; }
+  SongEvent* clone() const final    { return new NoteBlock(*this); }
+  SongEventType type() const final  { return SongEventType::NoteBlock; }
 
-  void setNote(uint8_t midiNote)        { note_ = midiNote; }
-  const uint8_t note() const            { return note_; }
+  void setNote(uint8_t midiNote)    { note_ = midiNote; }
+  const uint8_t note() const        { return note_; }
 
 private:
   uint8_t note_{0};
