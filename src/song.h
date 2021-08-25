@@ -85,8 +85,15 @@ public:
 // SongEvent
 //-------------------------------------------------------------------------------------------------
 
+enum class SongEventType {
+  Undefined,
+  NoteBlock
+};
+
 class SongEvent {
 public:
+  virtual SongEventType type() const = 0;
+
   void setStartTick(uint32_t startTick)   { startTick_ = startTick; }
   void setNumTicks(uint32_t numTicks)     { numTicks_ = numTicks; }
   void select()                           { isSelected_ = true; }
@@ -108,6 +115,8 @@ private:
 
 class NoteBlock : public SongEvent {
 public:
+  SongEventType type() const final      { return SongEventType::NoteBlock; }
+
   void setNote(uint8_t midiNote)        { note_ = midiNote; }
   const uint8_t note() const            { return note_; }
 
