@@ -83,6 +83,7 @@ void Song::importFromMidi0(const std::string& path) {
   setTpqn(midiFile.header.division.tpqn.TPQN);
 
   std::map<uint8_t, NoteBlock> onNotes;
+  std::map<uint8_t, uint8_t> channelToTrackNo;
 
   uint32_t currentTick = 0;
   MidiEvent midiEvent;
