@@ -42,11 +42,8 @@ void Song::clear() {
 }
 
 void Song::unselectAllNotes() {
-  for (SongEvent* pSongEvent : tracks_[0].noteBlocks()) {
-    NoteBlock& noteBlock = *static_cast<NoteBlock*>(pSongEvent);
-
-    noteBlock.unselect();
-  }
+  for (SongEvent* pSongEvent : tracks_[0].noteBlocks())
+    pSongEvent->unselect();
 }
 
 void Song::debugPrintAllNoteBlocks() const {
