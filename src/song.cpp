@@ -86,7 +86,11 @@ void Song::importFromMidi0(const std::string& path) {
 
   uint32_t currentTick = 0;
   MidiEvent midiEvent;
+
   while (eMidi_readEvent(&midiFile, &midiEvent) == EMIDI_OK) {
+    if (midiEvent.eventId == 0xFF) // skip meta events for now.
+      continue;
+
     currentTick += midiEvent.deltaTime;
 
     switch (midiEvent.eventId) {
