@@ -163,16 +163,17 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
 
   // draw note blocks
   for (const SongEvent* pSongEvent : pSong_->track(0)->noteBlocks()) {
-    const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
+    if (pSongEvent->type() == SongEventType::NoteBlock) {
+      const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
+      const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);
 
-    const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);
+      if (noteBlock.isSelected())
+        dc.SetBrush(wxBrush(wxColour(0, 255, 255)));
+      else
+        dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
 
-    if (noteBlock.isSelected())
-      dc.SetBrush(wxBrush(wxColour(0, 255, 255)));
-    else
-      dc.SetBrush(wxBrush(wxColour(0, 255, 0)));
-
-    dc.DrawRectangle(bd.x, bd.y, bd.width, canvas()->blockHeight());
+      dc.DrawRectangle(bd.x, bd.y, bd.width, canvas()->blockHeight());
+    }
   }
 }
 
@@ -241,12 +242,14 @@ KeyEditorGridCanvas::ResizeArea KeyEditorGridCanvas::noteBlockResizeArea(const N
 
 NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
   for (SongEvent* pSongEvent : pSong_->track(0)->noteBlocks()) {
-    NoteBlock& noteBlock = *static_cast<NoteBlock*>(pSongEvent);
+    if (pSongEvent->type() == SongEventType::NoteBlock) {
+      NoteBlock& noteBlock = *static_cast<NoteBlock*>(pSongEvent);
 
-    const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);
+      const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);
 
-    if (mouseX > bd.x && mouseX < bd.x + bd.width && mouseY > bd.y && mouseY < bd.y + canvas()->blockHeight())
-      return &noteBlock;
+      if (mouseX > bd.x && mouseX < bd.x + bd.width && mouseY > bd.y && mouseY < bd.y + canvas()->blockHeight())
+        return &noteBlock;
+    }
   }
 
   return nullptr;

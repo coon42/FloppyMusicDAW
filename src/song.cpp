@@ -56,9 +56,11 @@ void Song::debugPrintAllNoteBlocks() const {
     printf("Note blocks of track %d '%s':\n", trackNo + 1, track.name().c_str());
 
     for (const SongEvent* pSongEvent : track.noteBlocks()) {
-      const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
+      if (pSongEvent->type() == SongEventType::NoteBlock) {
+        const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
 
-      printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
+        printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
+      }
     }
   }
 }
@@ -145,10 +147,12 @@ void Song::exportAsMidi0(const std::string& path) const {
 
   for (const Track& track : tracks_) {
     for (const SongEvent* pSongEvent : track.noteBlocks()) {
-      const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
+      if (pSongEvent->type() == SongEventType::NoteBlock) {
+        const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
 
-      eventList.push_back(new EmNoteOnEvent(&midiFile, noteBlock.startTick(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
-      eventList.push_back(new EmNoteOffEvent(&midiFile, noteBlock.startTick() + noteBlock.numTicks(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+        eventList.push_back(new EmNoteOnEvent(&midiFile, noteBlock.startTick(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+        eventList.push_back(new EmNoteOffEvent(&midiFile, noteBlock.startTick() + noteBlock.numTicks(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+      }
     }
   }
 
