@@ -7,10 +7,10 @@ extern "C" {
 #include "song.h"
 
 //-------------------------------------------------------------------------------------------------
-// SongEvent
+// EmMidiEvent
 //-------------------------------------------------------------------------------------------------
 
-SongEvent::~SongEvent() {
+EmMidiEvent::~EmMidiEvent() {
 
 }
 
@@ -135,7 +135,7 @@ void Song::exportAsMidi0(const std::string& path) const {
     return;
   }
 
-  std::list<SongEvent*> eventList;
+  std::list<EmMidiEvent*> eventList;
 
   for (const Track& track : tracks_) {
     for (const NoteBlock& noteBlock : track.noteBlocks()) {
@@ -145,7 +145,7 @@ void Song::exportAsMidi0(const std::string& path) const {
   }
 
   // comparison, not case sensitive.
-  auto absoluteTicksAscending = [](const SongEvent* pFirst, const SongEvent* pSecond) -> bool {
+  auto absoluteTicksAscending = [](const EmMidiEvent* pFirst, const EmMidiEvent* pSecond) -> bool {
     return pFirst->absoluteTick() < pSecond->absoluteTick();
   };
 
@@ -153,7 +153,7 @@ void Song::exportAsMidi0(const std::string& path) const {
 
   uint32_t lastTick = 0;
 
-  for (const SongEvent* pEvent : eventList) {
+  for (const EmMidiEvent* pEvent : eventList) {
     const uint32_t deltaTick = pEvent->absoluteTick() - lastTick;
 
     if (Error error = pEvent->write(deltaTick))

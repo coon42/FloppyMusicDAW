@@ -12,15 +12,15 @@ extern "C" {
 constexpr int NUM_MIDI_NOTES = 128;
 
 //-------------------------------------------------------------------------------------------------
-// SongEvent
+// EmMidiEvent
 //-------------------------------------------------------------------------------------------------
 
-class SongEvent {
+class EmMidiEvent {
 public:
-  SongEvent(MidiFile* pMidiFile, uint32_t absoluteTick)
+  EmMidiEvent(MidiFile* pMidiFile, uint32_t absoluteTick)
       : pMidiFile_(pMidiFile), absoluteTick_(absoluteTick) {}
 
-  virtual ~SongEvent()                          = 0;
+  virtual ~EmMidiEvent()                        = 0;
   virtual uint8_t eventId() const               = 0;
   virtual Error write(uint32_t deltaTime) const = 0;
 
@@ -37,10 +37,10 @@ private:
 // NoteEvent
 //-------------------------------------------------------------------------------------------------
 
-class NoteEvent : public SongEvent {
+class NoteEvent : public EmMidiEvent {
 public:
   NoteEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint8_t channel, uint8_t note, uint8_t velocity)
-      : SongEvent(pMidiFile, absoluteTick), channel_(channel), note_(note), velocity_(velocity) {}
+      : EmMidiEvent(pMidiFile, absoluteTick), channel_(channel), note_(note), velocity_(velocity) {}
 
   uint8_t eventId() const override               = 0;
   Error write(uint32_t deltaTime) const override = 0;
