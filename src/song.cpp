@@ -95,23 +95,30 @@ void Song::importFromMidi0(const std::string& path) {
     const int channel = midiEvent.eventId & 0x0F;
     currentTick += midiEvent.deltaTime;
 
+    auto noteOn = [&](uint8_t note) {
+      NoteBlock noteBlock;
+      noteBlock.setNote(midiEvent.params.msg.noteOn.note);
+      noteBlock.setStartTick(currentTick);
+
+      onNotes[note] = noteBlock;
+    };
+
+    auto noteOff = [&](uint8_t note) {
+      NoteBlock& noteBlock = onNotes[note];
+      noteBlock.setNumTicks(currentTick - noteBlock.startTick());
+      tracks_[0].addSongEvent(onNotes[note]);
+      onNotes.erase(note);
+    };
+
     switch (eventId) {
       case MIDI_EVENT_NOTE_ON: {
         const uint8_t note = midiEvent.params.msg.noteOn.note;
 
         if (onNotes.find(note) == onNotes.end()) { // ignore, double additional note on event if already active
-          if (midiEvent.params.msg.noteOn.velocity > 0) {
-            NoteBlock block;
-            block.setNote(midiEvent.params.msg.noteOn.note);
-            block.setStartTick(currentTick);
-
-            onNotes[note] = block;
-          }
-          else {
-            onNotes[note].setNumTicks(currentTick - onNotes[note].startTick());
-            tracks_[0].addSongEvent(onNotes[note]);
-            onNotes.erase(note);
-          }
+          if (midiEvent.params.msg.noteOn.velocity > 0)
+            noteOn(note);
+          else // Velocity of 0 means note off:
+            noteOff(note);
         }
 
         break;
@@ -120,13 +127,8 @@ void Song::importFromMidi0(const std::string& path) {
       case MIDI_EVENT_NOTE_OFF: {
         const uint8_t note = midiEvent.params.msg.noteOff.note;
 
-        if (onNotes.find(note) != onNotes.end()) { // ignore, if there is no matching note on event active
-          NoteBlock& noteBlock = onNotes[note];
-          noteBlock.setNumTicks(currentTick - noteBlock.startTick());
-
-          tracks_[0].addSongEvent(onNotes[note]);
-          onNotes.erase(note);
-        }
+        if (onNotes.find(note) != onNotes.end()) // ignore, if there is no matching note on event active
+          noteOff(note);
 
         break;
       }
