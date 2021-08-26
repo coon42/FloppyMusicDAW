@@ -104,6 +104,8 @@ void Song::importFromMidi0(const std::string& path) {
   uint32_t currentTick = 0;
   MidiEvent midiEvent;
 
+  printf("MIDI Events:\n");
+
   while (eMidi_readEvent(&midiFile, &midiEvent) == EMIDI_OK) {
     if (midiEvent.eventId == 0xFF) // skip meta events for now.
       continue;
@@ -127,6 +129,11 @@ void Song::importFromMidi0(const std::string& path) {
     OnNotesMap& onNotes = trackOnNotes[channel];
 
     currentTick += midiEvent.deltaTime;
+
+    printf("%8d - ", currentTick);
+
+    if (Error error = eMidi_printMidiEvent(&midiEvent))
+      break;
 
     auto noteOn = [&](uint8_t note) {
       NoteBlock noteBlock;
@@ -171,6 +178,8 @@ void Song::importFromMidi0(const std::string& path) {
         break;
     }
   }
+
+  debugPrintAllSongEvents();
 
   if (Error error = eMidi_printFileInfo(&midiFile)) {
     printf("Error on printing MIDI file info!\n");

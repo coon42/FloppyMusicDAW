@@ -98,6 +98,8 @@ private:
   BlockDimensions getAbsoluteNoteBlockDimensions(const NoteBlock& noteBlock) const;
   BlockDimensions getVisibleNoteBlockDimensions(const NoteBlock& noteBlock) const;
   NoteBlock* currentPointedNoteBlock(int mouseX, int mouseY);
+
+  CellPosition lastPointedCell_{0};
   NoteBlock* pCurrentEditNoteBlock_{nullptr};
   int editStartBlockXClickPosition_{0};
 

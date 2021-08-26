@@ -308,6 +308,10 @@ void KeyEditorGridCanvas::OnMouseMotion(wxMouseEvent& event) {
   const int mouseY = event.GetY();
   const int mouseXabs = event.GetX() + canvas()->xScrollOffset() * canvas()->pixelsPerQuarterNote();
 
+  // if (pos.relativeXindex != lastPointedCell_.relativeXindex || pos.relativeYindex != lastPointedCell_.relativeYindex)
+  //   render();
+  // lastPointedCell_ = pos;
+
   switch (editState_) {
     case EditState::ResizingNoteRight: {
       const BlockDimensions dm = getAbsoluteNoteBlockDimensions(*pCurrentEditNoteBlock_);

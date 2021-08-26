@@ -41,6 +41,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
   pTopSizer->Add(pKeyEditorWindow_, 1, wxEXPAND);
 
   SetSizer(pTopSizer);
+
+  song_.importFromMidi0(R"(D:\c++\FloppyMusicDAW\src\lib\eMIDI\tests\midis\cdefgabc_0.mid)");
+
   Show(true);
 }
 
