@@ -146,10 +146,12 @@ private:
 // Track
 //-------------------------------------------------------------------------------------------------
 
+class Song;
+
 class Track {
 public:
-  Track(std::string name, int midiChannel)
-      : name_(name), midiChannel_(midiChannel) {};
+  Track(const Song& song, std::string name, int midiChannel)
+      : song_(song), name_(name), midiChannel_(midiChannel) {};
   Track(const Track& track);
   ~Track();
 
@@ -160,6 +162,7 @@ public:
   int midiChannel() const                         { return midiChannel_; }
 
 private:
+  const Song& song_;
   std::list<SongEvent*> songEvents_;
   std::string name_{"Undefined"};
   int midiChannel_{0};

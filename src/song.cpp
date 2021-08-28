@@ -39,7 +39,7 @@ void Song::clear() {
   tpqn_ = MIDI_DEFAULT_TPQN;
   tracks_.clear();
 
-  tracks_.push_back(Track("Track 1", 0));
+  tracks_.push_back(Track(*this, "Track 1", 0));
 }
 
 void Song::unselectAllNotes() {
@@ -95,7 +95,7 @@ void Song::importFromMidi0(const std::string& path) {
 
       std::ostringstream trackName;
       trackName << "Track " << channel + 1;
-      tracks_.push_back(Track(trackName.str(), channel));
+      tracks_.push_back(Track(*this, trackName.str(), channel));
 
       channelToTrackNo[channel] = tracks_.size() - 1;
     }
@@ -214,7 +214,7 @@ void Song::exportAsMidi0(const std::string& path) const {
 // Track
 //-------------------------------------------------------------------------------------------------
 
-Track::Track(const Track& track) : Track(track.name_, track.midiChannel_) {
+Track::Track(const Track& track) : Track(track.song_, track.name_, track.midiChannel_) {
   for (const SongEvent* pSongEvent : track.songEvents_)
     songEvents_.push_back(pSongEvent->clone());
 }
