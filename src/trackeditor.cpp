@@ -27,7 +27,8 @@ TrackEditorWindow::TrackEditorWindow(wxWindow* pParent, Song* pSong)
 }
 
 void TrackEditorWindow::updateTrackList() {
-  pTrackListGrid_->DeleteRows(0, pTrackListGrid_->GetNumberRows());
+  if (pTrackListGrid_->GetNumberRows())
+    pTrackListGrid_-> DeleteRows(0, pTrackListGrid_->GetNumberRows());
 
   for (int trackNo = 0; trackNo < pSong_->numberOfTracks(); ++trackNo) {
     pTrackListGrid_->AppendRows(1);
@@ -48,3 +49,4 @@ void TrackEditorWindow::updateTrackList() {
 
   GetParent()->Layout();
 }
+
