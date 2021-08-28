@@ -28,6 +28,7 @@
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\song.cpp" />
     <ClCompile Include="..\..\..\src\trackeditor.cpp" />
+    <ClCompile Include="..\..\..\src\transport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\keyeditor.h" />
@@ -40,6 +41,7 @@
     <ClInclude Include="..\..\..\src\main.h" />
     <ClInclude Include="..\..\..\src\song.h" />
     <ClInclude Include="..\..\..\src\trackeditor.h" />
+    <ClInclude Include="..\..\..\src\transport.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res.rc" />
