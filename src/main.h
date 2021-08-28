@@ -5,6 +5,7 @@
 
 #include "keyeditor.h"
 #include "trackeditor.h"
+#include "transport.h"
 #include "song.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -21,6 +22,7 @@ private:
   void OnOpen(wxCommandEvent& event);
   void OnSaveAs(wxCommandEvent& event);
 
+  TransportWindow* pTransportWindow_{nullptr};
   TrackEditorWindow* pTrackEditorWindow_{nullptr};
   KeyEditorWindow* pKeyEditorWindow_{nullptr};
   Song song_;

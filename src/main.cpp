@@ -31,10 +31,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
   CreateStatusBar();
   SetStatusText("Ready.");
 
+  pTransportWindow_ = new TransportWindow(this, &song_);
   pTrackEditorWindow_ = new TrackEditorWindow(this, &song_);
   pKeyEditorWindow_ = new KeyEditorWindow(this, &song_);
 
   wxSizer* pTopSizer = new wxBoxSizer(wxVERTICAL);
+  pTopSizer->Add(pTransportWindow_, 0, wxEXPAND);
   pTopSizer->Add(pTrackEditorWindow_, 0, wxEXPAND);
   pTopSizer->Add(pKeyEditorWindow_, 1, wxEXPAND);
 
@@ -62,6 +64,7 @@ void MainFrame::OnOpen(wxCommandEvent& event) {
     return;
 
   song_.importFromMidi0(openFileDialog.GetPath().ToStdString());
+  pTransportWindow_->update();
   pTrackEditorWindow_->updateTrackList();
   pKeyEditorWindow_->setDefaultScrollPositions();
 
