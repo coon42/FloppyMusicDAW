@@ -42,6 +42,19 @@ void Song::clear() {
   tracks_.push_back(Track(*this, "Track 1", 0));
 }
 
+uint64_t Song::durationUs() const {
+  uint64_t longestDuration = 0;
+
+  for (const Track& track : tracks_) {
+    const uint64_t curDuration = track.durationUs();
+
+    if (curDuration > longestDuration)
+      longestDuration = curDuration;
+  }
+
+  return longestDuration;
+}
+
 void Song::unselectAllNotes() {
   for (SongEvent* pSongEvent : tracks_[0].noteBlocks())
     pSongEvent->unselect();
@@ -225,3 +238,26 @@ Track::~Track() {
 
   songEvents_.clear();
 }
+
+uint64_t Track::durationUs() const {
+  static const uint32_t c = 60000000;
+  uint32_t bpm = 120;
+  uint32_t uspqn = c / bpm;
+  uint32_t tpqn = song_.tpqn();
+
+  uint64_t usTotal = 0;
+  uint32_t lastTick = 0;
+
+  for (const SongEvent* pEvent : songEvents_) {
+    const uint32_t deltaTick = pEvent->startTick() + pEvent->numTicks() - lastTick;
+
+    // TODO: set bpm on tempo change event
+
+    usTotal += (deltaTick * uspqn) / tpqn;
+
+    lastTick = pEvent->startTick() + pEvent->numTicks();
+  }
+
+  return usTotal;
+}
+

@@ -160,6 +160,7 @@ public:
   std::list<SongEvent*>& noteBlocks()             { return songEvents_; }
   const std::string& name() const                 { return name_; }
   int midiChannel() const                         { return midiChannel_; }
+  uint64_t durationUs() const;
 
 private:
   const Song& song_;
@@ -180,6 +181,7 @@ public:
   Track* track(int trackNo)              { return &tracks_[trackNo]; }
   const Track* track(int trackNo) const  { return &tracks_[trackNo]; }
   size_t numberOfTracks() const          { return tracks_.size(); }
+  uint64_t durationUs() const;
 
   void debugPrintAllNoteBlocks() const;
   void unselectAllNotes();
