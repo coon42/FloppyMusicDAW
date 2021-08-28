@@ -126,12 +126,12 @@ void Song::importFromMidi0(const std::string& path) {
       case MIDI_EVENT_NOTE_ON: {
         const uint8_t note = midiEvent.params.msg.noteOn.note;
 
-        if (onNotes.find(note) == onNotes.end()) { // ignore, double additional note on event if already active
-          if (midiEvent.params.msg.noteOn.velocity > 0)
+        if (midiEvent.params.msg.noteOn.velocity > 0) {
+          if (onNotes.find(note) == onNotes.end()) // ignore, double additional note on event if already active
             noteOn(note);
-          else // Velocity of 0 means note off:
-            noteOff(note);
         }
+        else // Velocity of 0 means note off:
+          noteOff(note);
 
         break;
       }
