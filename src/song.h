@@ -95,6 +95,25 @@ public:
 
   Error write(uint32_t deltaTime) const override = 0;
 };
+
+//-------------------------------------------------------------------------------------------------
+// EmMetaSetTempoEvent
+//-------------------------------------------------------------------------------------------------
+
+class EmMetaSetTempoEvent : public EmMetaEvent {
+public:
+  EmMetaSetTempoEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint32_t bpm)
+      : EmMetaEvent(pMidiFile, absoluteTick), bpm_(bpm) {}
+
+  uint8_t metaEventId() const final           { return MIDI_SET_TEMPO; }
+  Error write(uint32_t deltaTime) const final = 0;
+
+  uint8_t bpm() const                         { return bpm_; }
+
+private:
+  const uint32_t bpm_;
+};
+
 //-------------------------------------------------------------------------------------------------
 // SongEvent
 //-------------------------------------------------------------------------------------------------
