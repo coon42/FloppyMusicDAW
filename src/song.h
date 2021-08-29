@@ -82,6 +82,20 @@ public:
 };
 
 //-------------------------------------------------------------------------------------------------
+// EmMetaEvent
+//-------------------------------------------------------------------------------------------------
+
+class EmMetaEvent : public EmMidiEvent {
+public:
+  EmMetaEvent(MidiFile* pMidiFile, uint32_t absoluteTick)
+      : EmMidiEvent(pMidiFile, absoluteTick) {}
+
+  uint8_t eventId() const final               { return MIDI_EVENT_META; }
+  virtual uint8_t metaEventId() const = 0;
+
+  Error write(uint32_t deltaTime) const override = 0;
+};
+//-------------------------------------------------------------------------------------------------
 // SongEvent
 //-------------------------------------------------------------------------------------------------
 
