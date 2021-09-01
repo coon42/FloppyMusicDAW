@@ -162,7 +162,7 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   }
 
   // draw note blocks
-  for (const SongEvent* pSongEvent : pSong_->track(0)->noteBlocks()) {
+  for (const SongEvent* pSongEvent : pSong_->track(0)->songEvents()) {
     if (pSongEvent->type() == SongEventType::NoteBlock) {
       const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
       const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);
@@ -241,7 +241,7 @@ KeyEditorGridCanvas::ResizeArea KeyEditorGridCanvas::noteBlockResizeArea(const N
 }
 
 NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
-  for (SongEvent* pSongEvent : pSong_->track(0)->noteBlocks()) {
+  for (SongEvent* pSongEvent : pSong_->track(0)->songEvents()) {
     if (pSongEvent->type() == SongEventType::NoteBlock) {
       NoteBlock& noteBlock = *static_cast<NoteBlock*>(pSongEvent);
 
@@ -281,12 +281,12 @@ void KeyEditorGridCanvas::OnMouseLeftDown(wxMouseEvent& event) {
         break;
     }
 
-    pSong_->unselectAllNotes();
+    pSong_->unselectAllEvents();
     pNoteBlock->select();
     pClickedTarget = eMidi_numberToNote(pNoteBlock->note());
   }
   else
-    pSong_->unselectAllNotes();
+    pSong_->unselectAllEvents();
 
   printf("clicked on: %s\n", pClickedTarget);
   render();

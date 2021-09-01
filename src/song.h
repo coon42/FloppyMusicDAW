@@ -156,8 +156,8 @@ public:
   ~Track();
 
   void addSongEvent(const SongEvent& songEvent)   { songEvents_.push_back(songEvent.clone()); }
-  const std::list<SongEvent*>& noteBlocks() const { return songEvents_; }
-  std::list<SongEvent*>& noteBlocks()             { return songEvents_; }
+  const std::list<SongEvent*>& songEvents() const { return songEvents_; }
+  std::list<SongEvent*>& songEvents()             { return songEvents_; }
   const std::string& name() const                 { return name_; }
   int midiChannel() const                         { return midiChannel_; }
   uint64_t durationUs() const;
@@ -183,8 +183,8 @@ public:
   size_t numberOfTracks() const          { return tracks_.size(); }
   uint64_t durationUs() const;
 
-  void debugPrintAllNoteBlocks() const;
-  void unselectAllNotes();
+  void debugPrintAllSongEvents() const;
+  void unselectAllEvents();
   void importFromMidi0(const std::string& path);
   void exportAsMidi0(const std::string& path) const;
 

@@ -55,18 +55,18 @@ uint64_t Song::durationUs() const {
   return longestDuration;
 }
 
-void Song::unselectAllNotes() {
-  for (SongEvent* pSongEvent : tracks_[0].noteBlocks())
+void Song::unselectAllEvents() {
+  for (SongEvent* pSongEvent : tracks_[0].songEvents())
     pSongEvent->unselect();
 }
 
-void Song::debugPrintAllNoteBlocks() const {
+void Song::debugPrintAllSongEvents() const {
   for (int trackNo = 0; trackNo < tracks_.size(); ++trackNo) {
     const Track& track = tracks_[trackNo];
 
-    printf("Note blocks of track %d '%s':\n", trackNo + 1, track.name().c_str());
+    printf("Note events of track %d '%s':\n", trackNo + 1, track.name().c_str());
 
-    for (const SongEvent* pSongEvent : track.noteBlocks()) {
+    for (const SongEvent* pSongEvent : track.songEvents()) {
       if (pSongEvent->type() == SongEventType::NoteBlock) {
         const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
 
@@ -186,7 +186,7 @@ void Song::exportAsMidi0(const std::string& path) const {
   std::list<EmMidiEvent*> eventList;
 
   for (const Track& track : tracks_) {
-    for (const SongEvent* pSongEvent : track.noteBlocks()) {
+    for (const SongEvent* pSongEvent : track.songEvents()) {
       if (pSongEvent->type() == SongEventType::NoteBlock) {
         const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
 
