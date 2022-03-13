@@ -47,13 +47,13 @@ void Song::clear() {
   tpqn_ = MIDI_DEFAULT_TPQN;
   tracks_.clear();
 
-  tracks_.push_back(Track(*this, "Track 1", 0));
+  tracks_.push_back(ChannelTrack(*this, "Track 1", 0));
 }
 
 uint64_t Song::durationUs() const {
   uint64_t longestDuration = 0;
 
-  for (const Track& track : tracks_) {
+  for (const ChannelTrack& track : tracks_) {
     const uint64_t curDuration = track.durationUs();
 
     if (curDuration > longestDuration)
@@ -110,7 +110,7 @@ void Song::importFromMidi0(const std::string& path) {
 
       std::ostringstream trackName;
       trackName << "Track " << channel + 1;
-      tracks_.push_back(Track(*this, trackName.str(), channel));
+      tracks_.push_back(ChannelTrack(*this, trackName.str(), channel));
 
       channelToTrackNo[channel] = static_cast<uint8_t>(tracks_.size() - 1);
     }
@@ -187,7 +187,7 @@ void Song::exportAsMidi0(const std::string& path) const {
 
   std::list<EmMidiEvent*> eventList;
 
-  for (const Track& track : tracks_) {
+  for (const ChannelTrack& track : tracks_) {
     for (const SongEvent* pSongEvent : track.songEvents()) {
       if (pSongEvent->type() == SongEventType::NoteBlock) {
         const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
@@ -229,12 +229,25 @@ void Song::exportAsMidi0(const std::string& path) const {
 // Track
 //-------------------------------------------------------------------------------------------------
 
-Track::Track(const Track& track) : Track(track.song_, track.name_, track.midiChannel_) {
-  for (const SongEvent* pSongEvent : track.songEvents_)
-    songEvents_.push_back(pSongEvent->clone());
+Track::Track(const Track& track)
+  : Track(track.song_, track.name_) {
+  operator = (track);
 }
 
 Track::~Track() {
+  clear();
+}
+
+Track& Track::operator = (const Track& rhs) {
+  clear();
+
+  for (const SongEvent* pSongEvent : rhs.songEvents_)
+    songEvents_.push_back(pSongEvent->clone());
+
+  return *this;
+}
+
+void Track::clear() {
   for (SongEvent* pSongEvent : songEvents_)
     delete pSongEvent;
 
@@ -251,7 +264,11 @@ void Track::debugPrintAllEvents() const {
   }
 }
 
-uint64_t Track::durationUs() const {
+//-------------------------------------------------------------------------------------------------
+// ChannelTrack
+//-------------------------------------------------------------------------------------------------
+
+uint64_t ChannelTrack::durationUs() const {
   static const uint32_t c = 60000000;
   uint32_t bpm = 120;
   uint32_t uspqn = c / bpm;
@@ -260,7 +277,7 @@ uint64_t Track::durationUs() const {
   uint64_t usTotal = 0;
   uint32_t lastTick = 0;
 
-  for (const SongEvent* pEvent : songEvents_) {
+  for (const SongEvent* pEvent : songEvents()) {
     const uint32_t deltaTick = pEvent->startTick() + pEvent->numTicks() - lastTick;
 
     // TODO: set bpm on tempo change event
@@ -272,4 +289,3 @@ uint64_t Track::durationUs() const {
 
   return usTotal;
 }
-

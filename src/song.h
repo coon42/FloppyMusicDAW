@@ -254,23 +254,41 @@ class Song;
 
 class Track {
 public:
-  Track(const Song& song, std::string name, int midiChannel)
-      : song_(song), name_(name), midiChannel_(midiChannel) {};
+  Track(const Song& song, std::string name)
+      : song_(song), name_(name) {};
   Track(const Track& track);
+  Track& operator = (const Track& rhs);
   ~Track();
 
+  void clear();
   void addSongEvent(const SongEvent& songEvent)   { songEvents_.push_back(songEvent.clone()); }
   const std::list<SongEvent*>& songEvents() const { return songEvents_; }
   std::list<SongEvent*>& songEvents()             { return songEvents_; }
   const std::string& name() const                 { return name_; }
-  int midiChannel() const                         { return midiChannel_; }
-  uint64_t durationUs() const;
+
   void debugPrintAllEvents() const;
 
-private:
+protected:
   const Song& song_;
+
+private:
   std::list<SongEvent*> songEvents_;
   std::string name_{"Undefined"};
+};
+
+//-------------------------------------------------------------------------------------------------
+// ChannelTrack
+//-------------------------------------------------------------------------------------------------
+
+class ChannelTrack : public Track {
+public:
+  ChannelTrack(const Song& song, std::string name, int midiChannel)
+    : Track(song, name), midiChannel_(midiChannel) {};
+
+  int midiChannel() const { return midiChannel_; }
+  uint64_t durationUs() const;
+
+private:
   int midiChannel_{0};
 };
 
@@ -280,12 +298,12 @@ private:
 
 class Song {
 public:
-  Song()                                 { clear(); }
-  void clear();
-  void setTpqn(uint16_t tpqn)            { tpqn_ = tpqn; }
-  Track* track(int trackNo)              { return &tracks_[trackNo]; }
-  const Track* track(int trackNo) const  { return &tracks_[trackNo]; }
-  size_t numberOfTracks() const          { return tracks_.size(); }
+  Song()                                        { clear(); }
+  void clear();                                 
+  void setTpqn(uint16_t tpqn)                   { tpqn_ = tpqn; }
+  ChannelTrack* track(int trackNo)              { return &tracks_[trackNo]; }
+  const ChannelTrack* track(int trackNo) const  { return &tracks_[trackNo]; }
+  size_t numberOfTracks() const                 { return tracks_.size(); }
   uint64_t durationUs() const;
 
   void debugPrintAllSongEvents() const;
@@ -293,12 +311,12 @@ public:
   void importFromMidi0(const std::string& path);
   void exportAsMidi0(const std::string& path) const;
 
-  const uint16_t tpqn() const            { return tpqn_; }
+  const uint16_t tpqn() const                   { return tpqn_; }
 
 private:
   int currentSelectedTrack_{0};
   uint16_t tpqn_{0};
-  std::vector<Track> tracks_;
+  std::vector<ChannelTrack> tracks_;
 };
 
 #endif // _SONG_H
