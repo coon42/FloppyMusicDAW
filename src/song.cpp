@@ -118,70 +118,89 @@ void Song::importFromMidi0(const std::string& path) {
   MidiEvent midiEvent;
 
   while (eMidi_readEvent(&midiFile, &midiEvent) == EMIDI_OK) {
-    if (midiEvent.eventId == 0xFF) // skip meta events for now.
-      continue;
-
-    const int eventId = midiEvent.eventId & 0xF0;
-    const int channel = midiEvent.eventId & 0x0F;
-
-    if (channelToTrackNo.find(channel) == channelToTrackNo.end()) {
-      trackOnNotes[channel] = OnNotesMap();
-
-      std::ostringstream trackName;
-      trackName << "Track " << channel + 1;
-      tracks_.push_back(ChannelTrack(*this, trackName.str(), channel));
-
-      channelToTrackNo[channel] = static_cast<uint8_t>(tracks_.size() - 1);
-    }
-
-    const int trackNo = channelToTrackNo[channel];
-
-    Track* pTrack = &tracks_[trackNo];
-    OnNotesMap& onNotes = trackOnNotes[channel];
+    const int eventId = midiEvent.eventId != MIDI_EVENT_META ? midiEvent.eventId & 0xF0 : MIDI_EVENT_META;
 
     currentTick += midiEvent.deltaTime;
 
-    auto noteOn = [&](uint8_t note) {
-      NoteBlock noteBlock;
-      noteBlock.setNote(midiEvent.params.msg.noteOn.note);
-      noteBlock.setStartTick(currentTick);
+    if (eventId != MIDI_EVENT_META) {
+      const int channel = midiEvent.eventId & 0x0F;
 
-      onNotes[note] = noteBlock;
-    };
+      if (channelToTrackNo.find(channel) == channelToTrackNo.end()) {
+        trackOnNotes[channel] = OnNotesMap();
 
-    auto noteOff = [&](uint8_t note) {
-      NoteBlock& noteBlock = onNotes[note];
-      noteBlock.setNumTicks(currentTick - noteBlock.startTick());
-      pTrack->addSongEvent(onNotes[note]);
-      onNotes.erase(note);
-    };
+        std::ostringstream trackName;
+        trackName << "Track " << channel + 1;
+        tracks_.push_back(ChannelTrack(*this, trackName.str(), channel));
 
-    switch (eventId) {
-      case MIDI_EVENT_NOTE_ON: {
-        const uint8_t note = midiEvent.params.msg.noteOn.note;
+        channelToTrackNo[channel] = static_cast<uint8_t>(tracks_.size() - 1);
+      }
 
-        if (midiEvent.params.msg.noteOn.velocity > 0) {
-          if (onNotes.find(note) == onNotes.end()) // ignore, double additional note on event if already active
-            noteOn(note);
+      const int trackNo = channelToTrackNo[channel];
+
+      Track* pTrack = &tracks_[trackNo];
+      OnNotesMap& onNotes = trackOnNotes[channel];
+      
+      auto noteOn = [&](uint8_t note) {
+        NoteBlock noteBlock;
+        noteBlock.setNote(midiEvent.params.msg.noteOn.note);
+        noteBlock.setStartTick(currentTick);
+
+        onNotes[note] = noteBlock;
+      };
+
+      auto noteOff = [&](uint8_t note) {
+        NoteBlock& noteBlock = onNotes[note];
+        noteBlock.setNumTicks(currentTick - noteBlock.startTick());
+        pTrack->addSongEvent(onNotes[note]);
+        onNotes.erase(note);
+      };
+
+      switch (eventId) {
+        case MIDI_EVENT_NOTE_ON: {
+          const uint8_t note = midiEvent.params.msg.noteOn.note;
+
+          if (midiEvent.params.msg.noteOn.velocity > 0) {
+            if (onNotes.find(note) == onNotes.end()) // ignore, double additional note on event if already active
+              noteOn(note);
+          }
+          else // Velocity of 0 means note off:
+            noteOff(note);
+
+          break;
         }
-        else // Velocity of 0 means note off:
-          noteOff(note);
 
-        break;
+        case MIDI_EVENT_NOTE_OFF: {
+          const uint8_t note = midiEvent.params.msg.noteOff.note;
+
+          if (onNotes.find(note) != onNotes.end()) // ignore, if there is no matching note on event active
+            noteOff(note);
+
+          break;
+        }
+
+        default:
+          pTrack->addSongEvent(NotImplementedEvent(currentTick, eventId, 0));
+          break;
       }
+    }
+    else {
+      switch (midiEvent.metaEventId) {
+        case MIDI_SET_TEMPO: {
+          static const uint32_t c = 60000000;
+          const float bpm = static_cast<float>(c) / midiEvent.params.msg.meta.setTempo.usPerQuarterNote;
 
-      case MIDI_EVENT_NOTE_OFF: {
-        const uint8_t note = midiEvent.params.msg.noteOff.note;
+          SetTempoEvent setTempoEvent;
+          setTempoEvent.setStartTick(currentTick);
+          setTempoEvent.setBpm(bpm);
 
-        if (onNotes.find(note) != onNotes.end()) // ignore, if there is no matching note on event active
-          noteOff(note);
+          metaTrack_.addSongEvent(setTempoEvent);
+          break;
+        }
 
-        break;
+        default:
+          metaTrack_.addSongEvent(NotImplementedMetaEvent(currentTick, midiEvent.metaEventId, 0));
+          break;
       }
-
-      default:
-        pTrack->addSongEvent(NotImplementedEvent(currentTick, eventId, 0));
-        break;
     }
   }
 
