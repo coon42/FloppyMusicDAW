@@ -76,7 +76,25 @@ void Song::debugPrintAllSongEvents() const {
     printf("Note events of track %d '%s':\n", trackNo + 1, track.name().c_str());
 
     track.debugPrintAllEvents();
-  }   
+  }
+
+  printf("Meta events:\n");
+
+  for (const SongEvent* pSongEvent : metaTrack_.songEvents()) {
+    switch (pSongEvent->type()) {
+      case SongEventType::NotImplementedMetaEvent: {
+        const NotImplementedMetaEvent& me = *static_cast<const NotImplementedMetaEvent*>(pSongEvent);
+
+        printf("Not implemented meta event: ID: 0x%02X\n", me.midiMetaEventId());
+      }
+
+      case SongEventType::SetTempo: {
+        const SetTempoEvent& st = *static_cast<const SetTempoEvent*>(pSongEvent);
+
+        printf("Set Tempo: %.2f bpm\n", st.bpm());
+      }
+    }
+  }
 }
 
 void Song::importFromMidi0(const std::string& path) {
