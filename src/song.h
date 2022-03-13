@@ -132,14 +132,14 @@ public:
 
 class EmMetaSetTempoEvent : public EmMetaEvent {
 public:
-  uint8_t bpm() const                         { return bpm_; }
-  EmMetaSetTempoEvent(MidiFile* pMidiFile, uint32_t absoluteTick, uint32_t bpm)
+  EmMetaSetTempoEvent(MidiFile* pMidiFile, uint32_t absoluteTick, float bpm)
       : EmMetaEvent(pMidiFile, MIDI_SET_TEMPO, absoluteTick), bpm_(bpm) {}
   
   Error write(uint32_t deltaTime) const final;
+  float bpm() const                         { return bpm_; }
 
 private:
-  const uint32_t bpm_;
+  const float bpm_;
 };
 
 //-------------------------------------------------------------------------------------------------
