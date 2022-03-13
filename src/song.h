@@ -149,7 +149,9 @@ private:
 enum class SongEventType {
   Undefined,
   NotImplementedEvent,
-  NoteBlock
+  NotImplementedMetaEvent,
+  NoteBlock,
+  SetTempo
 };
 
 class SongEvent {
@@ -190,6 +192,26 @@ public:
 
 private:
   const uint8_t midiEventId_;
+};
+
+//-------------------------------------------------------------------------------------------------
+// NotImplementedMetaEvent
+//-------------------------------------------------------------------------------------------------
+
+class NotImplementedMetaEvent : public SongEvent {
+public:
+  NotImplementedMetaEvent(uint32_t startTick, uint8_t midiMetaEventId, uint32_t numTicks)
+      : midiMetaEventId_(midiMetaEventId) {
+    setStartTick(startTick);
+    setNumTicks(numTicks);
+  }
+
+  SongEvent* clone() const final   { return new NotImplementedMetaEvent(*this); }
+  SongEventType type() const final { return SongEventType::NotImplementedMetaEvent; }
+  uint8_t midiMetaEventId() const  { return midiMetaEventId_;}
+
+private:
+  const uint8_t midiMetaEventId_;
 };
 
 //-------------------------------------------------------------------------------------------------
