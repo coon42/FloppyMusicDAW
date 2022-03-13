@@ -39,9 +39,6 @@ void TrackEditorWindow::updateTrackList() {
     for (int row = 0; row < pTrackListGrid_->GetNumberRows(); ++row) {
       for (int col = 0; col < pTrackListGrid_->GetNumberCols(); ++col) {
         pTrackListGrid_->SetReadOnly(row, col);
-
-        pTrackListGrid_->SetCellAlignment(row, col, wxALIGN_CENTER, 0);
-        pTrackListGrid_->SetCellAlignment(row, col, wxALIGN_CENTER, 0);
         pTrackListGrid_->SetCellAlignment(row, col, wxALIGN_CENTER, 0);
       }
     }
