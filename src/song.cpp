@@ -118,7 +118,7 @@ void Song::importFromMidi0(const std::string& path) {
       trackName << "Track " << channel + 1;
       tracks_.push_back(Track(*this, trackName.str(), channel));
 
-      channelToTrackNo[channel] = tracks_.size() - 1;
+      channelToTrackNo[channel] = static_cast<uint8_t>(tracks_.size() - 1);
     }
 
     const int trackNo = channelToTrackNo[channel];
