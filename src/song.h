@@ -35,6 +35,21 @@ private:
 };
 
 //-------------------------------------------------------------------------------------------------
+// EmNotImplementedEvent
+//-------------------------------------------------------------------------------------------------
+
+class EmNotImplementedEvent : public EmMidiEvent {
+public:
+  EmNotImplementedEvent(MidiFile* pMidiFile, uint8_t eventId, uint32_t absoluteTick)
+      : EmMidiEvent(pMidiFile, eventId, absoluteTick) {}
+  
+  Error write(uint32_t deltaTime) const final {
+    printf("EmNotImplementedEvent::write()\n");
+    return EMIDI_OK;
+  }
+};
+
+//-------------------------------------------------------------------------------------------------
 // EmNoteEvent
 //-------------------------------------------------------------------------------------------------
 
