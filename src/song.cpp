@@ -315,22 +315,78 @@ void Track::debugPrintAllEvents() const {
 //-------------------------------------------------------------------------------------------------
 
 uint64_t ChannelTrack::durationUs() const {
+  std::list<EmMidiEvent*> eventList;
+
+  for (const SongEvent* pSongEvent : songEvents()) {
+    switch (pSongEvent->type()) {
+      case SongEventType::NoteBlock: {
+        const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
+
+        eventList.push_back(new EmNoteOnEvent(nullptr, noteBlock.startTick(), midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+        eventList.push_back(new EmNoteOffEvent(nullptr, noteBlock.startTick() + noteBlock.numTicks(), midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+
+        break;
+      }
+
+      case SongEventType::NotImplementedEvent: {
+        const NotImplementedEvent& notImplementedEvent = *static_cast<const NotImplementedEvent*>(pSongEvent);
+        
+        eventList.push_back(new EmNotImplementedEvent(nullptr, notImplementedEvent.midiEventId(),
+            notImplementedEvent.startTick()));
+      }
+
+      default:
+        break;
+    }
+  }
+
+  for (const SongEvent* pSongEvent : song_.metaTrack()->songEvents()) {
+    switch (pSongEvent->type()) {
+      case SongEventType::SetTempo: {
+        const SetTempoEvent& setTempoEvent = *static_cast<const SetTempoEvent*>(pSongEvent);
+
+        eventList.push_back(new EmMetaSetTempoEvent(nullptr, setTempoEvent.startTick(), setTempoEvent.bpm()));
+        break;
+      }      
+    }    
+  }
+
+  // comparison, not case sensitive.
+  auto absoluteTicksAscending = [](const EmMidiEvent* pFirst, const EmMidiEvent* pSecond) -> bool {
+    return pFirst->absoluteTick() < pSecond->absoluteTick();
+  };
+
+  eventList.sort(absoluteTicksAscending);
+
   static const uint32_t c = 60000000;
-  uint32_t bpm = 120;
-  uint32_t uspqn = c / bpm;
-  uint32_t tpqn = song_.tpqn();
+  const float defaultBpm = 120;
+  const uint32_t tpqn = song_.tpqn();
 
+  uint32_t uspqn = static_cast<uint32_t>(c / defaultBpm);
+  uint64_t usCurrent = 0;
   uint64_t usTotal = 0;
-  uint32_t lastTick = 0;
+  uint64_t lastTick = 0;
+   
+  for (const EmMidiEvent* pEvent : eventList) {
+    const uint64_t deltaTick = pEvent->absoluteTick() - lastTick;
 
-  for (const SongEvent* pEvent : songEvents()) {
-    const uint32_t deltaTick = pEvent->startTick() + pEvent->numTicks() - lastTick;
+    usCurrent += (deltaTick * uspqn) / tpqn; // FIXME: leads to integer overflow on big delta values
 
-    // TODO: set bpm on tempo change event
+    lastTick = pEvent->absoluteTick();
+    
+    if (pEvent->eventId() == MIDI_EVENT_META) {
+      const EmMetaEvent* pMetaEvent = static_cast<const EmMetaEvent*>(pEvent);
 
-    usTotal += (deltaTick * uspqn) / tpqn;
+      if (pMetaEvent->metaEventId() == MIDI_SET_TEMPO) {
+        const EmMetaSetTempoEvent* pSetTempoEvent = static_cast<const EmMetaSetTempoEvent*>(pEvent);
 
-    lastTick = pEvent->startTick() + pEvent->numTicks();
+        uspqn = static_cast<uint32_t>(c / pSetTempoEvent->bpm());
+      }
+      else
+        throw "non tempo meta event invalid!";
+    }
+    else    
+      usTotal = usCurrent;
   }
 
   return usTotal;
