@@ -178,13 +178,18 @@ private:
 
 class NotImplementedEvent : public SongEvent {
 public:
-  NotImplementedEvent(uint32_t startTick, uint32_t numTicks) {
+  NotImplementedEvent(uint32_t startTick, uint8_t midiEventId, uint32_t numTicks)
+      : midiEventId_(midiEventId) {
     setStartTick(startTick);
     setNumTicks(numTicks);
   }
 
   SongEvent* clone() const final   { return new NotImplementedEvent(*this); }
   SongEventType type() const final { return SongEventType::NotImplementedEvent; }
+  uint8_t midiEventId() const      { return midiEventId_;}
+
+private:
+  const uint8_t midiEventId_;
 };
 
 //-------------------------------------------------------------------------------------------------

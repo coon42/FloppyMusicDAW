@@ -167,7 +167,7 @@ void Song::importFromMidi0(const std::string& path) {
       }
 
       default:
-        pTrack->addSongEvent(NotImplementedEvent(currentTick, 0));
+        pTrack->addSongEvent(NotImplementedEvent(currentTick, eventId, 0));
         break;
     }
   }
