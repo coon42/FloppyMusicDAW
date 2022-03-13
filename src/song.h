@@ -310,10 +310,13 @@ public:
 class Song {
 public:
   Song()                                        { clear(); }
-  void clear();                                 
+  void clear();
   void setTpqn(uint16_t tpqn)                   { tpqn_ = tpqn; }
   ChannelTrack* track(int trackNo)              { return &tracks_[trackNo]; }
   const ChannelTrack* track(int trackNo) const  { return &tracks_[trackNo]; }
+  MetaTrack* metaTrack()                        { return &metaTrack_; }
+  const MetaTrack* metaTrack() const            { return &metaTrack_; }
+
   size_t numberOfTracks() const                 { return tracks_.size(); }
   uint64_t durationUs() const;
 
@@ -327,6 +330,8 @@ public:
 private:
   int currentSelectedTrack_{0};
   uint16_t tpqn_{0};
+
+  MetaTrack metaTrack_{*this};
   std::vector<ChannelTrack> tracks_;
 };
 

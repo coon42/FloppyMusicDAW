@@ -46,6 +46,7 @@ Error EmMetaSetTempoEvent::write(uint32_t deltaTime) const {
 void Song::clear() {
   tpqn_ = MIDI_DEFAULT_TPQN;
   tracks_.clear();
+  metaTrack_ = MetaTrack(*this);
 
   tracks_.push_back(ChannelTrack(*this, "Track 1", 0));
 }
