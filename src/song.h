@@ -112,6 +112,21 @@ private:
 };
 
 //-------------------------------------------------------------------------------------------------
+// EmMetaNotImplementedEvent
+//-------------------------------------------------------------------------------------------------
+
+class EmMetaNotImplementedEvent : public EmMetaEvent {
+public:
+  EmMetaNotImplementedEvent(MidiFile* pMidiFile, uint8_t metaEventId, uint32_t absoluteTick)
+    : EmMetaEvent(pMidiFile, metaEventId, absoluteTick) {}
+  
+  Error write(uint32_t deltaTime) const final {
+    printf("EmMetaNotImplementedEvent::write()\n");
+    return EMIDI_OK;
+  }
+};
+
+//-------------------------------------------------------------------------------------------------
 // EmMetaSetTempoEvent
 //-------------------------------------------------------------------------------------------------
 
