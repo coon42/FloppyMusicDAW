@@ -236,6 +236,17 @@ void Song::exportAsMidi0(const std::string& path) const {
     }
   }
 
+  for (const SongEvent* pSongEvent : metaTrack_.songEvents()) {
+    switch (pSongEvent->type()) {
+      case SongEventType::SetTempo: {
+        const SetTempoEvent& setTempoEvent = *static_cast<const SetTempoEvent*>(pSongEvent);
+
+        eventList.push_back(new EmMetaSetTempoEvent(&midiFile, setTempoEvent.startTick(), setTempoEvent.bpm()));
+        break;
+      }
+    }
+  }
+
   // comparison, not case sensitive.
   auto absoluteTicksAscending = [](const EmMidiEvent* pFirst, const EmMidiEvent* pSecond) -> bool {
     return pFirst->absoluteTick() < pSecond->absoluteTick();
