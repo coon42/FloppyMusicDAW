@@ -257,11 +257,19 @@ void Track::clear() {
 
 void Track::debugPrintAllEvents() const {
   for (const SongEvent* pSongEvent : songEvents_) {
-    if (pSongEvent->type() == SongEventType::NoteBlock) {
-      const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
+    switch (pSongEvent->type()) {
+      case SongEventType::NotImplementedEvent: {
+        const NotImplementedEvent& ne = *static_cast<const NotImplementedEvent*>(pSongEvent);
 
-      printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
-    }
+        printf("Not implemented event: ID: 0x%02X (%s)\n", ne.midiEventId(), eMidi_eventToStr(ne.midiEventId()));
+      }
+
+      case SongEventType::NoteBlock: {
+        const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
+
+        printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
+      }
+    }    
   }
 }
 
