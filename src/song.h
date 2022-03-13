@@ -231,6 +231,22 @@ private:
 };
 
 //-------------------------------------------------------------------------------------------------
+// SetTempoEvent
+//-------------------------------------------------------------------------------------------------
+
+class SetTempoEvent : public SongEvent {
+public:
+  SongEvent* clone() const final   { return new SetTempoEvent(*this); }
+  SongEventType type() const final { return SongEventType::SetTempo; }
+
+  void setBpm(float bpm)           { bpm_ = bpm; }
+  const float bpm() const          { return bpm_; }
+
+private:
+  float bpm_{0}; // TODO: use fixed point arithmetic instead
+};
+
+//-------------------------------------------------------------------------------------------------
 // Track
 //-------------------------------------------------------------------------------------------------
 
