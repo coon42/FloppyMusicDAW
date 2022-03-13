@@ -265,6 +265,7 @@ public:
   const std::string& name() const                 { return name_; }
   int midiChannel() const                         { return midiChannel_; }
   uint64_t durationUs() const;
+  void debugPrintAllEvents() const;
 
 private:
   const Song& song_;

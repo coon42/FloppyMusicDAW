@@ -74,14 +74,8 @@ void Song::debugPrintAllSongEvents() const {
 
     printf("Note events of track %d '%s':\n", trackNo + 1, track.name().c_str());
 
-    for (const SongEvent* pSongEvent : track.songEvents()) {
-      if (pSongEvent->type() == SongEventType::NoteBlock) {
-        const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
-
-        printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
-      }
-    }
-  }
+    track.debugPrintAllEvents();
+  }   
 }
 
 void Song::importFromMidi0(const std::string& path) {
@@ -245,6 +239,16 @@ Track::~Track() {
     delete pSongEvent;
 
   songEvents_.clear();
+}
+
+void Track::debugPrintAllEvents() const {
+  for (const SongEvent* pSongEvent : songEvents_) {
+    if (pSongEvent->type() == SongEventType::NoteBlock) {
+      const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
+
+      printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
+    }
+  }
 }
 
 uint64_t Track::durationUs() const {
