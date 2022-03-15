@@ -283,6 +283,14 @@ void Track::debugPrintAllEvents() const {
         break;
       }
 
+      case SongEventType::NotImplementedMetaEvent: {
+        const NotImplementedMetaEvent& nme = *static_cast<const NotImplementedMetaEvent*>(pSongEvent);
+
+        printf("Not implemented meta event: ID: 0x%02X (%s)\n", nme.midiMetaEventId(),
+            eMidi_metaEventToStr(nme.midiMetaEventId()));
+        break;
+      }
+
       case SongEventType::NoteBlock: {
         const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
 
