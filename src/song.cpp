@@ -314,7 +314,15 @@ void Track::debugPrintAllEvents() const {
       case SongEventType::NoteBlock: {
         const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
 
-        printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
+        const ChannelTrack& channelTrack = *static_cast<const ChannelTrack*>(this);
+        const char* pNoteName = nullptr;
+
+        if (channelTrack.midiChannel() != 9)
+          pNoteName = eMidi_numberToNote(b.note());
+        else
+          pNoteName = eMidi_drumToStr(b.note());
+
+        printf("Note: %s, start: %d, numTicks: %d\n", pNoteName, b.startTick(), b.numTicks());
         break;
       }
     }    
