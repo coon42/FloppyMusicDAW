@@ -162,7 +162,9 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   }
 
   // draw note blocks
-  for (const SongEvent* pSongEvent : pSong_->track(0)->songEvents()) {
+  std::list<SongEvent*> eventsOfCurrentTrack = pSong_->track(pSong_->currentSelectedTrackNo())->songEvents();
+
+  for (const SongEvent* pSongEvent : eventsOfCurrentTrack) {
     if (pSongEvent->type() == SongEventType::NoteBlock) {
       const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
       const BlockDimensions bd = getVisibleNoteBlockDimensions(noteBlock);

@@ -216,7 +216,9 @@ public:
 
   size_t numberOfTracks() const                 { return tracks_.size(); }
   uint64_t durationUs() const;
+  int currentSelectedTrackNo() const            { return currentSelectedTrackNo_; }
 
+  void setCurrentSelectedTrack(int track)       { currentSelectedTrackNo_ = track; }
   void debugPrintAllSongEvents() const;
   void unselectAllEvents();
   void importFromMidi0(const std::string& path);
@@ -225,7 +227,7 @@ public:
   const uint16_t tpqn() const                   { return tpqn_; }
 
 private:
-  int currentSelectedTrack_{0};
+  int currentSelectedTrackNo_{0};
   uint16_t tpqn_{0};
 
   MetaTrack metaTrack_{*this};
