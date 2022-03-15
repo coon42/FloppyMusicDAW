@@ -142,6 +142,15 @@ void Song::importFromMidi0(const std::string& path) {
           break;
         }
 
+        case MIDI_EVENT_PITCH_BEND: {
+          PitchBendEvent pitchBendEvent;
+          pitchBendEvent.setStartTick(currentTick);          
+          pitchBendEvent.setPitchBendValue(midiEvent.params.msg.pitchBend.value);
+
+          pTrack->addSongEvent(pitchBendEvent);
+          break;
+        }
+
         default:
           pTrack->addSongEvent(NotImplementedEvent(currentTick, eventId, 0));
           break;
@@ -205,6 +214,15 @@ void Song::exportAsMidi0(const std::string& path) const {
 
           eventList.push_back(new EmProgramChangeEvent(&midiFile, programChange.startTick(),
               track.midiChannel(), programChange.programNumber()));
+
+          break;
+        }
+
+        case SongEventType::PitchBend: {
+          const PitchBendEvent& pitchBendEvent = *static_cast<const PitchBendEvent*>(pSongEvent);
+
+          eventList.push_back(new EmPitchBendEvent(&midiFile, pitchBendEvent.startTick(), track.midiChannel(),
+              pitchBendEvent.pitchBendValue()));
 
           break;
         }

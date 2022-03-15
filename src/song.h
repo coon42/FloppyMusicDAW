@@ -15,7 +15,8 @@ enum class SongEventType {
   NotImplementedMetaEvent,
   SetTempo,
   NoteBlock,
-  ProgramChange
+  ProgramChange,
+  PitchBend
 };
 
 class SongEvent {
@@ -108,6 +109,22 @@ public:
 
 private:
   uint8_t programNumber_{0};
+};
+
+//-------------------------------------------------------------------------------------------------
+// PitchBendEvent
+//-------------------------------------------------------------------------------------------------
+
+class PitchBendEvent : public SongEvent {
+public:
+  SongEvent* clone() const final                  { return new PitchBendEvent(*this); }
+  SongEventType type() const final                { return SongEventType::PitchBend; }
+
+  void setPitchBendValue(uint16_t pitchBendValue) { pitchBendValue_ = pitchBendValue; }
+  const uint16_t pitchBendValue() const           { return pitchBendValue_; }
+
+private:
+  uint16_t pitchBendValue_{64};
 };
 
 //-------------------------------------------------------------------------------------------------
