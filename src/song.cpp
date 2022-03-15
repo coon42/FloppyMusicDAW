@@ -291,6 +291,14 @@ void Track::debugPrintAllEvents() const {
         break;
       }
 
+
+      case SongEventType::SetTempo: {
+        const SetTempoEvent& st = *static_cast<const SetTempoEvent*>(pSongEvent);
+
+        printf("Set Tempo: %.2f bpm\n", st.bpm());
+        break;
+      }
+
       case SongEventType::NoteBlock: {
         const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
 
