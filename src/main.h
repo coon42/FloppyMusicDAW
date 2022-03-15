@@ -27,6 +27,8 @@ private:
   KeyEditorWindow* pKeyEditorWindow_{nullptr};
   Song song_;
 
+  static void onRedrawAllRequest(void* pCtx); // TODO: remove once rendering is fixed!
+
   wxDECLARE_EVENT_TABLE();
 };
 

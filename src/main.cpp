@@ -31,6 +31,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
   CreateStatusBar();
   SetStatusText("Ready.");
 
+  song_.registerRedrawAllCallback(onRedrawAllRequest, this); // TODO: remove once rendering is fixed!
+
   pTransportWindow_ = new TransportWindow(this, &song_);
   pTrackEditorWindow_ = new TrackEditorWindow(this, &song_);
   pKeyEditorWindow_ = new KeyEditorWindow(this, &song_);
@@ -80,6 +82,16 @@ void MainFrame::OnSaveAs(wxCommandEvent& event) {
 
   song_.exportAsMidi0(saveFileDialog.GetPath().ToStdString());
 }
+
+// TODO: remove once rendering is fixed:
+void MainFrame::onRedrawAllRequest(void* pCtx) {
+  MainFrame* pThis = static_cast<MainFrame*>(pCtx);
+
+  pThis->pTransportWindow_->update();
+  pThis->pTrackEditorWindow_->updateTrackList();
+  pThis->pKeyEditorWindow_->render();
+}
+// --
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 EVT_MENU(wxID_EXIT, MainFrame::OnExit)
