@@ -165,11 +165,11 @@ public:
   ChannelTrack(const Song& song, std::string name, int midiChannel)
     : Track(song, name), midiChannel_(midiChannel) {};
 
-  int midiChannel() const { return midiChannel_; }
-  uint64_t durationUs() const;
+  int midiChannel() const                       { return midiChannel_; }
+  uint64_t durationUs() const;                  
 
 private:
-  int midiChannel_{0};
+  const int midiChannel_{0};
 };
 
 //-------------------------------------------------------------------------------------------------
