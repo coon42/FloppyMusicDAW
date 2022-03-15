@@ -136,6 +136,7 @@ void Song::importFromMidi0(const std::string& path) {
 
         case MIDI_EVENT_PROGRAM_CHANGE: {          
           ProgramChangeEvent programChange;          
+          programChange.setStartTick(currentTick);
           programChange.setProgram(midiEvent.params.msg.programChange.programNumber);
 
           pTrack->addSongEvent(programChange);
