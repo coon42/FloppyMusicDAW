@@ -95,8 +95,8 @@ void KeyEditorPianoCanvas::onRender(wxDC& dc) {
   dc.SetPen(wxPen(wxColor(0, 0, 0), 1)); // black line, 1 pixels thick
   dc.SetTextForeground(wxColor(0, 0, 0)); // set text color
 
-  for (int y = 0; y < NUM_MIDI_NOTES; ++y) {
-    const int midiNote = NUM_MIDI_NOTES - 1 - y - canvas()->yScrollOffset();
+  for (int y = 0; y < MIDI_NUM_NOTES; ++y) {
+    const int midiNote = MIDI_NUM_NOTES - 1 - y - canvas()->yScrollOffset();
 
     if (midiNote >= 0) {
       const int yOffset = y * canvas()->blockHeight();
@@ -137,8 +137,8 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
 
     int numBlocksVisibleOnScreen = (canvasSize.GetHeight() - canvas()->blockHeight() / 2) / canvas()->blockHeight();
 
-    if (numBlocksVisibleOnScreen + canvas()->yScrollOffset() > NUM_MIDI_NOTES)
-      numBlocksVisibleOnScreen = NUM_MIDI_NOTES - canvas()->yScrollOffset();
+    if (numBlocksVisibleOnScreen + canvas()->yScrollOffset() > MIDI_NUM_NOTES)
+      numBlocksVisibleOnScreen = MIDI_NUM_NOTES - canvas()->yScrollOffset();
 
     dc.DrawLine(xOffset, 0, xOffset, numBlocksVisibleOnScreen * canvas()->blockHeight());
   }
@@ -147,8 +147,8 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   dc.SetPen(wxPen(wxColor(0, 0, 0), 1)); // black line, 1 pixels thick
   dc.SetTextForeground(wxColor(0, 0, 0)); // set text color
 
-  for (int y = 0; y < NUM_MIDI_NOTES; ++y) {
-    const int midiNote = NUM_MIDI_NOTES - 1 - y - canvas()->yScrollOffset();
+  for (int y = 0; y < MIDI_NUM_NOTES; ++y) {
+    const int midiNote = MIDI_NUM_NOTES - 1 - y - canvas()->yScrollOffset();
 
     if (midiNote >= 0) {
       const int yOffset = y * canvas()->blockHeight();
@@ -210,8 +210,8 @@ KeyEditorGridCanvas::CellPosition KeyEditorGridCanvas::currentPointedCell(int mo
   pos.absoluteXindex = (mouseX + xOffset) / canvas()->pixelsPerQuarterNote();
   pos.absoluteYindex = (mouseY + yOffset) / canvas()->blockHeight();
 
-  if (pos.absoluteYindex > (NUM_MIDI_NOTES - 1))
-    pos.absoluteYindex = NUM_MIDI_NOTES - 1;
+  if (pos.absoluteYindex > (MIDI_NUM_NOTES - 1))
+    pos.absoluteYindex = MIDI_NUM_NOTES - 1;
 
   pos.relativeXindex = pos.absoluteXindex - xOffset / canvas()->pixelsPerQuarterNote();
   pos.relativeYindex = pos.absoluteYindex - yOffset / canvas()->blockHeight();
@@ -485,7 +485,7 @@ void KeyEditorWindow::render() {
 
 void KeyEditorWindow::setDefaultScrollPositions() {
   pHorizontalScrollbar_->SetScrollbar(0, 1, 128, 1);
-  pVerticalScrollbar_->SetScrollbar(24, 1, NUM_MIDI_NOTES, 1);
+  pVerticalScrollbar_->SetScrollbar(24, 1, MIDI_NUM_NOTES, 1);
 
   pHorizontalZoomSlider_->SetMin(0);
   pHorizontalZoomSlider_->SetMax(10);
