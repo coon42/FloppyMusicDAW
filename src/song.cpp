@@ -280,12 +280,14 @@ void Track::debugPrintAllEvents() const {
         const NotImplementedEvent& ne = *static_cast<const NotImplementedEvent*>(pSongEvent);
 
         printf("Not implemented event: ID: 0x%02X (%s)\n", ne.midiEventId(), eMidi_eventToStr(ne.midiEventId()));
+        break;
       }
 
       case SongEventType::NoteBlock: {
         const NoteBlock& b = *static_cast<const NoteBlock*>(pSongEvent);
 
         printf("Note: %s, start: %d, numTicks: %d\n", eMidi_numberToNote(b.note()), b.startTick(), b.numTicks());
+        break;
       }
     }    
   }
