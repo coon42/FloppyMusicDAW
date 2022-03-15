@@ -20,6 +20,10 @@ private:
   wxSizer* pTopSizer_{nullptr};
   wxGrid* pTrackListGrid_{nullptr};
   Song* const pSong_;
+
+  void OnTrackListGridDoubleClick(wxGridEvent& event);
+
+  wxDECLARE_EVENT_TABLE();
 };
 
 #endif // _TRACKEDITOR

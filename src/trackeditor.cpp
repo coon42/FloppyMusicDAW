@@ -18,6 +18,7 @@ TrackEditorWindow::TrackEditorWindow(wxWindow* pParent, Song* pSong)
   pTrackListGrid_->SetColLabelValue(3, "Duration");
 
   pTrackListGrid_->SetColLabelSize(pTrackListGrid_->GetCharHeight() + 4);
+  pTrackListGrid_->Bind(wxEVT_GRID_CELL_LEFT_DCLICK, &TrackEditorWindow::OnTrackListGridDoubleClick, this);
 
   pTopSizer_ = new wxBoxSizer(wxHORIZONTAL);
   pTopSizer_->Add(pTrackListGrid_);
@@ -33,7 +34,7 @@ void TrackEditorWindow::updateTrackList() {
 
   for (int trackNo = 0; trackNo < pSong_->numberOfTracks(); ++trackNo) {
     pTrackListGrid_->AppendRows(1);
-    pTrackListGrid_->SetCellValue(trackNo, 0, trackNo == 0 ? "X" : "");
+    pTrackListGrid_->SetCellValue(trackNo, 0, trackNo == pSong_->currentSelectedTrackNo() ? "X" : "");
     pTrackListGrid_->SetCellValue(trackNo, 1, pSong_->track(trackNo)->name());
     pTrackListGrid_->SetCellValue(trackNo, 2, wxString::Format("%d", pSong_->track(trackNo)->midiChannel() + 1));
         
@@ -55,3 +56,13 @@ void TrackEditorWindow::updateTrackList() {
   GetParent()->Layout();
 }
 
+void TrackEditorWindow::OnTrackListGridDoubleClick(wxGridEvent& event) {  
+  if (event.GetCol() == 0) {
+    pSong_->setCurrentSelectedTrack(event.GetRow());    
+    pSong_->requestGlobalRedraw(); // TODO: fix rendering so this works via 'GetParent()->Refresh()' instead
+  }
+}
+
+wxBEGIN_EVENT_TABLE(TrackEditorWindow, wxWindow)
+EVT_GRID_CELL_LEFT_DCLICK(TrackEditorWindow::OnTrackListGridDoubleClick)
+wxEND_EVENT_TABLE()
