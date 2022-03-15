@@ -13,8 +13,9 @@ enum class SongEventType {
   Undefined,
   NotImplementedEvent,
   NotImplementedMetaEvent,
+  SetTempo,
   NoteBlock,
-  SetTempo
+  ProgramChange
 };
 
 class SongEvent {
@@ -91,6 +92,22 @@ public:
 
 private:
   uint8_t note_{0};
+};
+
+//-------------------------------------------------------------------------------------------------
+// ProgramChangeEvent
+//-------------------------------------------------------------------------------------------------
+
+class ProgramChangeEvent : public SongEvent {
+public:
+  SongEvent* clone() const final         { return new ProgramChangeEvent(*this); }
+  SongEventType type() const final       { return SongEventType::ProgramChange; }
+
+  void setProgram(uint8_t programNumber) { programNumber_ = programNumber; }  
+  const uint8_t programNumber() const    { return programNumber_; }
+
+private:
+  uint8_t programNumber_{0};
 };
 
 //-------------------------------------------------------------------------------------------------

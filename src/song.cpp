@@ -134,6 +134,14 @@ void Song::importFromMidi0(const std::string& path) {
           break;
         }
 
+        case MIDI_EVENT_PROGRAM_CHANGE: {          
+          ProgramChangeEvent programChange;          
+          programChange.setProgram(midiEvent.params.msg.programChange.programNumber);
+
+          pTrack->addSongEvent(programChange);
+          break;
+        }
+
         default:
           pTrack->addSongEvent(NotImplementedEvent(currentTick, eventId, 0));
           break;
@@ -183,12 +191,24 @@ void Song::exportAsMidi0(const std::string& path) const {
 
   for (const ChannelTrack& track : tracks_) {
     for (const SongEvent* pSongEvent : track.songEvents()) {
-      if (pSongEvent->type() == SongEventType::NoteBlock) {
-        const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
+      switch (pSongEvent->type()) {
+        case SongEventType::NoteBlock: {
+          const NoteBlock& noteBlock = *static_cast<const NoteBlock*>(pSongEvent);
 
-        eventList.push_back(new EmNoteOnEvent(&midiFile, noteBlock.startTick(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
-        eventList.push_back(new EmNoteOffEvent(&midiFile, noteBlock.startTick() + noteBlock.numTicks(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
-      }
+          eventList.push_back(new EmNoteOnEvent(&midiFile, noteBlock.startTick(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+          eventList.push_back(new EmNoteOffEvent(&midiFile, noteBlock.startTick() + noteBlock.numTicks(), track.midiChannel(), noteBlock.note(), MIDI_DEFAULT_VELOCITY));
+          break;
+        }
+
+        case SongEventType::ProgramChange: {
+          const ProgramChangeEvent& programChange = *static_cast<const ProgramChangeEvent*>(pSongEvent);
+
+          eventList.push_back(new EmProgramChangeEvent(&midiFile, programChange.startTick(),
+              track.midiChannel(), programChange.programNumber()));
+
+          break;
+        }
+      }      
     }
   }
 
@@ -277,6 +297,12 @@ void Track::debugPrintAllEvents() const {
         break;
       }
 
+      case SongEventType::ProgramChange: {
+        const ProgramChangeEvent& pce = *static_cast<const ProgramChangeEvent*>(pSongEvent);
+
+        printf("Program change: %d (%s)\n", pce.programNumber(), eMidi_programToStr(pce.programNumber()));
+        break;
+      }
 
       case SongEventType::SetTempo: {
         const SetTempoEvent& st = *static_cast<const SetTempoEvent*>(pSongEvent);
