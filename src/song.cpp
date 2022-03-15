@@ -19,6 +19,7 @@ void Song::clear() {
   metaTrack_ = MetaTrack(*this);
 
   tracks_.push_back(ChannelTrack(*this, "Track 1", 0));
+  currentSelectedTrackNo_ = 0;
 }
 
 uint64_t Song::durationUs() const {
