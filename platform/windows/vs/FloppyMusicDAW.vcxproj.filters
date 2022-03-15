@@ -48,6 +48,9 @@
     <ClCompile Include="..\..\..\src\transport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\eMIDI\src\midifile_oop.cpp">
+      <Filter>Source Files\eMIDI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\main.h">

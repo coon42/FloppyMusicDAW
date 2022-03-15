@@ -5,39 +5,9 @@ extern "C" {
 #include "lib/eMIDI/src/helpers.h"
 }
 
+#include "lib/eMIDI/src/midifile_oop.h"
+
 #include "song.h"
-
-//-------------------------------------------------------------------------------------------------
-// EmMidiEvent
-//-------------------------------------------------------------------------------------------------
-
-EmMidiEvent::~EmMidiEvent() {
-
-}
-
-//-------------------------------------------------------------------------------------------------
-// EmNoteOnEvent
-//-------------------------------------------------------------------------------------------------
-
-Error EmNoteOnEvent::write(uint32_t deltaTime) const {
-  return eMidi_writeNoteOnEvent(pMidiFile_, deltaTime, channel(), note(), velocity());
-}
-
-//-------------------------------------------------------------------------------------------------
-// EmNoteOffEvent
-//-------------------------------------------------------------------------------------------------
-
-Error EmNoteOffEvent::write(uint32_t deltaTime) const {
-  return eMidi_writeNoteOffEvent(pMidiFile_, deltaTime, channel(), note(), velocity());
-}
-
-//-------------------------------------------------------------------------------------------------
-// EmMetaSetTempoEvent
-//-------------------------------------------------------------------------------------------------
-
-Error EmMetaSetTempoEvent::write(uint32_t deltaTime) const {
-  return eMidi_writeSetTempoMetaEvent(pMidiFile_, deltaTime, bpm());
-}
 
 //-------------------------------------------------------------------------------------------------
 // Song
