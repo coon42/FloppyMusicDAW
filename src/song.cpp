@@ -270,6 +270,18 @@ void Song::exportAsMidi0(const std::string& path) const {
     eMidi_printError(error);
 }
 
+// TODO: remove once rendering is fixed
+void Song::registerRedrawAllCallback(void(*redrawAllCallback)(void* pCtx), void* pCtx) {
+  pRedrawAllCallback_ = redrawAllCallback;
+  pRedrawCallbackCtx_ = pCtx;
+}
+
+void Song::requestGlobalRedraw() {
+  if (pRedrawAllCallback_)
+    pRedrawAllCallback_(pRedrawCallbackCtx_);
+}
+// --
+
 //-------------------------------------------------------------------------------------------------
 // Track
 //-------------------------------------------------------------------------------------------------

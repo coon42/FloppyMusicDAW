@@ -226,12 +226,22 @@ public:
 
   const uint16_t tpqn() const                   { return tpqn_; }
 
+  // TODO: remove once rendering is fixed:
+  void registerRedrawAllCallback(void(*redrawAllCallback)(void* pCtx), void* pCtx);
+  void requestGlobalRedraw();
+  // --
+
 private:
   int currentSelectedTrackNo_{0};
   uint16_t tpqn_{0};
 
   MetaTrack metaTrack_{*this};
   std::vector<ChannelTrack> tracks_;
+
+  // TODO: remove once rendering is fixed:
+  void(*pRedrawAllCallback_)(void* pCtx) = nullptr;
+  void* pRedrawCallbackCtx_ = nullptr;
+  // --
 };
 
 #endif // _SONG_H
