@@ -219,6 +219,7 @@ public:
   uint64_t durationUs() const;
   uint32_t numTicks() const;                    
   int currentSelectedTrackNo() const            { return currentSelectedTrackNo_; }
+  const ChannelTrack* currentSelectedTrack() const { return track(currentSelectedTrackNo_); }
 
   void setCurrentSelectedTrack(int track)       { currentSelectedTrackNo_ = track; }
   void debugPrintAllSongEvents() const;
