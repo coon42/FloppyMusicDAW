@@ -488,7 +488,9 @@ void KeyEditorWindow::render() {
 }
 
 void KeyEditorWindow::setDefaultScrollPositions() {
-  pHorizontalScrollbar_->SetScrollbar(0, 1, 128, 1);
+  const int numQuarterNotes = pSong_->numTicks() / pSong_->tpqn();  
+
+  pHorizontalScrollbar_->SetScrollbar(0, 1, numQuarterNotes, 1);
   pVerticalScrollbar_->SetScrollbar(24, 1, MIDI_NUM_NOTES, 1);
 
   pHorizontalZoomSlider_->SetMin(0);
