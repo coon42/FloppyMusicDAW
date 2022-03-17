@@ -162,7 +162,7 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   }
 
   // draw note blocks
-  std::list<SongEvent*> eventsOfCurrentTrack = pSong_->track(pSong_->currentSelectedTrackNo())->songEvents();
+  std::list<SongEvent*> eventsOfCurrentTrack = pSong_->currentSelectedTrack()->songEvents();
 
   for (const SongEvent* pSongEvent : eventsOfCurrentTrack) {
     if (pSongEvent->type() == SongEventType::NoteBlock) {
