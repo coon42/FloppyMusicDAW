@@ -35,6 +35,19 @@ uint64_t Song::durationUs() const {
   return longestDuration;
 }
 
+uint32_t Song::numTicks() const {
+  uint32_t longestTrackTicks = 0;
+
+  for (const Track& track : tracks_) {    
+    const uint32_t curTrackTicks = track.numTicks();
+
+    if (curTrackTicks > longestTrackTicks)
+      longestTrackTicks = curTrackTicks;    
+  }
+
+  return longestTrackTicks;
+}
+
 void Song::unselectAllEvents() {
   for (SongEvent* pSongEvent : tracks_[0].songEvents())
     pSongEvent->unselect();

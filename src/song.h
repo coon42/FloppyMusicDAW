@@ -217,6 +217,7 @@ public:
 
   size_t numberOfTracks() const                 { return tracks_.size(); }
   uint64_t durationUs() const;
+  uint32_t numTicks() const;                    
   int currentSelectedTrackNo() const            { return currentSelectedTrackNo_; }
 
   void setCurrentSelectedTrack(int track)       { currentSelectedTrackNo_ = track; }
