@@ -207,27 +207,27 @@ public:
 
 class Song {
 public:
-  Song()                                        { clear(); }
-  void clear();
-  void setTpqn(uint16_t tpqn)                   { tpqn_ = tpqn; }
-  ChannelTrack* track(int trackNo)              { return &tracks_[trackNo]; }
-  const ChannelTrack* track(int trackNo) const  { return &tracks_[trackNo]; }
-  MetaTrack* metaTrack()                        { return &metaTrack_; }
-  const MetaTrack* metaTrack() const            { return &metaTrack_; }
-
-  size_t numberOfTracks() const                 { return tracks_.size(); }
+  Song()                                           { clear(); }
+  void clear();                                    
+  void setTpqn(uint16_t tpqn)                      { tpqn_ = tpqn; }
+  ChannelTrack* track(int trackNo)                 { return &tracks_[trackNo]; }
+  const ChannelTrack* track(int trackNo) const     { return &tracks_[trackNo]; }
+  MetaTrack* metaTrack()                           { return &metaTrack_; }
+  const MetaTrack* metaTrack() const               { return &metaTrack_; }
+                                                   
+  size_t numberOfTracks() const                    { return tracks_.size(); }
   uint64_t durationUs() const;
   uint32_t numTicks() const;                    
-  int currentSelectedTrackNo() const            { return currentSelectedTrackNo_; }
+  int currentSelectedTrackNo() const               { return currentSelectedTrackNo_; }
   const ChannelTrack* currentSelectedTrack() const { return track(currentSelectedTrackNo_); }
 
-  void setCurrentSelectedTrack(int track)       { currentSelectedTrackNo_ = track; }
+  void setCurrentSelectedTrack(int track)          { currentSelectedTrackNo_ = track; }
   void debugPrintAllSongEvents() const;
   void unselectAllEvents();
   void importFromMidi0(const std::string& path);
   void exportAsMidi0(const std::string& path) const;
 
-  const uint16_t tpqn() const                   { return tpqn_; }
+  const uint16_t tpqn() const                      { return tpqn_; }
 
   // TODO: remove once rendering is fixed:
   void registerRedrawAllCallback(void(*redrawAllCallback)(void* pCtx), void* pCtx);
