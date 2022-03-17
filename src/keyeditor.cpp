@@ -38,6 +38,8 @@ wxBEGIN_EVENT_TABLE(KeyEditorCanvasSegment, wxWindow)
 EVT_PAINT(KeyEditorCanvasSegment::OnPaint)
 wxEND_EVENT_TABLE()
 
+static const int _beatsPerBar = 4;
+
 //-------------------------------------------------------------------------------------------------
 // KeyEditorQuantizationCanvas
 //-------------------------------------------------------------------------------------------------
@@ -53,7 +55,7 @@ void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
 
   for (int segment = 0; segment < numSegments; ++segment) {
     const int xOffset = segment * canvas()->pixelsPerQuarterNote();
-    const bool isFirst = (canvas()->xScrollOffset() + segment) % 4 == 0;
+    const bool isFirst = (canvas()->xScrollOffset() + segment) % _beatsPerBar == 0;
     const int yEndPos = isFirst ? GetClientSize().GetHeight() : 10;
 
     if (isFirst) {
@@ -67,9 +69,9 @@ void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
 
     dc.DrawLine(canvas()->xBlockStartOffset() + xOffset, 0, canvas()->xBlockStartOffset() + xOffset, yEndPos);
 
-    const int labelXoffset = isFirst ? xOffset + 5 : xOffset - 4;
-    const int major = 1 + (canvas()->xScrollOffset() + segment) / 4;
-    const int minor = 1 + (canvas()->xScrollOffset() + segment) % 4;
+    const int labelXoffset = isFirst ? xOffset + 5 : xOffset - _beatsPerBar;
+    const int major = 1 + (canvas()->xScrollOffset() + segment) / _beatsPerBar;
+    const int minor = 1 + (canvas()->xScrollOffset() + segment) % _beatsPerBar;
 
     wxString label;
 
@@ -124,7 +126,7 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   // draw divisions
   for (int segment = 0; segment < numSegments; ++segment) {
     const int xOffset = segment * canvas()->pixelsPerQuarterNote();
-    const bool isFirst = (canvas()->xScrollOffset() + segment) % 4 == 0;
+    const bool isFirst = (canvas()->xScrollOffset() + segment) % _beatsPerBar == 0;
 
     if (isFirst) {
       dc.SetPen(wxPen(wxColor(0, 0, 0), 1)); // black line, 1 pixels thick
