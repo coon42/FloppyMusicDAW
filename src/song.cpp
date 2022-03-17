@@ -49,7 +49,7 @@ uint32_t Song::numTicks() const {
 }
 
 void Song::unselectAllEvents() {
-  for (SongEvent* pSongEvent : tracks_[0].songEvents())
+  for (SongEvent* pSongEvent : currentSelectedTrack()->songEvents())
     pSongEvent->unselect();
 }
 

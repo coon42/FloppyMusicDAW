@@ -243,7 +243,7 @@ KeyEditorGridCanvas::ResizeArea KeyEditorGridCanvas::noteBlockResizeArea(const N
 }
 
 NoteBlock* KeyEditorGridCanvas::currentPointedNoteBlock(int mouseX, int mouseY) {
-  for (SongEvent* pSongEvent : pSong_->track(0)->songEvents()) {
+  for (SongEvent* pSongEvent : pSong_->currentSelectedTrack()->songEvents()) {
     if (pSongEvent->type() == SongEventType::NoteBlock) {
       NoteBlock& noteBlock = *static_cast<NoteBlock*>(pSongEvent);
 
