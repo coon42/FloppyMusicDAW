@@ -55,10 +55,10 @@ void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
 
   for (int segment = 0; segment < numSegments; ++segment) {
     const int xOffset = segment * canvas()->pixelsPerQuarterNote();
-    const bool isFirst = (canvas()->xScrollOffset() + segment) % _beatsPerBar == 0;
-    const int yEndPos = isFirst ? GetClientSize().GetHeight() : 10;
+    const bool isBar = (canvas()->xScrollOffset() + segment) % _beatsPerBar == 0;
+    const int yEndPos = isBar ? GetClientSize().GetHeight() : 10;
 
-    if (isFirst) {
+    if (isBar) {
       dc.SetPen(wxPen(wxColor(0, 0, 0), 1));
       dc.SetTextForeground(wxColor(0, 0, 0));
     }
@@ -69,16 +69,16 @@ void KeyEditorQuantizationCanvas::onRender(wxDC& dc) {
 
     dc.DrawLine(canvas()->xBlockStartOffset() + xOffset, 0, canvas()->xBlockStartOffset() + xOffset, yEndPos);
 
-    const int labelXoffset = isFirst ? xOffset + 5 : xOffset - _beatsPerBar;
-    const int major = 1 + (canvas()->xScrollOffset() + segment) / _beatsPerBar;
-    const int minor = 1 + (canvas()->xScrollOffset() + segment) % _beatsPerBar;
+    const int labelXoffset = isBar ? xOffset + 5 : xOffset - _beatsPerBar;
+    const int barNo = 1 + (canvas()->xScrollOffset() + segment) / _beatsPerBar;
+    const int beatNo = 1 + (canvas()->xScrollOffset() + segment) % _beatsPerBar;
 
     wxString label;
 
-    if (isFirst)
-      label = wxString::Format("%d", major);
+    if (isBar)
+      label = wxString::Format("%d", barNo);
     else
-      label = wxString::Format("%d.%d", major, minor);
+      label = wxString::Format("%d.%d", barNo, beatNo);
 
     dc.DrawText(label, canvas()->xBlockStartOffset() + labelXoffset, 10);
   }
@@ -126,9 +126,9 @@ void KeyEditorGridCanvas::onRender(wxDC& dc) {
   // draw divisions
   for (int segment = 0; segment < numSegments; ++segment) {
     const int xOffset = segment * canvas()->pixelsPerQuarterNote();
-    const bool isFirst = (canvas()->xScrollOffset() + segment) % _beatsPerBar == 0;
+    const bool isBar = (canvas()->xScrollOffset() + segment) % _beatsPerBar == 0;
 
-    if (isFirst) {
+    if (isBar) {
       dc.SetPen(wxPen(wxColor(0, 0, 0), 1)); // black line, 1 pixels thick
       dc.SetTextForeground(wxColor(0, 0, 0)); // set text color
     }
