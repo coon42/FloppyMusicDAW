@@ -162,6 +162,7 @@ public:
   const std::list<SongEvent*>& songEvents() const { return songEvents_; }
   std::list<SongEvent*>& songEvents()             { return songEvents_; }
   const std::string& name() const                 { return name_; }
+  uint32_t numTicks() const;
 
   void debugPrintAllEvents() const;
 

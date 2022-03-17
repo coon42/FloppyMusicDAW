@@ -311,6 +311,15 @@ void Track::clear() {
   songEvents_.clear();
 }
 
+uint32_t Track::numTicks() const {
+  if (!songEvents_.size())
+    return 0;
+
+  const SongEvent& lastEvent = *songEvents_.back();
+
+  return lastEvent.startTick() + lastEvent.numTicks();
+}
+
 void Track::debugPrintAllEvents() const {
   for (const SongEvent* pSongEvent : songEvents_) {
     switch (pSongEvent->type()) {
