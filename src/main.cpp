@@ -43,6 +43,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
   pTopSizer->Add(pKeyEditorWindow_, 1, wxEXPAND);
 
   SetSizer(pTopSizer);
+  updateTitle();
+
   Show(true);
 }
 
@@ -66,6 +68,8 @@ void MainFrame::OnOpen(wxCommandEvent& event) {
     return;
 
   song_.importFromMidi0(openFileDialog.GetPath().ToStdString());
+  updateTitle();
+
   pTransportWindow_->update();
   pTrackEditorWindow_->updateTrackList();
   pKeyEditorWindow_->setDefaultScrollPositions();
@@ -81,6 +85,20 @@ void MainFrame::OnSaveAs(wxCommandEvent& event) {
     return;
 
   song_.exportAsMidi0(saveFileDialog.GetPath().ToStdString());
+  updateTitle();
+}
+
+void MainFrame::updateTitle() {
+  std::string curTrackName = song_.currentSelectedTrack()->name();
+
+  // Cut away 'Track' duplicate, if the tracks name itself is starting with 'Track':
+  const std::string trackStr = "Track ";
+  
+  if (curTrackName.find(trackStr) != std::string::npos)
+    curTrackName = curTrackName.substr(trackStr.length());
+
+  SetTitle(wxString::Format("%s - Track %s - Floppy Music DAW", song_.currentSongFileName().c_str(),
+      curTrackName.c_str()));
 }
 
 // TODO: remove once rendering is fixed:
@@ -90,6 +108,7 @@ void MainFrame::onRedrawAllRequest(void* pCtx) {
   pThis->pTransportWindow_->update();
   pThis->pTrackEditorWindow_->updateTrackList();
   pThis->pKeyEditorWindow_->render();
+  pThis->updateTitle();
 }
 // --
 
@@ -105,7 +124,7 @@ wxEND_EVENT_TABLE()
 //-------------------------------------------------------------------------------------------------
 
 bool WxApp::OnInit() {
-  new MainFrame("Floppy Music DAW", wxDefaultPosition, wxSize(1440, 900));
+  new MainFrame("", wxDefaultPosition, wxSize(1440, 900));
 
   printf("Floppy Music DAW started.\n");
 

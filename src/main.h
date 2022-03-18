@@ -22,6 +22,8 @@ private:
   void OnOpen(wxCommandEvent& event);
   void OnSaveAs(wxCommandEvent& event);
 
+  void updateTitle();
+
   TransportWindow* pTransportWindow_{nullptr};
   TrackEditorWindow* pTrackEditorWindow_{nullptr};
   KeyEditorWindow* pKeyEditorWindow_{nullptr};
