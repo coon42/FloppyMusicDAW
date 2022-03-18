@@ -201,9 +201,11 @@ void Song::importFromMidi0(const std::string& path) {
     printf("Error on closing midi file!\n");
     return;
   }
+  
+  setCurrentFileNameFromPath(path);
 }
 
-void Song::exportAsMidi0(const std::string& path) const {
+void Song::exportAsMidi0(const std::string& path) {
   MidiFile midiFile;
 
   if (Error error = eMidi_create(&midiFile, path.c_str(), tpqn())) {
@@ -279,8 +281,12 @@ void Song::exportAsMidi0(const std::string& path) const {
     return;
   }
 
-  if (Error error = eMidi_close(&midiFile))
+  if (Error error = eMidi_close(&midiFile)) {
     eMidi_printError(error);
+    return;
+  }
+
+  setCurrentFileNameFromPath(path);
 }
 
 // TODO: remove once rendering is fixed
@@ -294,6 +300,17 @@ void Song::requestGlobalRedraw() {
     pRedrawAllCallback_(pRedrawCallbackCtx_);
 }
 // --
+
+void Song::setCurrentFileNameFromPath(const std::string & path) {
+  size_t startOfFileName = path.find_last_of('\\');
+  
+  if (startOfFileName == std::string::npos) {
+    currentSongFileName_ = "<Error on reading file name>";
+    return;
+  }
+
+  currentSongFileName_ = path.substr(startOfFileName + 1);
+}
 
 //-------------------------------------------------------------------------------------------------
 // Track

@@ -220,12 +220,13 @@ public:
   uint32_t numTicks() const;                    
   int currentSelectedTrackNo() const               { return currentSelectedTrackNo_; }
   const ChannelTrack* currentSelectedTrack() const { return track(currentSelectedTrackNo_); }
+  const std::string& currentSongFileName() const   { return currentSongFileName_; }
 
   void setCurrentSelectedTrack(int track)          { currentSelectedTrackNo_ = track; }
   void debugPrintAllSongEvents() const;
   void unselectAllEvents();
   void importFromMidi0(const std::string& path);
-  void exportAsMidi0(const std::string& path) const;
+  void exportAsMidi0(const std::string& path);
 
   const uint16_t tpqn() const                      { return tpqn_; }
 
@@ -235,6 +236,9 @@ public:
   // --
 
 private:
+  void setCurrentFileNameFromPath(const std::string& path);
+
+  std::string currentSongFileName_{"Unnamed"};
   int currentSelectedTrackNo_{0};
   uint16_t tpqn_{0};
 
