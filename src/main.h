@@ -20,7 +20,8 @@ private:
   void OnExit(wxCommandEvent& event);
   void OnAbout(wxCommandEvent& event);
   void OnOpen(wxCommandEvent& event);
-  void OnSaveAs(wxCommandEvent& event);
+  void OnSaveAs(wxCommandEvent& event);  
+  void OnSize(wxSizeEvent& event);
 
   void updateTitle();
 

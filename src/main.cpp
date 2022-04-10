@@ -88,6 +88,10 @@ void MainFrame::OnSaveAs(wxCommandEvent& event) {
   updateTitle();
 }
 
+void MainFrame::OnSize(wxSizeEvent& event) {
+  onRedrawAllRequest(this);
+}
+
 void MainFrame::updateTitle() {
   std::string curTrackName = song_.currentSelectedTrack()->name();
 
@@ -105,10 +109,12 @@ void MainFrame::updateTitle() {
 void MainFrame::onRedrawAllRequest(void* pCtx) {
   MainFrame* pThis = static_cast<MainFrame*>(pCtx);
 
-  pThis->pTransportWindow_->update();
-  pThis->pTrackEditorWindow_->updateTrackList();
-  pThis->pKeyEditorWindow_->render();
-  pThis->updateTitle();
+  if (pThis->pTransportWindow_) {
+    pThis->pTransportWindow_->update();  
+    pThis->pTrackEditorWindow_->updateTrackList();
+    pThis->pKeyEditorWindow_->render();
+    pThis->updateTitle();
+  }
 }
 // --
 
@@ -117,6 +123,7 @@ EVT_MENU(wxID_EXIT, MainFrame::OnExit)
 EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 EVT_MENU(wxID_OPEN, MainFrame::OnOpen)
 EVT_MENU(wxID_SAVEAS, MainFrame::OnSaveAs)
+EVT_SIZE(MainFrame::OnSize)
 wxEND_EVENT_TABLE()
 
 //-------------------------------------------------------------------------------------------------
