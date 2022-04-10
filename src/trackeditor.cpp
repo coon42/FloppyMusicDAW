@@ -8,7 +8,7 @@ TrackEditorWindow::TrackEditorWindow(wxWindow* pParent, Song* pSong)
     : wxWindow(pParent, wxID_ANY, wxDefaultPosition, wxDefaultSize), pSong_(pSong) {
 
   pTrackListGrid_ = new wxGrid(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-  pTrackListGrid_->CreateGrid(pSong_->numberOfTracks(), 4);
+  pTrackListGrid_->CreateGrid(pSong_->numberOfTracks(), 5);
   pTrackListGrid_->HideRowLabels();
   pTrackListGrid_->SetSelectionMode(wxGrid::wxGridSelectionModes::wxGridSelectNone);
 
@@ -16,6 +16,7 @@ TrackEditorWindow::TrackEditorWindow(wxWindow* pParent, Song* pSong)
   pTrackListGrid_->SetColLabelValue(1, "Track Name");
   pTrackListGrid_->SetColLabelValue(2, "Channel");
   pTrackListGrid_->SetColLabelValue(3, "Duration");
+  pTrackListGrid_->SetColLabelValue(4, "Track Preview");
 
   pTrackListGrid_->SetColLabelSize(pTrackListGrid_->GetCharHeight() + 4);
   pTrackListGrid_->Bind(wxEVT_GRID_CELL_LEFT_DCLICK, &TrackEditorWindow::OnTrackListGridDoubleClick, this);
