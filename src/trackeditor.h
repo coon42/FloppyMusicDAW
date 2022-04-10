@@ -21,6 +21,7 @@ private:
   wxGrid* pTrackListGrid_{nullptr};
   Song* const pSong_;
 
+  void adjustTrackPreviewSize();
   void OnTrackListGridDoubleClick(wxGridEvent& event);
 
   wxDECLARE_EVENT_TABLE();

@@ -55,6 +55,24 @@ void TrackEditorWindow::updateTrackList() {
   }
 
   GetParent()->Layout();
+  adjustTrackPreviewSize();
+}
+
+void TrackEditorWindow::adjustTrackPreviewSize() {
+  const int numCols = pTrackListGrid_->GetNumberCols();
+  int start = 0;
+
+  for (int i = 0; i < numCols; ++i) {
+    if (i != (numCols - 1))
+      start += pTrackListGrid_->GetColSize(i);
+    else {
+      const int size = GetParent()->GetSize().GetWidth();
+      const int width = size - start - 20;
+
+      if (width > 0)
+        pTrackListGrid_->SetColSize(i, width);
+    }
+  }  
 }
 
 void TrackEditorWindow::OnTrackListGridDoubleClick(wxGridEvent& event) {  
