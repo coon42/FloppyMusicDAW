@@ -45,4 +45,3 @@ void TransportWindow::update() {
   pTotalTime_->SetLabelMarkup(wxString::Format(
       "<span background='black' foreground='lime' size='%d'>%02d:%02d:%03d</span>", 30 * 1024, m, s, roundedMs));
 }
-

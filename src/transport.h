@@ -22,5 +22,3 @@ private:
 };
 
 #endif // _TRANSPORT
-
-

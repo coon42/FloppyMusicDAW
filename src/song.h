@@ -104,7 +104,7 @@ public:
   SongEvent* clone() const final         { return new ProgramChangeEvent(*this); }
   SongEventType type() const final       { return SongEventType::ProgramChange; }
 
-  void setProgram(uint8_t programNumber) { programNumber_ = programNumber; }  
+  void setProgram(uint8_t programNumber) { programNumber_ = programNumber; }
   const uint8_t programNumber() const    { return programNumber_; }
 
 private:
@@ -184,7 +184,7 @@ public:
     : Track(song, name), midiChannel_(midiChannel) {};
 
   int midiChannel() const                       { return midiChannel_; }
-  uint64_t durationUs() const;                  
+  uint64_t durationUs() const;
 
 private:
   const int midiChannel_{0};
@@ -208,16 +208,16 @@ public:
 class Song {
 public:
   Song()                                           { clear(); }
-  void clear();                                    
+  void clear();
   void setTpqn(uint16_t tpqn)                      { tpqn_ = tpqn; }
   ChannelTrack* track(int trackNo)                 { return &tracks_[trackNo]; }
   const ChannelTrack* track(int trackNo) const     { return &tracks_[trackNo]; }
   MetaTrack* metaTrack()                           { return &metaTrack_; }
   const MetaTrack* metaTrack() const               { return &metaTrack_; }
-                                                   
+
   size_t numberOfTracks() const                    { return tracks_.size(); }
   uint64_t durationUs() const;
-  uint32_t numTicks() const;                    
+  uint32_t numTicks() const;
   int currentSelectedTrackNo() const               { return currentSelectedTrackNo_; }
   const ChannelTrack* currentSelectedTrack() const { return track(currentSelectedTrackNo_); }
   const std::string& currentSongFileName() const   { return currentSongFileName_; }

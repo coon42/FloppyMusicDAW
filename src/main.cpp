@@ -97,7 +97,7 @@ void MainFrame::updateTitle() {
 
   // Cut away 'Track' duplicate, if the tracks name itself is starting with 'Track':
   const std::string trackStr = "Track ";
-  
+
   if (curTrackName.find(trackStr) != std::string::npos)
     curTrackName = curTrackName.substr(trackStr.length());
 
@@ -110,7 +110,7 @@ void MainFrame::onRedrawAllRequest(void* pCtx) {
   MainFrame* pThis = static_cast<MainFrame*>(pCtx);
 
   if (pThis->pTransportWindow_) {
-    pThis->pTransportWindow_->update();  
+    pThis->pTransportWindow_->update();
     pThis->pTrackEditorWindow_->updateTrackList();
     pThis->pKeyEditorWindow_->render();
     pThis->updateTitle();

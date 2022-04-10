@@ -38,11 +38,11 @@ uint64_t Song::durationUs() const {
 uint32_t Song::numTicks() const {
   uint32_t longestTrackTicks = 0;
 
-  for (const Track& track : tracks_) {    
+  for (const Track& track : tracks_) {
     const uint32_t curTrackTicks = track.numTicks();
 
     if (curTrackTicks > longestTrackTicks)
-      longestTrackTicks = curTrackTicks;    
+      longestTrackTicks = curTrackTicks;
   }
 
   return longestTrackTicks;
@@ -64,7 +64,7 @@ void Song::debugPrintAllSongEvents() const {
 
   printf("Meta events:\n");
 
-  metaTrack_.debugPrintAllEvents();  
+  metaTrack_.debugPrintAllEvents();
 }
 
 void Song::importFromMidi0(const std::string& path) {
@@ -109,7 +109,7 @@ void Song::importFromMidi0(const std::string& path) {
 
       Track* pTrack = &tracks_[trackNo];
       OnNotesMap& onNotes = trackOnNotes[channel];
-      
+
       auto noteOn = [&](uint8_t note) {
         NoteBlock noteBlock;
         noteBlock.setNote(midiEvent.params.msg.noteOn.note);
@@ -148,8 +148,8 @@ void Song::importFromMidi0(const std::string& path) {
           break;
         }
 
-        case MIDI_EVENT_PROGRAM_CHANGE: {          
-          ProgramChangeEvent programChange;          
+        case MIDI_EVENT_PROGRAM_CHANGE: {
+          ProgramChangeEvent programChange;
           programChange.setStartTick(currentTick);
           programChange.setProgram(midiEvent.params.msg.programChange.programNumber);
 
@@ -159,7 +159,7 @@ void Song::importFromMidi0(const std::string& path) {
 
         case MIDI_EVENT_PITCH_BEND: {
           PitchBendEvent pitchBendEvent;
-          pitchBendEvent.setStartTick(currentTick);          
+          pitchBendEvent.setStartTick(currentTick);
           pitchBendEvent.setPitchBendValue(midiEvent.params.msg.pitchBend.value);
 
           pTrack->addSongEvent(pitchBendEvent);
@@ -201,7 +201,7 @@ void Song::importFromMidi0(const std::string& path) {
     printf("Error on closing midi file!\n");
     return;
   }
-  
+
   setCurrentFileNameFromPath(path);
 }
 
@@ -243,7 +243,7 @@ void Song::exportAsMidi0(const std::string& path) {
 
           break;
         }
-      }      
+      }
     }
   }
 
@@ -303,7 +303,7 @@ void Song::requestGlobalRedraw() {
 
 void Song::setCurrentFileNameFromPath(const std::string & path) {
   size_t startOfFileName = path.find_last_of('\\');
-  
+
   if (startOfFileName == std::string::npos) {
     currentSongFileName_ = "<Error on reading file name>";
     return;
@@ -396,7 +396,7 @@ void Track::debugPrintAllEvents() const {
         printf("Note: %s, start: %d, numTicks: %d\n", pNoteName, b.startTick(), b.numTicks());
         break;
       }
-    }    
+    }
   }
 }
 
@@ -420,7 +420,7 @@ uint64_t ChannelTrack::durationUs() const {
 
       case SongEventType::NotImplementedEvent: {
         const NotImplementedEvent& notImplementedEvent = *static_cast<const NotImplementedEvent*>(pSongEvent);
-        
+
         eventList.push_back(new EmNotImplementedEvent(nullptr, notImplementedEvent.midiEventId(),
             notImplementedEvent.startTick()));
       }
@@ -437,8 +437,8 @@ uint64_t ChannelTrack::durationUs() const {
 
         eventList.push_back(new EmMetaSetTempoEvent(nullptr, setTempoEvent.startTick(), setTempoEvent.bpm()));
         break;
-      }      
-    }    
+      }
+    }
   }
 
   // comparison, not case sensitive.
@@ -456,14 +456,14 @@ uint64_t ChannelTrack::durationUs() const {
   uint64_t usCurrent = 0;
   uint64_t usTotal = 0;
   uint64_t lastTick = 0;
-   
+
   for (const EmMidiEvent* pEvent : eventList) {
     const uint64_t deltaTick = pEvent->absoluteTick() - lastTick;
 
     usCurrent += (deltaTick * uspqn) / tpqn; // FIXME: leads to integer overflow on big delta values
 
     lastTick = pEvent->absoluteTick();
-    
+
     if (pEvent->eventId() == MIDI_EVENT_META) {
       const EmMetaEvent* pMetaEvent = static_cast<const EmMetaEvent*>(pEvent);
 
@@ -475,7 +475,7 @@ uint64_t ChannelTrack::durationUs() const {
       else
         throw "non tempo meta event invalid!";
     }
-    else    
+    else
       usTotal = usCurrent;
   }
 
