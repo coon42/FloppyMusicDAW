@@ -5,3 +5,4 @@ platform/windows/vs/.vs
 platform/windows/vs/Debug
 platform/windows/vs/Release
 platform/windows/vs/x64
+platform/windows/vs/enc_temp_folder
