@@ -10,6 +10,7 @@ TrackEditorWindow::TrackEditorWindow(wxWindow* pParent, Song* pSong)
   pTrackListGrid_ = new wxGrid(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
   pTrackListGrid_->CreateGrid(pSong_->numberOfTracks(), 5);
   pTrackListGrid_->HideRowLabels();
+  pTrackListGrid_->ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_NEVER);
   pTrackListGrid_->SetSelectionMode(wxGrid::wxGridSelectionModes::wxGridSelectNone);
 
   pTrackListGrid_->SetColLabelValue(0, "Selected");
