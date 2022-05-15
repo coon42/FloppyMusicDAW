@@ -19,49 +19,35 @@ CFLAGS += -I../../src/lib/wxWidgets/include
 
 ###################################################
 
-OBJDIR=obj
-BINDIR=bin
 MAIN_SRCS = song.cpp keyeditor.cpp trackeditor.cpp transport.cpp main.cpp
-
-#LIB_SRCS = <TODO: add files if needed>
-
-EMIDI_LIB_SRCS = midifile.c midiplayer.c helpers.c emidi_linux.c
+MAIN_OBJS=$(patsubst %.cpp,obj/%.o,$(MAIN_SRCS))
 
 PROJ_NAME=FloppyMusicDAW
-OUTPATH=bin
-
-###################################################
-
-MAIN_OBJS=$(patsubst %.cpp,$(OBJDIR)/%.o,$(MAIN_SRCS))
-#LIB_OBJS=$(patsubst %.c,$(OBJDIR)/%.o,$(LIB_SRCS))
-EMIDI_LIB_OBJS=$(patsubst %.c,$(OBJDIR)/%.o,$(EMIDI_LIB_SRCS))
-
-###################################################
 
 .PHONY: proj clean
 
-all: $(OUTPATH)/$(PROJ_NAME).elf
+all: bin/$(PROJ_NAME).elf
 
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-	mkdir -p $(BINDIR)
+obj:
+	mkdir -p obj
+	mkdir -p bin
 
-$(OBJDIR)/%.o: %.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@ -L$(OBJDIR)
+obj/%.o: %.c | obj
+	$(CC) $(CFLAGS) -c $< -o $@ -Lobj
 
-$(OBJDIR)/%.o: %.cpp | $(OBJDIR)
-	$(CXX) $(CFLAGS) -c $< -o $@ -L$(OBJDIR) `wx-config --cxxflags --libs`
+obj/%.o: %.cpp | obj
+	$(CXX) $(CFLAGS) -c $< -o $@ -Lobj `wx-config --cxxflags --libs`
 
-$(OBJDIR)/libemidi.a: $(EMIDI_LIB_OBJS)
-	$(AR) -r $@ $(EMIDI_LIB_OBJS)
+../../src/lib/eMIDI/lib/libemidi.a:
+	$(MAKE) lib/libemidi.a -C ../../src/lib/eMIDI
 
-$(OUTPATH)/$(PROJ_NAME).elf: $(OBJDIR)/libemidi.a $(MAIN_OBJS)
-	$(CXX) $(CFLAGS) $^ -o $@ -L. -Lobj -lemidi `wx-config --cxxflags --libs`
+bin/$(PROJ_NAME).elf: ../../src/lib/eMIDI/lib/libemidi.a $(MAIN_OBJS)
+	$(CXX) $(CFLAGS) $(MAIN_OBJS) -o $@ -L ../../src/lib/eMIDI/lib -lemidi `wx-config --cxxflags --libs`
 	$(SIZE) $@
 
-proj: $(OUTPATH)/$(PROJ_NAME).elf
+proj: bin/$(PROJ_NAME).elf
 
 clean:
-	rm -rf $(OBJDIR)
-	rm -rf $(BINDIR)
+	rm -rf obj
+	rm -rf bin
 
