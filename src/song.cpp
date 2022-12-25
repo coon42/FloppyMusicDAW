@@ -110,12 +110,111 @@ void Song::importFromMidi0(const std::string& path) {
       Track* pTrack = &tracks_[trackNo];
       OnNotesMap& onNotes = trackOnNotes[channel];
 
+      static int lastOffTick = 0;
+
       auto noteOn = [&](uint8_t note) {
         NoteBlock noteBlock;
         noteBlock.setNote(midiEvent.params.msg.noteOn.note);
         noteBlock.setStartTick(currentTick);
 
         onNotes[note] = noteBlock;
+
+        auto midiNoteToBongoPlusKeyboardNote = [](int midiNote) -> const char* {
+          switch (midiNote) {
+            case 48: return "v1";
+            case 49: return "v1#";
+            case 50: return "v2";
+            case 51: return "v2#";
+            case 52: return "v3";
+            case 53: return "v4";
+            case 54: return "v4#";
+            case 55: return "v5";
+            case 56: return "v5#";
+            case 57: return "v6";
+            case 58: return "v6#";
+            case 59: return "v7";
+            case 60: return "1";
+            case 61: return "1#";
+            case 62: return "2";
+            case 63: return "2#";
+            case 64: return "3";
+            case 65: return "4";
+            case 66: return "4#";
+            case 67: return "5";
+            case 68: return "5#";
+            case 69: return "6";
+            case 70: return "6#";
+            case 71: return "7";
+            case 72: return "^1";
+            case 73: return "^1#";
+            case 74: return "^2";
+            case 75: return "^2#";
+            case 76: return "^3";
+            case 77: return "^4";
+            case 78: return "^4#";
+            case 79: return "^5";
+            case 80: return "^5#";
+            case 81: return "^6";
+            case 82: return "^6#";
+            case 83: return "^7";
+
+            default:
+              return "???";
+          }
+        };
+
+        auto midiNoteToBongoPlusMarimbaNote = [](int midiNote) -> const char* {
+          switch (midiNote) {
+            case 48: return "vQ";
+            case 49: return "vQ#";
+            case 50: return "vW";
+            case 51: return "vW#";
+            case 52: return "vE";
+            case 53: return "vR";
+            case 54: return "vR#";
+            case 55: return "vT";
+            case 56: return "vT#";
+            case 57: return "vY";
+            case 58: return "vY#";
+            case 59: return "vU";
+            case 60: return "Q";
+            case 61: return "Q#";
+            case 62: return "W";
+            case 63: return "W#";
+            case 64: return "E";
+            case 65: return "R";
+            case 66: return "R#";
+            case 67: return "T";
+            case 68: return "T#";
+            case 69: return "Y";
+            case 70: return "Y#";
+            case 71: return "U";
+            case 72: return "^Q";
+            case 73: return "^Q#";
+            case 74: return "^W";
+            case 75: return "^W#";
+            case 76: return "^E";
+            case 77: return "^R";
+            case 78: return "^R#";
+            case 79: return "^T";
+            case 80: return "^T#";
+            case 81: return "^Y";
+            case 82: return "^Y#";
+            case 83: return "^U";
+
+            default:
+              return "???";
+          }
+        };
+
+        if (channel == 0) {
+          const int numPauseTicks = (currentTick - lastOffTick) / tpqn_;
+
+          for (int i = 0; i < numPauseTicks; ++i)
+            printf(". ");
+
+          printf("%s ", midiNoteToBongoPlusMarimbaNote(note));
+        }
       };
 
       auto noteOff = [&](uint8_t note) {
@@ -123,6 +222,9 @@ void Song::importFromMidi0(const std::string& path) {
         noteBlock.setNumTicks(currentTick - noteBlock.startTick());
         pTrack->addSongEvent(onNotes[note]);
         onNotes.erase(note);
+
+        if (channel == 0)
+          lastOffTick = currentTick;
       };
 
       switch (eventId) {
