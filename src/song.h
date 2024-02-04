@@ -1,6 +1,7 @@
 #ifndef _SONG_H
 #define _SONG_H
 
+#include <stdint.h>
 #include <list>
 #include <string>
 #include <vector>
